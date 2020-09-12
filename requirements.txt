@@ -1,0 +1,6 @@
+redis
+Flask==1.1.2
+peewee==3.13.3
+uuid==1.30
+logbook==1.5.3
+requests==2.24.0

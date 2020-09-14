@@ -1,25 +1,18 @@
-import uuid
-from flask import session as flask_session, redirect, url_for
-from utils.session import Session as redis_session
+from utils.session import Session
 from functools import wraps
+from flask import redirect
 
 
-def post(func):
-    if hasattr(func, "methods"):
-        func.methods.append("POST")
-    else:
-        setattr(func, "methods", ["POST"])
-    setattr(func, "__name__", "".join(func.__name__.split("_")[1:]))
-    return func
+def login_required(func):
+    @wraps(func)
+    def inner(*args, **kwargs):
+        session = Session()
+        if session.get("logged_in") != "true":
+            return redirect("/auth/login")
+        session.extend()
+        func(*args, **kwargs)
+    return inner
 
-
-def get(func):
-    if hasattr(func, "methods"):
-        func.methods.append("GET")
-    else:
-        setattr(func, "methods", ["GET"])
-    setattr(func, "__name__", "_".join(func.__name__.split("_")[1:]))
-    return func
 
 
 

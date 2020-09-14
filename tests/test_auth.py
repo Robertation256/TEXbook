@@ -50,6 +50,19 @@ def test_login():
     print("login_response:", response.text)
     print("login_cookies:", requests.utils.dict_from_cookiejar(cookie))
 
+def test_reset_password():
+    cookie = response = requests.post(
+        url="http://127.0.0.1:5000/auth/token",
+        data={
+            "email": "yz3919@nyu.edu",
+            "reset_password": "true"
+        }
+    )
+    cookie = response.cookies
+    print("token_response: ", response.content)
+    print("token_cookies:", requests.utils.dict_from_cookiejar(cookie))
+    return cookie
+
 
 if __name__ == "__main__":
     # cookie = test_get_token()

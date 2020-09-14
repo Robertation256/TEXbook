@@ -1,5 +1,5 @@
 import re
-from models.user import User
+from common.models.user import User
 
 
 def nyu_email_check(email: str) -> bool:

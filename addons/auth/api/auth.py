@@ -1,9 +1,9 @@
 import logbook
 from base.base_resource import BaseResource
-from models.user import User
+from common.models.user import User
 from utils.token_generator import TokenGenerator
 from utils.MD5_helper import MD5Helper
-from auth.service.email_service import EmailHelper
+from addons.auth.service.email_service import EmailHelper
 from flask import redirect, render_template, request
 from utils.session import Session
 
@@ -128,7 +128,10 @@ class AuthResource(BaseResource):
             return {"status": False, "message": "Email is of wrong format. Please provide NYU email"}
 
         query = User.select().where(User.email == email)
-        if query.exists():
+        if request.form.get("reset_password") == "true" and not(query.exists()):
+            return {"status": False, "message": "This email has not been registered yet. Please register first"}
+
+        if request.form.get("reset_password") != "true" and query.exists():
             return {"status": False, "message": "This email has been registered"}
 
         token = TokenGenerator.generate()
@@ -138,6 +141,55 @@ class AuthResource(BaseResource):
         email_helper = EmailHelper(receiver_email=email)
         email_helper.send_token(token)
         return {"status": True, "message": "A token has been sent to your mail box"}
+
+    def get_reset_password_email_verify(self):
+        session = Session()
+        if session.get("logged_in") == " true":
+            session.extend()
+            return redirect("/homepage")
+        if session.get("email_verified") == "true":
+            return redirect("/auth/reset_password")
+        return render_template("reset_password_email_verify.html")
+
+    def post_reset_password_email_verify(self):
+        session = Session()
+        if session.get("logged_in") == " true":
+            session.extend()
+            return redirect("/homepage")
+        if session.get("reset_password_email_verified") == "true":
+            return redirect("/auth/reset_password")
+
+        token = request.form.get("token")
+        stored_token = session.get("token")
+        if stored_token is not None and stored_token == token:
+            session["reset_password_email_verified"] = "true"
+            session.expire(900)
+            return redirect("/auth/reset_password")
+        else:
+            return {"status": False, "message": "Wrong token"}
+
+
+    def get_reset_password(self):
+        session = Session()
+        if session.get("logged_in") == " true":
+            session.extend()
+            return redirect("/homepage")
+        if session.get("reset_password_email_verified") != "true":
+            return redirect("/auth/reset_password_email_verify")
+
+        email = session.get("email")
+        password = request.form.get("password")
+        from utils.format_checker import (
+            password_checker
+        )
+        password_check = password_checker(password)
+        if not password_check:
+            return {"status": False, "message": "Bad password format"}
+        hashed_pwd = MD5Helper.hash(password)
+        User.update(password=hashed_pwd).where(User.email==email).execute()
+
+
+
 
 
 

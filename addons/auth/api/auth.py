@@ -52,7 +52,7 @@ class AuthResource(BaseResource):
             session.extend()
             return redirect("/homepage")
 
-        return render_template("register_page.html")
+        return render_template("email_verify.html")
 
     def post_email_verify(self):
         session = Session()
@@ -65,7 +65,7 @@ class AuthResource(BaseResource):
         if stored_token is not None and stored_token == token:
             session["email_verified"] = "true"
             session.expire(900)
-            return redirect("/auth/register")
+            return {"status": True, "message": "Email verify succeeds"}
         else:
             return {"status": False, "message": "Wrong token"}
 
@@ -123,6 +123,7 @@ class AuthResource(BaseResource):
 
         from utils.format_checker import nyu_email_check
         email = request.form.get("email")
+        print("email_received:", email)
         if not nyu_email_check(email):
             logbook.info("[GET EMAIL TOKEN] Wrong email format")
             return {"status": False, "message": "Email is of wrong format. Please provide NYU email"}

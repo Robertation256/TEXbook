@@ -2,7 +2,7 @@ from flask import Flask
 from config import  app_config
 from addons.auth.api.auth import AuthResource
 from addons.image.api.image import ImageResource
-from common.models import user, image
+from common.models import user, image, test_image
 from addons.profile.models.profile import Profile
 
 
@@ -12,6 +12,7 @@ AuthResource().api_register(app)
 ImageResource().api_register(app)
 user.User.create_table()
 image.Image.create_table()
+test_image.TestImage.create_table()
 Profile.create_table()
 
 

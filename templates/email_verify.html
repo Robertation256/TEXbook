@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<!--<script type="text/javascript" src="static/js/token_verify.js"></script>-->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Email verification</title>
+		<title>Email Verification</title>
 		<style>
 		.login-form {
 			width: 300px;
@@ -40,13 +41,25 @@
 	<body>
 		<div class="login-form">
 			<h1>Verify through email</h1>
-			<form action="/auth/token_verify", method="POST">
-            	<input type="text" name="token" placeholder="Token">
-				<input type="submit">verify</input>
-			</form>
-			<form action="/auth/get_email_token" method="GET">
-				<button class="get_token">get token</button>
-			</form>
+			<p>邮箱:
+				<input type="text" name = "email" placeholder="邮箱"/>
+			</p>
+<!--			<form action="/auth/token_verify", method="POST">-->
+<!--            	<input type="text" name="token" placeholder="Token">-->
+<!--				<input type="submit">Verify</input>-->
+<!--			</form>-->
+<!--			<form action="/auth/get_email_token" method="GET">-->
+<!--				<button class="get_token">Get Token</button>-->
+<!--			</form>-->
+			<p>验证码：
+				<input type="password" name = "token" required = "required" placeholder="验证码"/>
+				<button id="get_token">获得验证码</button>
+			</p>
+			<p>
+				<button id="confirm">确认</button>
+			</p>
 		</div>
 	</body>
 </html>
+
+<script type="text/javascript" src="../static/js/token_verify.js"></script>

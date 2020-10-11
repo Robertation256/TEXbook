@@ -14,10 +14,10 @@ class ProfileResource(BaseResource):
 
     @login_required
     def get(self):
-        session = Session()
-        email = session.get("email")
-        profile_info = self.profile_service.get_user_profile(email)
-        return render_template("profile.html", **profile_info)
+        # session = Session()
+        # email = session.get("email")
+        # profile_info = self.profile_service.get_user_profile(email)
+        return render_template("profile.html")
 
     @login_required
     def post(self):

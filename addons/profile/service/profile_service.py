@@ -14,8 +14,8 @@ class ProfileService(object):
 
     @classmethod
     def get_user_profile(cls, email: str) -> dict:
-        user_ins = User.select().where(User.email==email)
-        profile_ins = user_ins.profile
+        user_id = User.select().where(User.email==email).get().id
+        profile_ins = Profile.select().where(Profile.user_id == user_id).get()
         result = {
             "username": profile_ins.username,
             "grade": profile_ins.grade,

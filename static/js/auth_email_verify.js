@@ -1,6 +1,4 @@
-
-    $("#get_token").click(function(){//发送邮箱地址 请求token
-            console.log("0");
+$("#get_token").click(function(){//发送邮箱地址 请求token
 			var email = $('input[name="email"]').val();
 			console.log(email);
 			if (email.search("@nyu.edu") == -1){//输入的不是nyu邮箱
@@ -16,10 +14,10 @@
 			    })
 			    //得到token
 			}
-	  });
+});
 
-	$("#confirm").click(function(){
-	    console.log("1");
+
+$("#verify").click(function(){
 	    var input_token = $('input[name="token"]').val();
         $.ajax({
 		    type:'post',
@@ -28,7 +26,6 @@
 	        success:function(data){
 	            if (data.status){
 	                window.location.href="/auth/register"
-	                alert(data.message);//弹窗报错
 	            }
 	            else{
 	                 alert(data.message);//弹窗报错

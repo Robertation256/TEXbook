@@ -1,4 +1,6 @@
 import re
+
+from addons.profile.models import Profile
 from common.models.user import User
 
 
@@ -13,7 +15,7 @@ def nyu_email_check(email: str) -> bool:
 def username_checker(username: str):
     if len(username) not in range(4,20):
         return {"status": False, "error": "wrong username format"}
-    if User.select().where(User.username == username).exists():
+    if Profile.select().where(Profile.username == username).exists():
         return {"status": False, "error": "username exists"}
     return {"status": True, "error": "wrong username format"}
 

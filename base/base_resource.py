@@ -15,6 +15,10 @@ class BaseResource(object):
                         endpoint = "_".join(func_name.split("_")[1:])
                     except:
                         endpoint = ""
-                    print("adding", "/"+self._prefix+"/"+endpoint, "methods:", method)
-                    app.add_url_rule("/"+self._prefix+"/"+endpoint, view_func=attr, methods=[method])
+                    if self._prefix == "":
+                        print("adding", "/" + endpoint, "methods:", method)
+                        app.add_url_rule("/"+endpoint, endpoint="index_"+endpoint, view_func=attr, methods=[method])
+                    else:
+                        print("adding", "/"+self._prefix+"/"+endpoint, "methods:", method)
+                        app.add_url_rule("/"+self._prefix+"/"+endpoint, view_func=attr, methods=[method])
 

@@ -1,4 +1,6 @@
 import logbook
+
+from addons.profile.models import Profile
 from base.base_resource import BaseResource
 from common.models.user import User
 from utils.token_generator import TokenGenerator
@@ -18,7 +20,7 @@ class AuthResource(BaseResource):
         if session.get("logged_in") == "true":
             session.extend()
             return redirect("/homepage")
-        return render_template("login_page.html")
+        return render_template("auth_login.html")
 
     def post_login(self):
         session = Session()
@@ -43,7 +45,7 @@ class AuthResource(BaseResource):
                 return {"status": False, "message": "wrong password"}
         else:
             logbook.info("[LOGIN] Login Failed: user not found.")
-            return {"status": False, "message": "username not found"}
+            return {"status": False, "message": "Email not found"}
 
 
     def get_email_verify(self):
@@ -52,7 +54,7 @@ class AuthResource(BaseResource):
             session.extend()
             return redirect("/homepage")
 
-        return render_template("email_verify.html")
+        return render_template("auth_email_verify.html")
 
     def post_email_verify(self):
         session = Session()
@@ -77,7 +79,7 @@ class AuthResource(BaseResource):
         if session.get("email_verified") != "true":
             return redirect("/auth/email_verify")
 
-        return render_template("register_page.html")
+        return render_template("auth_register.html")
 
     def post_register(self):
         session = Session()
@@ -104,10 +106,13 @@ class AuthResource(BaseResource):
             return {"status": False, "message": "Bad password format"}
 
         from utils.MD5_helper import MD5Helper
-        User.insert(
-            username=username,
+        user_id = User.insert(
             email=email,
             password=MD5Helper.hash(password)
+        ).execute()
+        Profile.insert(
+            username=username,
+            user=user_id
         ).execute()
         print(f"[REGISTER] Register Success. username: {username}, email: {email}")
         session["logged_in"] = "true"
@@ -187,7 +192,8 @@ class AuthResource(BaseResource):
         if not password_check:
             return {"status": False, "message": "Bad password format"}
         hashed_pwd = MD5Helper.hash(password)
-        User.update(password=hashed_pwd).where(User.email==email).execute()
+        User.update(password=hashed_pwd).where(User.email == email).execute()
+
 
 
 

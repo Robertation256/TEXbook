@@ -10,7 +10,7 @@ def login_required(func):
         if session.get("logged_in") != "true":
             return redirect("/auth/login")
         session.extend()
-        func(*args, **kwargs)
+        return func(*args, **kwargs)
     return inner
 
 

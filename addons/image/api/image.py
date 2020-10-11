@@ -10,7 +10,7 @@ class ImageResource(BaseResource):
         super().__init__()
         self._prefix = "image"
 
-    def get(self):
+    def get_page(self):
         session = Session()
         if session.get("logged_in") != "true":
             return {"status": False, "message": "permission denied"}

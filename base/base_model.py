@@ -1,13 +1,14 @@
 from peewee import Model, MySQLDatabase
-from config import user_config
+from config import db_credentials
 
 db = MySQLDatabase(
-    database=user_config.get("DATABASE"),
-    host="127.0.0.1",
-    port=3306,
-    user="root",
-    passwd=""
+    database=db_credentials.get("DB_DATABASE"),
+    host=db_credentials.get("DB_HOST"),
+    port=db_credentials.get("DB_PORT"),
+    user=db_credentials.get("DB_USER"),
+    passwd=db_credentials.get("DB_PASS")
 )
+
 db.connect()
 
 

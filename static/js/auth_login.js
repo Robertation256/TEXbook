@@ -9,7 +9,7 @@ $(window).load(function () {
 		    data:{"email":email, "password":password},
 	        success:function(data){
 	            if (data.status) {
-	                window.location.href="/homepage";
+	                window.location.href="/home";
 	            }
 	            else {
 	                alert(data.message);//弹窗报错

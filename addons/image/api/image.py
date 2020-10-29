@@ -59,10 +59,9 @@ class ImageResource(BaseResource):
 
     def get_avatar(self):
         image_id = request.args.get("id")
-        print(image_id)
         if image_id is None:
             return {"status": False, "message": "no image_id"}
-        result = Image.get_image(image_id,user_email=None)
+        result = Image.get_image(image_id,user_email=None, type="avatar")
         if result["status"]:
             image_ins = result["result"]
             return send_file(
@@ -73,13 +72,20 @@ class ImageResource(BaseResource):
         else:
             return result
 
-    def post(self):
-        first_name = request.form.get("first_name")
-        last_name = request.form.get("last_name")
-        major = request.form.get("major")
-        class_year = request.form.get("class_year")
-        contact_information = request.form.get("contact_information")
-        avatar_id = request.form.get("avatar_id")
-        Profile.add()
+    def get_resource(self):
+        image_id = request.args.get("id")
+        if image_id is None:
+            return {"status": False, "message": "no image_id"}
+        result = Image.get_image(image_id,user_email=None, type="resource")
+        if result["status"]:
+            image_ins = result["result"]
+            return send_file(
+                io.BytesIO(image_ins.content),
+                mimetype=f"image/{image_ins.image_format}",
+                attachment_filename=f'avatar_{image_id}'
+            )
+        else:
+            return result
+
 
 

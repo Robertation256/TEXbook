@@ -62,7 +62,7 @@ class Image(base_model.BaseModel):
         else:
             query = cls.select().where((cls.id == image_id) & (cls.owner_email == user_email))
 
-        if query.exists() and query.get().type == type:
+        if query.exists() and type in query.get().type:
             return {"status": True, "result": query.get()}
         else:
             return {"status": False, "result": None}

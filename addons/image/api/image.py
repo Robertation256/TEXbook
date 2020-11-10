@@ -32,31 +32,6 @@ class ImageResource(BaseResource):
     def get_test(self):
         return render_template("upload_file.html")
 
-    def post_test(self):
-        file = request.files.get("image")
-        file_format = file.filename.split(".")[-1]
-
-        from common.models.test_image import TestImage
-        print("file_content:", file)
-        print("image_format:", file_format)
-        fp = file.read()
-        TestImage.insert(
-            content= fp,
-            image_format = file_format
-        ).execute()
-        return render_template("get_file.html")
-
-    def get_test_image(self):
-        from common.models.test_image import TestImage
-        image_ins = TestImage.select().get()
-        image_content = image_ins.content
-        image_format = image_ins.image_format
-        return send_file(
-            io.BytesIO(image_content),
-            mimetype="image/jpeg",
-            attachment_filename='test'
-        )
-
     def get_avatar(self):
         image_id = request.args.get("id")
         if image_id is None:
@@ -77,6 +52,21 @@ class ImageResource(BaseResource):
         if image_id is None:
             return {"status": False, "message": "no image_id"}
         result = Image.get_image(image_id,user_email=None, type="resource")
+        if result["status"]:
+            image_ins = result["result"]
+            return send_file(
+                io.BytesIO(image_ins.content),
+                mimetype=f"image/{image_ins.image_format}",
+                attachment_filename=f'avatar_{image_id}'
+            )
+        else:
+            return result
+
+    def get_bookcover(self):
+        image_id = request.args.get("id")
+        if image_id is None:
+            return {"status": False, "message": "no image_id"}
+        result = Image.get_image(image_id,user_email=None, type="bookcover")
         if result["status"]:
             image_ins = result["result"]
             return send_file(

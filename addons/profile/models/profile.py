@@ -5,12 +5,12 @@ from common.models.user import User
 
 
 class Profile(base_model.BaseModel):
-    user = peewee.ForeignKeyField(model=User, null=False)
+    user = peewee.ForeignKeyField(User, null=False)
     first_name = peewee.CharField(max_length=32)
     last_name = peewee.CharField(max_length=32)
     major = peewee.CharField(max_length=32)
     class_year = peewee.CharField(max_length=32)
-    avatar_id = peewee.ForeignKeyField(model=Image, null=True)
+    avatar_id = peewee.ForeignKeyField(Image, null=False)
     contact_info = peewee.CharField(max_length=32, null=True)
 
 

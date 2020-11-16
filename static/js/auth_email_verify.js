@@ -25,8 +25,13 @@ $(window).load(function () {
                 url:'/auth/email_verify',
                 data:{"token":input_token},
                 success:function(data){
+                    //Not printed (Ask Robert)
+                    console.log(data.status);
                     if (data.status){
                         window.location.href="/auth/register";
+                    }
+                    if (data.message == 'All 5 login attempts failed-verified'){
+                        window.location.href="/auth/login";
                     }
                     else{
                          alert(data.message);//弹窗报错

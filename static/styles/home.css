@@ -1,0 +1,91 @@
+body {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+
+.features-icons {
+  padding-top: 4rem;
+  padding-bottom: 7rem;
+  height: 320px;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  padding-left:5px;
+  padding-right:5px;
+  background-color: #F8FBFE;
+}
+
+
+.testimonials {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.testimonials .testimonial-item {
+  max-width: 18rem;
+}
+
+.testimonials .testimonial-item img {
+  max-width: 12rem;
+  box-shadow: 0px 5px 5px 0px #adb5bd;
+}
+
+.call-to-action {
+  position: relative;
+  background-color: #343a40;
+  background: url("/image/resource?id=9") no-repeat center center;
+  background-size: cover;
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.call-to-action .overlay {
+  position: absolute;
+  background-color: #212529;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
+
+footer.footer {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.nav_avatar_icon {
+    height: 25px;
+    width: 25px;
+    border-radius:50%;
+    margin-right: 10px;
+}
+
+.col {
+    height:250px;
+    width: 100px;
+    margin-left:10px;
+    margin_right: 10px;
+    -webkit-box-shadow: #666 0px 0px 2px;
+   -moz-box-shadow: #666 0px 0px 2px;
+   box-shadow: #666 0px 0px 2px;
+   background-color: white;
+
+}
+.icon-container {
+    text-align:center;
+}
+
+.icon {
+    height: 150px;
+    width: 150px;
+}

@@ -1,0 +1,57 @@
+{% extends "layout_navigation_bar.html" %}
+
+{% block style_sheet_link %}
+      <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/listing_publish.css') }}">
+{% endblock %}
+
+{% block content %}
+<section style="margin-top: 70px;">
+<div class="container">
+          <div class="card">
+            <div class="card-body tab-content">
+              <div class="tab-pane active" id="profile">
+                <h6>LISTING INFORMATION</h6>
+                <hr>
+                <form>
+                  <div class="form-group">
+                    <label>Select Textbook</label>
+                    <select name = "textbook" class="form-control" id="textbook" value = "{{textbook}}">
+                      {% for m in ["Computer Science","Computer Engineering","Data Science","Math"] %}
+                        {% if m == major %}
+                          <option value ="{{major}}" selected="selected">{{major}}</option>
+                        {% else %}
+                          <option value ="{{m}}">{{m}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label >Purchase Option</label>
+                    <select name = "purchase_option" class="form-control" id="purchase_option" value = "{{purchase_option}}">
+                      <option value ="Buy">Buy</option>
+                      <option value ="Rent">Rent</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Offered Price</label>
+                    <input name = "offered_price" type="number" class="form-control" id="offered_price" value = "{{offered_price}}">
+                  </div>
+                  <div class="form-group">
+                    <label>Photo of your textbook</label>
+                    <input name = "photo" type="file" class="form-control" id="photo">
+                  </div>
+                  <div class="form-group small text-muted">
+                    All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears.
+                  </div>
+                </form>
+                <button id="publish" class="btn btn-primary">publish</button>
+              </div>
+              </div>
+            </div>
+</div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/js/profile.js"></script>
+{% endblock %}

@@ -52,9 +52,9 @@ class Image(base_model.BaseModel):
     def get_image(
             cls,
             image_id:int,
-            user_email: str
+            user_email: str,
+            type: str
     ):
-        print(f"requesting {image_id}")
         if image_id is None:
             return {"status": False, "result": None}
         if user_email is None or user_email == "public":
@@ -62,8 +62,7 @@ class Image(base_model.BaseModel):
         else:
             query = cls.select().where((cls.id == image_id) & (cls.owner_email == user_email))
 
-        if query.exists():
-            print(query.get().id)
+        if query.exists() and type in query.get().type:
             return {"status": True, "result": query.get()}
         else:
             return {"status": False, "result": None}

@@ -28,14 +28,14 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
-            return redirect("/homepage")
+              return redirect("/home")
         return render_template("auth_login.html")
 
     def post_login(self):
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
 
         #brute force password protection
         ip_address = request.remote_addr
@@ -64,7 +64,7 @@ class AuthResource(BaseResource):
                 session.extend()
                 logbook.info(f"[LOGIN] Login Succeed: [user_email: {email}]")
                 print(f"[LOGIN] Login Succeed: [user_email: {email}]")
-                return redirect("/homepage")
+                return {"status": True, "message": "Login succeeds"}
             else:
                 logbook.info("[LOGIN] Login Failed: wrong password.")
                 self.modify_login_attempt('dec')
@@ -86,7 +86,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("login"):
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
 
         token = request.form.get("token")
         stored_token = session.get("token")
@@ -117,7 +117,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
         if session.get("email_verified") != "true":
             return redirect("/auth/email_verify")
 
@@ -127,7 +127,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == " true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
 
         if session.get("email_verified") != "true":
             return redirect("/auth/email_verify")
@@ -191,7 +191,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == " true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
 
         return render_template("auth_reset_password_email_verify.html")
 
@@ -199,7 +199,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == " true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
         if session.get("reset_password_email_verified") == "true":
             return redirect("/auth/reset_password")
 
@@ -216,7 +216,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == " true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
         if session.get("reset_password_email_verified") != "true":
             return redirect("/auth/reset_password_email_verify")
 
@@ -226,7 +226,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == " true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
         if session.get("reset_password_email_verified") != "true":
             return redirect("/auth/reset_password_email_verify")
 

@@ -28,7 +28,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
-              return redirect("/home")
+              #return redirect("/home")
         return render_template("auth_login.html")
 
     def post_login(self):

@@ -1,19 +1,15 @@
-import logbook
-
-from addons.profile.models import Profile
 from base.base_resource import BaseResource
 from common.models.user import User
-from utils.token_generator import TokenGenerator
-from utils.MD5_helper import MD5Helper
-from addons.auth.service.email_service import EmailHelper
 from flask import redirect, render_template, request
 from utils.session import Session
+from addons.auth.service.auth_service import AuthService
 
 
 class AuthResource(BaseResource):
     def __init__(self):
         super().__init__()
         self._prefix = "auth"
+        self.service = AuthService
 
     def get_login(self):
         session = Session()
@@ -30,22 +26,14 @@ class AuthResource(BaseResource):
 
         email = request.form.get("email")
         input_password = request.form.get("password")
-        query = User.select().where(User.email == email)
-        if query.exists():
-            stored_password_hash = [ _ for _ in query][0].password
-            if MD5Helper.evaluate(input_password, stored_password_hash):
-                session["logged_in"] = "true"
-                session["email"] = email
-                session.extend()
-                logbook.info(f"[LOGIN] Login Succeed: [user_email: {email}]")
-                print(f"[LOGIN] Login Succeed: [user_email: {email}]")
-                return {"status": True, "message": "Login succeeds"}
-            else:
-                logbook.info("[LOGIN] Login Failed: wrong password.")
-                return {"status": False, "message": "wrong password"}
-        else:
-            logbook.info("[LOGIN] Login Failed: user not found.")
-            return {"status": False, "message": "Email not found"}
+        res = self.service.email_pwd_auth(password=input_password, email=email)
+        if res["status"]:
+            session["logged_in"] = "true"
+            session["email"] = email
+            session.extend()
+            print(f"[LOGIN] Login Succeed: [user_email: {email}]")
+
+        return res
 
 
     def get_email_verify(self):
@@ -100,16 +88,15 @@ class AuthResource(BaseResource):
         if not password_check:
             return {"status": False, "message": "Bad password format"}
 
-        from utils.MD5_helper import MD5Helper
-        user_id = User.insert(
+        self.service.add_user(
             email=email,
-            password=MD5Helper.hash(password)
-        ).execute()
-        return redirect("/profile/profile")
+            password=password
+        )
 
         print(f"[REGISTER] Register Success. Email: {email}")
+        return redirect("/profile/profile")
 
-        return redirect("/auth/login")
+
 
 
     def post_token(self):
@@ -122,22 +109,19 @@ class AuthResource(BaseResource):
         email = request.form.get("email")
         print("email_received:", email)
         if not nyu_email_check(email):
-            logbook.info("[GET EMAIL TOKEN] Wrong email format")
             return {"status": False, "message": "Email is of wrong format. Please provide NYU email"}
 
-        query = User.select().where(User.email == email)
-        if request.form.get("reset_password") == "true" and not(query.exists()):
+        registered = self.service.is_registered(email=email)
+        if request.form.get("reset_password") == "true" and not registered:
             return {"status": False, "message": "This email has not been registered yet. Please register first"}
 
-        if request.form.get("reset_password") != "true" and query.exists():
+        if request.form.get("reset_password") != "true" and registered:
             return {"status": False, "message": "This email has been registered"}
 
-        token = TokenGenerator.generate()
-        session["token"] = token
-        session["email"] = email
-        session.expire(600)
-        email_helper = EmailHelper(receiver_email=email)
-        email_helper.send_token(token)
+        token = self.service.send_token(
+            email=email,
+            session=session
+        )
         print("token sent:", token)
         return {"status": True, "message": "A token has been sent to your mail box"}
 
@@ -186,14 +170,12 @@ class AuthResource(BaseResource):
 
         email = session.get("email")
         password = request.form.get("password")
-        from utils.format_checker import (
-            password_checker
-        )
+        from utils.format_checker import password_checker
         password_check = password_checker(password)
         if not password_check:
             return {"status": False, "message": "Bad password format"}
-        hashed_pwd = MD5Helper.hash(password)
-        User.update(password=hashed_pwd).where(User.email == email).execute()
+
+        self.service.update_pwd_by_email(pwd=password,email=email)
         return redirect("/auth/login")
 
 

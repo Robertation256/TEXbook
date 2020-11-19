@@ -1,9 +1,37 @@
 from addons.profile.models.profile import Profile
-from common.models.user import User
 from common.models.image import Image
+from base import base_service
 
 
-class ProfileService(object):
+class ProfileService(base_service.BaseService):
+    model = Profile
+
+    @classmethod
+    def add(cls, data:dict):
+        res = cls.model.add(data)
+        return res
+
+    @classmethod
+    def get_profile_info(cls, email:str):
+        '''
+        get profile data
+        :param email:
+        :return:
+        {
+            "first_name":
+            "last_name":
+            "major":
+            "class_year":
+            "avatar_id":
+            "contact_information":
+            "avatar_options":
+        }
+        '''
+        profile_info = cls.model.get_profile_by_email(email)
+        avatar_options = Image.get_avatar_ids()
+        profile_info["avatar_options"] = avatar_options
+        return profile_info
+
     @classmethod
     def avatar_format_check(cls, file_name: str) -> bool:
         if "." in file_name:
@@ -12,46 +40,3 @@ class ProfileService(object):
                 return file_format
         return False
 
-    @classmethod
-    def get_user_profile(cls, email: str) -> dict:
-        user_id = User.select().where(User.email==email).get().id
-        profile_ins = Profile.select().where(Profile.user_id == user_id).get()
-        result = {
-            "username": profile_ins.username,
-            "grade": profile_ins.grade,
-            "contact_info": profile_ins.contact_info,
-            "avatar_id": profile_ins.avatar
-        }
-        return result
-
-    @classmethod
-    def add_avatar(cls, email, content, file_format):
-        user_id = User.get().where(User.email==email).id
-        query = Image.select().where(Image.user_id == user_id & Image.type == "avatar")
-        if query.exists():
-            image_id = query.get().id
-        else:
-            image_id = None
-        avatar_id = Image.add(
-            user_id=user_id,
-            content=content,
-            type="avatar",
-            image_id=image_id,
-            image_format=file_format
-        )
-        return avatar_id
-
-
-    @classmethod
-    def update_user_profile(cls, email:str, data:dict) -> dict:
-        print(f"[PROFILE SERVICE] Updating profile [email:{email}, data:{data}]")
-        user_ins = User.get().where(User.email == email)
-        try:
-            Profile.update(
-                username=data.get("username"),
-                grade=data.get("grade"),
-                contact_info=data.get("contact_info"),
-                avatar_id=data.get("avatar_id")
-            ).where(Profile.id==user_ins.profile_id).execute()
-        except:
-            return {"status":False, "message": "Profile update failed"}

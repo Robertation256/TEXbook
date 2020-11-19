@@ -2,8 +2,7 @@ from flask import render_template, request
 from utils.decorators import login_required
 from base.base_resource import BaseResource
 from utils.session import Session
-from addons.profile.models.profile import Profile
-from common.models.image import Image
+from addons.profile.service.profile_service import ProfileService
 
 
 class ProfileResource(BaseResource):
@@ -11,14 +10,13 @@ class ProfileResource(BaseResource):
     def __init__(self):
         super().__init__()
         self._prefix = "profile"
+        self.service = ProfileService
 
     @login_required
     def get_profile(self):
         session = Session()
         email = session.get("email")
-        profile_info = Profile.get_profile_by_email(email)
-        avatar_options = Image.get_avatar_ids()
-        profile_info["avatar_options"] = avatar_options
+        profile_info = self.service.get_profile_info(email=email)
         return render_template("profile.html", **profile_info)
 
     @login_required
@@ -33,7 +31,7 @@ class ProfileResource(BaseResource):
         form["contact_information"] = request.form.get("contact_information")
         form["avatar_id"] = request.form.get("avatar_id")
         form["email"] = email
-        res = Profile.add(form)
+        res = self.service.add(data=form)
         return res
 
 

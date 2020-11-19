@@ -1,3 +1,33 @@
 .col-md-8 {
     text-align: center;
 }
+
+.book_info {
+    width:100%;
+    height:200px;
+    display:flex;
+    vertical-align: middle;
+}
+
+.book_des {
+    margin-left:20px;
+    width: 40%;
+    height: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+
+}
+
+.book_cover {
+    height:200px;
+    width: 132px;
+}
+
+.preview_image {
+    height:196px;
+    width:180px;
+}
+

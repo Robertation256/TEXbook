@@ -89,3 +89,8 @@ footer.footer {
     height: 150px;
     width: 150px;
 }
+
+.search-select {
+    height: 100%;
+    width: 30%;
+}

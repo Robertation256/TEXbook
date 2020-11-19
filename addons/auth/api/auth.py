@@ -3,6 +3,7 @@ from common.models.user import User
 from flask import redirect, render_template, request
 from utils.session import Session
 from addons.auth.service.auth_service import AuthService
+import redis
 
 
 class AuthResource(BaseResource):
@@ -10,8 +11,16 @@ class AuthResource(BaseResource):
         super().__init__()
         self._prefix = "auth"
         self.service = AuthService
+        self.conn = redis.Redis('localhost')
+
 
     def get_login(self):
+
+        #Debugging
+        ip_address = request.remote_addr
+        response_dict = self.get_redis_response()
+        print(response_dict[ip_address])
+
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -23,6 +32,22 @@ class AuthResource(BaseResource):
         if session.get("logged_in") == "true":
             session.extend()
             return redirect("/home")
+
+        #brute force password protection
+        ip_address = request.remote_addr
+        response_dict = self.get_redis_response()
+
+        if ip_address not in response_dict:
+            val_attempts = {ip_address:5}
+            self.conn.hmset("pythonDict", val_attempts)
+
+        response_dict = self.get_redis_response()
+        if int(response_dict[ip_address]) <= 0:
+
+
+            return {"status": False, "message": "All 5 login attempts failed"}
+            #Enter your code here
+            #redirect to the verification page
 
         email = request.form.get("email")
         input_password = request.form.get("password")
@@ -55,6 +80,22 @@ class AuthResource(BaseResource):
         if stored_token is not None and stored_token == token:
             session["email_verified"] = "true"
             session.expire(900)
+            ip_address = request.remote_addr
+            response_dict = self.get_redis_response()
+            print('DEBUG')
+            print(ip_address in response_dict)
+
+            email = session.get('email')
+
+            print(email)
+            query = User.select().where(User.email == email)
+
+            print(query.exists())
+
+            if ip_address in response_dict and query.exists():
+                self.modify_login_attempt('inc')
+                print('at least reached here!')
+                return {"status": False, "message": "All 5 login attempts failed-verified"}
             return {"status": True, "message": "Email verify succeeds"}
         else:
             return {"status": False, "message": "Wrong token"}
@@ -96,7 +137,9 @@ class AuthResource(BaseResource):
         print(f"[REGISTER] Register Success. Email: {email}")
         return redirect("/profile/profile")
 
+        print(f"[REGISTER] Register Success. Email: {email}")
 
+        return redirect("/auth/login")
 
 
     def post_token(self):
@@ -179,8 +222,33 @@ class AuthResource(BaseResource):
         return redirect("/auth/login")
 
 
+    def get_redis_response(self):
+
+        redis_response = self.conn.hgetall("pythonDict")
+        response_dict = {y.decode('ascii'): redis_response.get(y).decode('ascii') for y in redis_response.keys()}
+
+        return response_dict
+
+    #change function file directory (static method: service)
+    def modify_login_attempt(self, change='dec'):
+
+        'change: dec, inc'
+
+        ip_address = request.remote_addr
+        response_dict = self.get_redis_response()
+        if change == 'dec':
+            attempts = int(response_dict[ip_address]) - 1
+        elif change == 'inc':
+            attempts = int(response_dict[ip_address]) + 5
+        val_attempts = {ip_address:attempts}
+        self.conn.hmset("pythonDict", val_attempts)
+        response_dict = self.get_redis_response()
+        print(response_dict[ip_address])
 
 
+
+
+    #create a duplicate page with modified js and html
 
 
 

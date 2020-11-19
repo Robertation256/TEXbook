@@ -15,6 +15,7 @@
 
 
 {% block content %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha512-HWlJyU4ut5HkEj0QsK/IxBCY55n5ZpskyjVlAoV9Z7XQwwkqXoYdCIC93/htL3Gu5H3R4an/S0h2NXfbZk3g7w==" crossorigin="anonymous"></script>
   <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
   <!-- Masthead -->
     <section class="features-icons text-center">
@@ -48,21 +49,32 @@
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
-        <div class="col-xl-9 mx-auto">
-          <h2 class="mb-4">Search a course or textbook</h2>
-        </div>
-        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-          <form>
-            <div class="form-row">
-              <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <input type="email" class="form-control form-control-lg" placeholder="Book name, course name, ISBN, author name">
+          <div class="col-xl-9 mx-auto">
+            <h2 class="mb-4">Search a course or textbook</h2>
+          </div>
+
+          <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+            <div  style="display:flex; height:48px; width:730px;">
+
+              <div class="input-group mb-3" style="height:100% !important;">
+                <div class="input-group-prepend" style="height:100% !important; width:25%; ">
+                  <select id="search_field" class="form-control input-group-text" style="height:100%; background-color:#343A40; color:white;box-shadow:None !important;">
+                      <option value="1">Book Name</option>
+                      <option value="2">Course Name</option>
+                      <option value="3">Subject</option>
+                  </select>
+                </div>
+                <input id="search_input" type="text" class="form-control" style="height:100%; box-shadow:None !important;" data-provide="typeahead"
+     data-source='' data-items="4">
               </div>
-              <div class="col-12 col-md-3">
-                <button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
+
+              <div class="col-12 col-md-2">
+                    <button id = "search_btn" type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
               </div>
+
             </div>
-          </form>
-        </div>
+
+          </div>
       </div>
     </div>
   </section>
@@ -145,7 +157,6 @@
       </div>
     </div>
   </footer>
-
 {% endblock %}
 
 {% block script %}

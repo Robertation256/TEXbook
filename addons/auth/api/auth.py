@@ -1,13 +1,8 @@
-import logbook
-
-from addons.profile.models import Profile
 from base.base_resource import BaseResource
 from common.models.user import User
-from utils.token_generator import TokenGenerator
-from utils.MD5_helper import MD5Helper
-from addons.auth.service.email_service import EmailHelper
 from flask import redirect, render_template, request
 from utils.session import Session
+from addons.auth.service.auth_service import AuthService
 import redis
 
 
@@ -15,11 +10,12 @@ class AuthResource(BaseResource):
     def __init__(self):
         super().__init__()
         self._prefix = "auth"
+        self.service = AuthService
         self.conn = redis.Redis('localhost')
 
 
     def get_login(self):
-        
+
         #Debugging
         ip_address = request.remote_addr
         response_dict = self.get_redis_response()
@@ -28,7 +24,7 @@ class AuthResource(BaseResource):
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
-              #return redirect("/home")
+            return redirect("/home")
         return render_template("auth_login.html")
 
     def post_login(self):
@@ -40,46 +36,37 @@ class AuthResource(BaseResource):
         #brute force password protection
         ip_address = request.remote_addr
         response_dict = self.get_redis_response()
-        
+
         if ip_address not in response_dict:
             val_attempts = {ip_address:5}
             self.conn.hmset("pythonDict", val_attempts)
 
         response_dict = self.get_redis_response()
         if int(response_dict[ip_address]) <= 0:
-        
-            logbook.info("[LOGIN] Login Failed: A maximum of 5 failed login attempts reached. Please re-verify your email address")
+
+
             return {"status": False, "message": "All 5 login attempts failed"}
             #Enter your code here
             #redirect to the verification page
 
         email = request.form.get("email")
         input_password = request.form.get("password")
-        query = User.select().where(User.email == email)
-        if query.exists():
-            stored_password_hash = [ _ for _ in query][0].password
-            if MD5Helper.evaluate(input_password, stored_password_hash):
-                session["logged_in"] = "true"
-                session["email"] = email
-                session.extend()
-                logbook.info(f"[LOGIN] Login Succeed: [user_email: {email}]")
-                print(f"[LOGIN] Login Succeed: [user_email: {email}]")
-                return {"status": True, "message": "Login succeeds"}
-            else:
-                logbook.info("[LOGIN] Login Failed: wrong password.")
-                self.modify_login_attempt('dec')
-                return {"status": False, "message": "wrong password"}
-        else:
-            logbook.info("[LOGIN] Login Failed: user not found.")
-            self.modify_login_attempt('dec')
-            return {"status": False, "message": "Email not found"}
+        res = self.service.email_pwd_auth(password=input_password, email=email)
+        if res["status"]:
+            session["logged_in"] = "true"
+            session["email"] = email
+            session.extend()
+            print(f"[LOGIN] Login Succeed: [user_email: {email}]")
+
+        return res
 
 
     def get_email_verify(self):
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
-            return redirect("/homepage")
+            return redirect("/home")
+
         return render_template("auth_email_verify.html")
 
     def post_email_verify(self):
@@ -97,7 +84,7 @@ class AuthResource(BaseResource):
             response_dict = self.get_redis_response()
             print('DEBUG')
             print(ip_address in response_dict)
-            
+
             email = session.get('email')
 
             print(email)
@@ -142,11 +129,12 @@ class AuthResource(BaseResource):
         if not password_check:
             return {"status": False, "message": "Bad password format"}
 
-        from utils.MD5_helper import MD5Helper
-        user_id = User.insert(
+        self.service.add_user(
             email=email,
-            password=MD5Helper.hash(password)
-        ).execute()
+            password=password
+        )
+
+        print(f"[REGISTER] Register Success. Email: {email}")
         return redirect("/profile/profile")
 
         print(f"[REGISTER] Register Success. Email: {email}")
@@ -164,26 +152,19 @@ class AuthResource(BaseResource):
         email = request.form.get("email")
         print("email_received:", email)
         if not nyu_email_check(email):
-            logbook.info("[GET EMAIL TOKEN] Wrong email format")
             return {"status": False, "message": "Email is of wrong format. Please provide NYU email"}
 
-        query = User.select().where(User.email == email)
-        if request.form.get("reset_password") == "true" and not(query.exists()):
+        registered = self.service.is_registered(email=email)
+        if request.form.get("reset_password") == "true" and not registered:
             return {"status": False, "message": "This email has not been registered yet. Please register first"}
 
-        if request.form.get("reset_password") != "true" and query.exists():
-            ip_address = request.remote_addr
-            response_dict = self.get_redis_response()
-            if ip_address not in response_dict and query.exists():
-                #Add the Robert special case
-                return {"status": False, "message": "This email has been registered"}
+        if request.form.get("reset_password") != "true" and registered:
+            return {"status": False, "message": "This email has been registered"}
 
-        token = TokenGenerator.generate()
-        session["token"] = token
-        session["email"] = email
-        session.expire(600)
-        email_helper = EmailHelper(receiver_email=email)
-        email_helper.send_token(token)
+        token = self.service.send_token(
+            email=email,
+            session=session
+        )
         print("token sent:", token)
         return {"status": True, "message": "A token has been sent to your mail box"}
 
@@ -232,14 +213,12 @@ class AuthResource(BaseResource):
 
         email = session.get("email")
         password = request.form.get("password")
-        from utils.format_checker import (
-            password_checker
-        )
+        from utils.format_checker import password_checker
         password_check = password_checker(password)
         if not password_check:
             return {"status": False, "message": "Bad password format"}
-        hashed_pwd = MD5Helper.hash(password)
-        User.update(password=hashed_pwd).where(User.email == email).execute()
+
+        self.service.update_pwd_by_email(pwd=password,email=email)
         return redirect("/auth/login")
 
 

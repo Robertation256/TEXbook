@@ -24,17 +24,17 @@ class Image(base_model.BaseModel):
 
         date_time = time.strftime("%Y-%m-%d %H:%M")
         if image_id is None:    #Perform insertion
-            try:
-                image_id = cls.insert(
-                    owner_email=user_email,
-                    content=content,
-                    dateAdded=date_time,
-                    type=type,
-                    image_format=image_format
-                ).execute()
-                return image_id
-            except:
-                return {"status": False}
+
+            image_id = cls.insert(
+                owner_email=user_email,
+                content=content,
+                dateAdded=date_time,
+                type=type,
+                image_format=image_format
+            ).execute()
+            return image_id
+
+            # return {"status": False}
         else:                   #Perform edition
             query = cls.select().where(cls.id==image_id)
             if query.exists():
@@ -48,24 +48,17 @@ class Image(base_model.BaseModel):
             else:
                 return {"status": False, "message": "image id does not exist."}
 
-    @classmethod
-    def get_image(
-            cls,
-            image_id:int,
-            user_email: str,
-            type: str
-    ):
-        if image_id is None:
-            return {"status": False, "result": None}
-        if user_email is None or user_email == "public":
-            query = cls.select().where((cls.id == image_id) & (cls.owner_email == "public"))
-        else:
-            query = cls.select().where((cls.id == image_id) & (cls.owner_email == user_email))
 
-        if query.exists() and type in query.get().type:
-            return {"status": True, "result": query.get()}
-        else:
-            return {"status": False, "result": None}
+    @classmethod
+    def add_multiple(cls, data:list):
+        res = []
+        for d in data:
+            id = cls.add(**d)
+            res.append(id)
+        return res
+
+
+
 
     @classmethod
     def get_avatar_ids(

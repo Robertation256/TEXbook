@@ -5,9 +5,21 @@
 {% endblock %}
 
 {% block navbar_rightmost %}
-<div class="search_bracket", style="vertical-align:middle;display:flex; margin-right:200px; heigh:35%;width:600px;" >
-  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="width:500px;">
-      <button class="btn btn-primary my-2 my-sm-0" type="submit" style="width:100px;">Search</button>
+<div class="search_bracket", style="vertical-align:middle;display:flex; margin-right:200px; height:100%;width:600px;" >
+              <div class="input-group mb-1" style="height:100% !important;">
+                <div class="input-group-prepend" style="height:100% !important; width:23%; ">
+                  <select id="select_field" class="form-control input-group-text" style="font-size:9px;height:100%; background-color:#343A40; color:white;box-shadow:None !important;">
+                      <option value="1">Book Name</option>
+                      <option value="2">Course Name</option>
+                      <option value="3">Subject</option>
+                  </select>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with dropdown button" style="height:100%; box-shadow:None !important;">
+              </div>
+
+              <div class="col-9 col-md-2" style="height:100%" >
+                    <button type="submit" class="btn btn-block btn-lg btn-primary" style="height:100%;font-size:13px">Search</button>
+              </div>
 </div>
 <div class="nav_rightmost_container" style="margin-right: 25px;">
   <img class="nav_avatar_icon" src="/image/avatar?id=3">
@@ -17,32 +29,27 @@
 
 
 {% block content %}
-  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 <section>
-<div class="container"style="height:500px;width:100%;margin-top:80px !important;">
-  <p class="prompt">Results for "Maths" Related Textbooks</p>
+<div class="container"style="height:{{(books.__len__()//5+1)*310+100}}px;width:100%;margin-top:80px !important;">
+  <p class="prompt">Results for "{{keyword}}" Related Textbooks</p>
   <hr>
-  <div class="textbook_container" style="height:500px;width:100%;margin-top:20px;display:flex;">
-    <div class="textbook_wrapper">
-      <img class = "bookcover" value = "{{id}}" src="/image/bookcover?id=1979">
-      <div class="info_wrapper">
-      <p class="title">A First Course in Probabilities</p>
-      <p class="author">Sheldon Ross</p>
+  <div class="textbook_container" style="height:500px;width:100%;margin-top:20px;display:flex;flex-wrap:wrap">
+    {% for book in books %}
+      <div class="textbook_wrapper">
+        <img class = "bookcover" value = "{{book.id}}" src="/image/bookcover?id={{book.cover_image_id}}">
+        <div class="info_wrapper">
+        <p class="title">{{book.title[:40]+"..." if book.title.__len__() >40 else book.title}}</p>
+        <p class="author">{{book.author[:30]+"..." if book.author.__len__() >30 else book.author}}</p>
+        </div>
       </div>
-    </div>
-    <div class="textbook_wrapper">
-      <img class = "bookcover" value = "{{id}}" src="/image/bookcover?id=1981">
-      <div class="info_wrapper">
-      <p class="title">Red Sorhum</p>
-      <p class="author">Moyan</p>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 </section>
 
 
   <!-- Footer -->
+<section>
   <footer class="footer bg-light">
     <div class="container">
       <div class="row">
@@ -88,9 +95,11 @@
       </div>
     </div>
   </footer>
+</section>
 
 {% endblock %}
 
 {% block script %}
 <script type="text/javascript" src="/static/js/home.js"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 {% endblock %}

@@ -9,6 +9,7 @@ from addons.textbook.api.textbook import TextbookResource
 from addons.home.api.home import HomeResource
 from common.models import user, image
 from addons.profile.models.profile import Profile
+from addons.listing.model.listing import Listing
 
 
 
@@ -26,6 +27,7 @@ TextbookResource().api_register(app)
 user.User.create_table()
 image.Image.create_table()
 Profile.create_table()
+Listing.create_table()
 
 
 

@@ -13,6 +13,6 @@ class PublicResource(BaseResource):
     def get(self):
         sesson = Session()
         if sesson.get("logged-in") == "true":
-            return redirect("/homepage")
+            return redirect("/home")
 
         return render_template("index.html")

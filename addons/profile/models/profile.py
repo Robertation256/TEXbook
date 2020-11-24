@@ -66,3 +66,11 @@ class Profile(base_model.BaseModel):
                 "avatar_id": 5,
                 "contact_info": ""
             }
+
+    @classmethod
+    def get_contact_info_by_id(cls, id):
+        query = cls.select(cls.first_name,cls.last_name,cls.contact_info).where(cls.id == id)
+        if query.exists():
+            return query.get()
+        return None
+

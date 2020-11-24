@@ -16,3 +16,10 @@ class BaseService():
             return None
         return User.get_user_id_by_email(email=user_email)
 
+    @classmethod
+    def get_avatar_id(cls):
+        user_id = cls.get_user_id()
+        if user_id is None:
+            return None
+        from addons.profile.models.profile import Profile
+        return Profile.select().where(Profile.user_id == user_id).get().avatar_id

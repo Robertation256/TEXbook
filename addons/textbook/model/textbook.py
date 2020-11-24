@@ -40,7 +40,7 @@ class Textbook(base_model.BaseModel):
         query = cls.select().where(cls.title % f"%{book_name}%")
         if query.exists():
             return [_ for _ in query]
-        return None
+        return []
 
     @classmethod
     def get_title(cls, only_title=False):
@@ -63,7 +63,7 @@ class Textbook(base_model.BaseModel):
                 res = cls.select().where(cls.id << textbook_ids)
                 if res.exists():
                     return [_ for _ in res]
-        return None
+        return []
 
     @classmethod
     def search_by_subject(cls,subject):
@@ -77,4 +77,4 @@ class Textbook(base_model.BaseModel):
                 res = cls.select().where(cls.id << textbook_ids)
                 if res.exists():
                     return [_ for _ in res]
-        return None
+        return []

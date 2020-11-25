@@ -6,7 +6,7 @@
 
 {% block navbar_rightmost %}
   <div class="nav_rightmost_container" style="margin-right: 25px;">
-    <img class="nav_avatar_icon" src="/image/avatar?id=3">
+    <img class="nav_avatar_icon" src="/image/avatar?id={{avatar_id}}">
     <span class="iconify" data-icon="octicon:bell-16" data-inline="false"></span>
 
 
@@ -160,5 +160,5 @@
 {% endblock %}
 
 {% block script %}
-<script type="text/javascript" src="/static/js/home.js"></script>
+<script type="text/javascript" src="/static/js/search_bracket.js"></script>
 {% endblock %}

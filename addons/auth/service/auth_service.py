@@ -2,12 +2,14 @@ from base import base_service
 from utils.MD5_helper import MD5Helper
 from common.models.user import User
 from utils.token_generator import TokenGenerator
+from base import base_redis_dict
 from addons.auth.service.email_service import EmailHelper
 
 
 
 class AuthService(base_service.BaseService):
     model = User
+    ip_dict = base_redis_dict.BaseRedisDict(name="brute_force_protection")
 
 
     @classmethod
@@ -22,6 +24,7 @@ class AuthService(base_service.BaseService):
             stored_pwd = query.get().password
             if MD5Helper.evaluate(password, stored_pwd):
                 return {"status": True, "message": "Login succeeds"}
+
             return {"status": False, "message": "wrong password"}
 
         return {"status": False, "message": "Email not found"}
@@ -59,5 +62,43 @@ class AuthService(base_service.BaseService):
         email_helper = EmailHelper(receiver_email=email)
         email_helper.send_token(token)
         return token
+
+
+    @classmethod
+    def exceeded_max_attempt(cls,ip):
+        chance_left = cls.ip_dict.get(ip)
+        if chance_left is None:
+            cls.ip_dict[ip] = 5
+            return False
+        chance_left = int(chance_left)
+        if chance_left <= 0:
+            cls.ip_dict.extend()
+            return True
+
+        return False
+
+    @classmethod
+    def dec_login_chance(cls, ip):
+        chance_left = int(cls.ip_dict.get(ip))
+        if chance_left > 0:
+            cls.ip_dict[ip] = chance_left-1
+        cls.ip_dict.extend()
+
+    @classmethod
+    def get_chance_left(cls, ip):
+        return int(cls.ip_dict.get(ip))
+
+    @classmethod
+    def delete_ip(cls, ip):
+        cls.ip_dict.delete(ip)
+
+    @classmethod
+    def reset_chances(cls, ip):
+        cls.ip_dict[ip] = 5
+
+
+
+
+
 
 

@@ -29,6 +29,7 @@
     display:flex;
     margin-left:auto;
     margin-right:auto;
+    margin-bottom:20px;
 
 }
 
@@ -100,6 +101,7 @@
     align-self:center;
 }
 
+
 .condition-label {
     height:100%;
     width:30%;
@@ -109,10 +111,20 @@
 
 }
 
+
+.condition-label-container {
+    height:90%
+    width:70%;
+    float:left;
+
+}
+
 .badge {
     height:30px;
     font-size:15px;
     line-height:20px;
+    margin-right:5px;
+    margin-bottom: 5px!important;
 }
 
 
@@ -183,8 +195,19 @@
     width:100%;
 }
 
+.seller-info {
+    height:100%;
+    width:100%;
+    overflow: hidden;
+}
+
+.info-shield {
+    height:100%;
+    width:100%;
+}
 .striped-prompt {
     height:100%;
+    width:100%;
     color: white;
     background: repeating-linear-gradient(
       -55deg,
@@ -195,4 +218,15 @@
     );
     line-height:250px;
 
+}
+
+footer {
+    position: absolute;
+    margin-top:20px;
+    width: 100%;
+}
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
 }

@@ -49,8 +49,19 @@ class ListingResource(BaseResource):
         res = self.service.get_listing_by_id(listing_id)
         if res is None:
             return {"status":False, "msg":""}
-        data = {
-            "book_image_ids": res.book_image_ids.split(",")
-        }
-        return {"status": True, "data": data}
 
+        return {"status": True, "book_image_ids": res.book_image_ids.split(",")}
+
+    @login_required
+    def get_view_listing(self):
+        textbook_id = request.args.get("id")
+        textbook = self.service.get_textbook_by_id(textbook_id)
+        listings = self.service.get_listing_by_textbook_id(textbook_id)
+        avatar_id = self.service.get_avatar_id()
+        return render_template("listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id)
+
+    @login_required
+    def get_unlock_contact_info(self):
+        listing_id = request.args.get("id")
+        data = self.service.get_contact_info_by_id(listing_id)
+        return data

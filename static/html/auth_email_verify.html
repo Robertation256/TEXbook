@@ -288,6 +288,7 @@ h1 {
 {% endblock %}
 
 {% block content %}
+<div id="type" style="display:none;" class="{{type}}"></div>
 <div class="background">
   <div class="wrapper fadeInDown">
     <div id="formContent">
@@ -302,9 +303,11 @@ h1 {
         <input type="submit" id="verify" style="width:85%;" class="fadeIn fourth" value="Verify">
 
       <!-- Remind Password -->
+      {% if type == "registration" %}
       <div id="formFooter">
         <a class="underlineHover" href="/auth/login">Already have an account?</a>
       </div>
+      {% endif %}
 
     </div>
   </div>

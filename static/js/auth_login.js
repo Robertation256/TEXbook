@@ -1,6 +1,5 @@
 $(window).load(function () {
     $("#login").click(function(){
-	    console.log("1");
 	    var email = $('input[name="email"]').val();
 		var password = $('input[name="password"]').val();
 	    $.ajax({
@@ -9,13 +8,13 @@ $(window).load(function () {
 		    data:{"email":email, "password":password},
 	        success:function(data){
 	            if (data.status) {
-	                window.location.href="/homepage";
+	                window.location.href="/home";
 				}
-				if (data.message == 'All 5 login attempts failed'){
-					window.location.href="/auth/email_verify";
+				else if (data.chances_left == 0){
+					window.location.href="/auth/email_verify?exceeded_max_attempts=1";
 				}
 	            else {
-	                alert(data.message);//弹窗报错
+	                alert(data.message+", "+data.chances_left+" chances left");//弹窗报错
 	            }
 	        }
         })

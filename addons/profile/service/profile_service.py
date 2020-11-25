@@ -40,3 +40,15 @@ class ProfileService(base_service.BaseService):
                 return file_format
         return False
 
+    @classmethod
+    def get_contact_info_by_seller_id(cls, id):
+        query = cls.model.select(cls.model.last_name,cls.model.first_name,cls.model.contact_info).where(cls.model.user_id==id)
+        if query.exists():
+            ins = query.get()
+            res = dict()
+            res["contact_info"] = ins.contact_info
+            res["first_name"] = ins.first_name
+            res["last_name"] = ins.last_name
+            return res
+        return None
+

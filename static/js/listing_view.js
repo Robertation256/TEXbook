@@ -74,6 +74,7 @@ $(window).load(function() {
                 url:"/listing/unlock_contact_info?id="+listing_id,
                 type:"GET",
                 success:function(data){
+                    console.log(data);
                     if (data.chance_left == 0){
                         alert("You have 0 unlock chance left for today. Get membership for unlimited access.");
                     }

@@ -14,6 +14,7 @@ class Listing(base_model.BaseModel):
     defect = peewee.CharField(null=True)
     book_image_ids = peewee.CharField()
     date_added = peewee.DateTimeField()
+    unlocked_user_ids = peewee.TextField(default="")
 
 
     @classmethod
@@ -28,4 +29,12 @@ class Listing(base_model.BaseModel):
             book_image_ids = data["book_image_ids"],
             date_added = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ).execute()
+
+    @classmethod
+    def get_unlocked_user_ids(cls,id):
+        query = cls.select(cls.unlocked_user_ids).where(cls.id==id)
+        if query.exists():
+            res = query.get()
+            return res.unlocked_user_ids.split(",")
+        return []
 

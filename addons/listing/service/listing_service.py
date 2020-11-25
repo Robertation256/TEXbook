@@ -52,19 +52,25 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_contact_info_by_id(cls, id:int):
-        from common.models.user import User
         user_id = cls.get_user_id()
-        user_ins = User.select().where(User.id==user_id).get()
-        is_member = user_ins.is_member
-        unlock_chance = user_ins.unlock_chance
-        if is_member == "false" and unlock_chance <= 0:
-            return {"chance_left": 0, "contact_info": None}
+        unlocked_user_ids = cls.model.get_unlocked_user_ids(id)
+        print(unlocked_user_ids)
+        unlock_chance = None
+        if str(user_id) not in unlocked_user_ids:
+            from common.models.user import User
+            is_member, unlock_chance = User.check_member_and_unlock_chance(user_id)
+            if is_member == "false" and unlock_chance <= 0:
+                return {"chance_left": 0, "contact_info": None}
+            else:
+                unlock_chance = User.dec_unlock_chance(user_id)
+                unlocked_user_ids.append(str(user_id))
+                cls.model.update(unlocked_user_ids=",".join(unlocked_user_ids)).where(cls.model.id==id).execute()
 
-        from addons.profile.models.profile import Profile
-        listing_owner_id = cls.model.select().where(cls.model.id == id).get().id
-        contact_info = Profile.get_contact_info_by_id(listing_owner_id)
-        unlock_chance = User.dec_unlock_chance(user_id)
-        return {"chance_left":unlock_chance, "contact_info":contact_info}
+        from addons.profile.service.profile_service import ProfileService
+        listing_owner_id = cls.model.select().where(cls.model.id == id).get().seller_id
+        contact_info = ProfileService.get_contact_info_by_seller_id(listing_owner_id)
+        print(contact_info)
+        return {"chance_left": unlock_chance, "contact_info":contact_info}
 
 
     @classmethod

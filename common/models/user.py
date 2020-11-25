@@ -6,6 +6,8 @@ class User(base_model.BaseModel):
     email = peewee.CharField(unique=True, max_length=32)
     password = peewee.CharField(max_length=32)
     unlock_chance = peewee.IntegerField(default=5)
+    is_member = peewee.CharField(default="false")
+    allow_email_notification = peewee.CharField(default="false")
 
     @classmethod
     def get_user_id_by_email(cls, email:str):
@@ -26,5 +28,14 @@ class User(base_model.BaseModel):
     @classmethod
     def recover_unlock_chance(cls):
         cls.update(unlock_chance=5).execute()
+
+    @classmethod
+    def check_member_and_unlock_chance(cls,id):
+        query = cls.select(cls.is_member,cls.unlock_chance).where(cls.id == id)
+        if query.exists():
+            ins = query.get()
+            return ins.is_member, ins.unlock_chance
+        return "false",0
+
 
 

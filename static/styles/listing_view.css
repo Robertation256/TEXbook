@@ -200,17 +200,6 @@
     width:100%;
     overflow: hidden;
 }
-.seller-info:before {
-    content: url(images/your-image.jpg);
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    animation-name: reveal;
-    animation-duration: 3s;
-    animation-fill-mode: forwards;
-    animation-delay: 3s;
-}
 
 .info-shield {
     height:100%;
@@ -235,4 +224,9 @@ footer {
     position: absolute;
     margin-top:20px;
     width: 100%;
+}
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
 }

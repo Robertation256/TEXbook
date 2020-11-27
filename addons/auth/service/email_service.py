@@ -43,3 +43,10 @@ class EmailHelper(object):
             content=f"验证码：{token}"
         )
 
+
+    def send_listing_notification(self, email_content):
+        self.send_email(
+            subject= 'Alert: Your requested listing is now available',
+            content=f"message: {email_content}"
+        )
+

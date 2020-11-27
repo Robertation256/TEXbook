@@ -63,6 +63,25 @@ class AuthService(base_service.BaseService):
         email_helper.send_token(token)
         return token
 
+    @classmethod
+    def send_listing_notification(cls, email:str, session):
+        '''
+        send a listing notification to mailbox and update session
+        '''
+        #email_content = email_template(buyer_post)
+        email_content = 'Dear Student, Your requested listing is now available! Click here to check it out'
+        session["email_content"] = email_content
+        session["email"] = email
+        session.expire(600)
+        email_helper = EmailHelper(receiver_email=email)
+        email_helper.send_listing_notification(email_content)
+        return email_content
+
+    def email_template(cls, buyer_post):
+        email_content = """Dear {}, Your requested title, {} with IBSN: {} at the Date of Publish : {} is now exclusively available 
+        on the website! Please feel free to check it out - Insert Listing Link or display""".format(buyer_post['name'], 
+        buyer_post['textbook_id'], buyer_post['textbook_ISBN'], buyer_post['DOP'])
+
 
     @classmethod
     def exceeded_max_attempt(cls,ip):

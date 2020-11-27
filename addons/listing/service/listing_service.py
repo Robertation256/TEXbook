@@ -21,6 +21,10 @@ class ListingService(base_service.BaseService):
         })
         return {"status":True,"msg":None}
 
+        #A function returns the user credentials (email address) who requested the title = user_list
+            #This function runs through all the buyer posts and checks if the textbook_id matches the buyer post
+
+        #A listingPublishingEvent event is triggered with user_list as a parameter
 
     @classmethod
     def get_listing_by_id(cls, id:int):

@@ -31,7 +31,7 @@ class AuthResource(BaseResource):
 
         email = request.form.get("email")
         input_password = request.form.get("password")
-        res = self.service.email_pwd_auth(password=input_password, email=email)
+        res = self.service.email_pwd_auth(password=input_password, email=email)   #ERROR
         if res["status"]:
             self.service.delete_ip(ip_address)
             session["logged_in"] = "true"
@@ -148,11 +148,21 @@ class AuthResource(BaseResource):
         if request.args.get("exceeded_max_attempts") is not None and (not registered):
             return {"status": False, "message": "This email has not been registered yet. Please register first"}
 
+        
+        
         token = self.service.send_token(
             email=email,
             session=session
         )
         print("token sent:", token)
+
+        #Debugging
+        email_content = self.service.send_listing_notification(
+            email=email,
+            session=session
+        )
+        print("email sent:", email_content)
+
         return {"status": True, "message": "A token has been sent to your mail box"}
 
     def get_reset_password(self):

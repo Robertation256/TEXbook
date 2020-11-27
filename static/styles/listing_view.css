@@ -1,3 +1,7 @@
+.cursor-pointer{
+  cursor: pointer;
+}
+
 .nav_avatar_icon {
     height: 25px;
     width: 25px;
@@ -144,6 +148,7 @@
     top:0;
     width:100%;
     z-index:10000;
+    border-radius:3px;
 }
 
 .hover_bkgr_fricc .helper{
@@ -184,21 +189,107 @@
 }
 
 .exposed_info {
-    height:50%;
+    height:46%;
     width:100%;
     text-align:left;
 
 }
 
+.exposed_info_up {
+    height:40%;
+    width:100%;
+
+}
+
+.info_book_name {
+    margin-top:20px;
+    height:auto;
+    width:100%;
+    padding-left:20px;
+    font-family:Google Sans;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.pop_up_purchase_option {
+    margin-left:10px;
+    width:30%;
+    margin-left:5px;
+    font-family:Google Sans;
+    font-size: 20px;
+    font-weight: 600;
+    color: #5DAB06;
+    line-height:25px;
+}
+
+.pop_up_offered_price {
+    width:30%
+    font-family:Google Sans;
+    font-size: 25px;
+    font-weight: 500;
+    line-height:25px;
+}
+
+.pop_up_original_price {
+    margin-left:5px;
+    width:20%
+    font-family:Google Sans;
+    font-size: 8px;
+    font-weight: 450;
+    text-decoration: line-through;
+    font-color:grey;
+}
+
+.pop_up_checked_user {
+    width:100%;
+    height:100%;
+    font-family:Google Sans;
+    font-size: 2px;
+    font-weight: 200;
+    text-decoration: underline;
+}
+
+.exposed_info_down{
+    height:40%;
+    width:100%;
+    display:flex;
+}
+
+.pop-up-label {
+    font-family:Google Sans;
+    font-size: 15px;
+    font-weight: bold;
+}
 .hidden_info {
     height:50%;
     width:100%;
+    text-align: middle;
 }
 
 .seller-info {
     height:100%;
     width:100%;
     overflow: hidden;
+}
+
+.pop-up-name {
+    margin-top:40px;
+    font-family:Google Sans;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.pop-up-contact-info {
+    font-family:Google Sans;
+    font-size: 15px;
+    font-weight: 300;
+}
+
+.pop-up-info {
+    font-family:Google Sans;
+    font-size: 8px;
+    font-weight: 300;
+
 }
 
 .info-shield {

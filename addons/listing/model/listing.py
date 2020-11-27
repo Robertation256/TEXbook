@@ -1,13 +1,13 @@
 import peewee
 import datetime
 from base import base_model
-from common.models.user import User
+from addons.user.model.user import User
 from addons.textbook.model.textbook import Textbook
 
 
 class Listing(base_model.BaseModel):
     textbook = peewee.ForeignKeyField(model=Textbook)
-    seller = peewee.ForeignKeyField(model=User)
+    owner = peewee.ForeignKeyField(model=User)
     purchase_option = peewee.CharField()
     offered_price = peewee.DecimalField()
     condition = peewee.CharField()
@@ -15,19 +15,21 @@ class Listing(base_model.BaseModel):
     book_image_ids = peewee.CharField()
     date_added = peewee.DateTimeField()
     unlocked_user_ids = peewee.TextField(default="")
+    type = peewee.CharField(max_length=30,default="seller_post")
 
 
     @classmethod
     def add(cls, data:dict):
         cls.insert(
             textbook_id = data["textbook_id"],
-            seller_id = data["user_id"],
+            owner_id = data["user_id"],
             purchase_option = data["purchase_option"],
             offered_price = data["offered_price"],
             condition = data["condition"],
             defect = data["defect"],
             book_image_ids = data["book_image_ids"],
-            date_added = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            date_added = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            type=data["type"]
         ).execute()
 
     @classmethod

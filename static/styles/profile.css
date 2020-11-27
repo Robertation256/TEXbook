@@ -1,3 +1,7 @@
+.cursor-pointer{
+  cursor: pointer;
+}
+
 body{
         margin-top:20px;
         color: #1a202c;

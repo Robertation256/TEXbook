@@ -1,3 +1,7 @@
+.cursor-pointer{
+  cursor: pointer;
+}
+
 .col-md-8 {
     text-align: center;
 }

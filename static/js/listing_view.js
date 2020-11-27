@@ -2,11 +2,22 @@ $(window).load(function() {
     $(".hover_bkgr_fricc").hide();
     $(".seller-info").hide();
     var listing_id = -1;
-    $(".listing-wrapper").click(function () {
+    $(".listing-wrapper").click(function (e) {
         listing_id = $(this).attr("id");
         $(".carousel-inner").empty();
         $(".carousel-indicators").empty();
         $(".hidden_info").attr("id","closed");
+        var option = $(this).find("#option-content").text();
+        if (option == "Buy") {
+            $(".pop_up_purchase_option").text("Sold at");
+        }
+        else if (option == "Rent"){
+            $(".pop_up_purchase_option").text("Rented at");
+        }
+        $(".pop_up_offered_price").text("￥"+$(this).find("#offered-price-content").text());
+        $("#pop-up-condition").text($(this).find("#condition-content").text());
+        $("#pop-up-defect").text($(this).find("#defect-content").text());
+        $(".pop_up_checked_user").text($(this).find("#checked-user-num-content").text()+" user(s) have checked on seller contact information");
         $.ajax({
             url:"/listing/image_ids?id="+listing_id,
             type:"GET",

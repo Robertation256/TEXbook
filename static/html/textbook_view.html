@@ -37,7 +37,7 @@
   <hr>
   <div class="textbook_container" style="height:500px;width:100%;margin-top:20px;display:flex;flex-wrap:wrap">
     {% for book in books %}
-      <div class="textbook_wrapper" id="{{book.id}}">
+      <div class="textbook_wrapper cursor-pointer" id="{{book.id}}">
         <img class = "bookcover"  src="/image/bookcover?id={{book.cover_image_id}}">
         <div class="info_wrapper">
         <p class="title">{{book.title[:40]+"..." if book.title.__len__() >40 else book.title}}</p>

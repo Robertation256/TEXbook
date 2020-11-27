@@ -1,3 +1,7 @@
+.cursor-pointer{
+  cursor: pointer;
+}
+
 body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -42,7 +46,7 @@ h6 {
 .call-to-action {
   position: relative;
   background-color: #343a40;
-  background: url("/image/resource?id=9") no-repeat center center;
+  background: url("/image/resource?id=2150") no-repeat center center;
   background-size: cover;
   padding-top: 7rem;
   padding-bottom: 7rem;

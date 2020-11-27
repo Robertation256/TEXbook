@@ -38,8 +38,16 @@
     <p>Original price: ￥ {{textbook.price}}</p>
 
   <hr>
+    <!-- Listings -->
     {% for listing in listings %}
-    <div class="listing-wrapper" id="{{listing.id}}">
+    <div class="listing-wrapper cursor-pointer" id="{{listing.id}}">
+        <div style="display:none;">
+            <p id="option-content">{{listing.purchase_option}}</p>
+            <p id="offered-price-content">{{listing.offered_price}}</p>
+            <p id="condition-content">{{listing.condition}}</p>
+            <p id="defect-content">{{listing.defect}}</p>
+            <p id="checked-user-num-content">{{listing.unlocked_user_ids.split(",").__len__()-1}}</p>
+        </div>
 
         <img class="listing-img" src="/image/upload?id={{listing.book_image_ids.split(',')[0]}}">
 
@@ -62,7 +70,7 @@
         <div class="condition-container" style="display:flex;">
             <p class="condition-label">Condition</p>
             <div class="condition-label-container" style="float:left;">
-                <span class="badge badge-success">{{listing.condition}}</span>
+                <span class="badge badge-success condition">{{listing.condition}}</span>
                 {% for d in listing.defect.split(",") %}
                 <span class="badge badge-warning">{{d}}</span>
                 {% endfor %}
@@ -124,7 +132,7 @@
   </footer>
 </section>
 
-
+    <!-- Pop-up -->
 <div class="hover_bkgr_fricc">
     <span class="helper"></span>
     <div class = "meta_container">
@@ -178,36 +186,79 @@
 
 
             <div class="info_container">
+
                 <div class="exposed_info">
-                    <div style="height:20%;">
-                        <p class="price" >￥180</p>
+
+                    <div class ="exposed_info_up">
+                        <p class="info_book_name" >{{textbook.title}}</p>
+                        <hr>
+
+                        <div style="display:flex;width:100%; margin-left:20px;height:20%;">
+                            <img class="nav_avatar_icon" src="/image/avatar?id={{avatar_id}}">
+                            <text class="pop_up_purchase_option"></text>
+                            <text class="pop_up_offered_price"></text>
+                            <text class="pop_up_original_price">￥{{textbook.price}}</text>
+                        </div>
+
                     </div>
-                    <hr>
-                    <ul  class="entry-content">
-                        <li class="pop-up-info">option: buy</li>
-                        <li class="pop-up-info">condition: good</li>
-                        <li class="pop-up-info">defects: none</li>
-                    </ul>
+
+                    <div class="exposed_info_down">
+                        <div style="margin-left:20px; width:50%; align-self:center;">
+                            <text class="pop-up-label">ISBN: </text>
+                            <text class="pop-up-info">{{textbook.ISBN}}</text>
+                            <br/>
+                            <br/>
+                            <text class="pop-up-label">Author: </text>
+                            <text class="pop-up-info">{{textbook.author}}</text>
+                        </div>
+
+                        <div style="width:50%; align-self:center;">
+                            <text class="pop-up-label">Condition: </text>
+                            <text id="pop-up-condition" class="pop-up-info"></text>
+                            <br/>
+                            <br/>
+                            <text class="pop-up-label">Defects: </text>
+                            <text id="pop-up-defect" class="pop-up-info"></text>
+                        </div>
+
+                    </div>
+
+                    <div style="width:90%; margin-top:10px;height:20%;margin-left:20px;">
+                            <text class="pop_up_checked_user" style="width:100%;"></text>
+                    </div>
+
 
                 </div>
 
                 <div class="hidden_info" id="not_requested">
                     <div class="seller-info">
-                        <p class="name">Yuechuan Zhang</p>
-                        <p class="contact-info">Wechat:Robertation</p>
+                        <p class="pop-up-name">Yuechuan Zhang</p>
+                        <hr>
+                        <p class="pop-up-contact-info">yz3919@nyu.edu</p>
+                        <p class="pop-up-contact-info">Wechat:Robertation</p>
                     </div>
                     <div class="info-shield">
                         <h3 class="striped-prompt">Unlock Seller Info</h3>
                     </div>
                 </div>
+
             </div>
 
 
         </div>
+
+
     </div>
+
 </div>
 
+
 {% endblock %}
+
+
+
+
+
 
 {% block script %}
 <script type="text/javascript" src="/static/js/listing_view.js"></script>

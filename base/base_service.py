@@ -1,4 +1,4 @@
-from common.models.user import User
+from addons.user.model.user import User
 from utils.session import Session
 
 

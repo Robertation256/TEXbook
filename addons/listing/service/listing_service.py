@@ -18,6 +18,7 @@ class ListingService(base_service.BaseService):
             "condition":data["condition"],
             "defect":data["defect"],
             "book_image_ids": img_ids,
+            "type":"seller_post"
         })
         return {"status":True,"msg":None}
 
@@ -41,7 +42,7 @@ class ListingService(base_service.BaseService):
             res =  [_ for _ in query]
             for e in res:
                 e.offered_price = int(e.offered_price)
-                seller_id = e.seller_id
+                seller_id = e.owner_id
                 avatar_id = Profile.get(Profile.user_id==seller_id).avatar_id
                 e.avatar_id = avatar_id
             return res
@@ -61,7 +62,7 @@ class ListingService(base_service.BaseService):
         print(unlocked_user_ids)
         unlock_chance = None
         if str(user_id) not in unlocked_user_ids:
-            from common.models.user import User
+            from addons.user.model.user import User
             is_member, unlock_chance = User.check_member_and_unlock_chance(user_id)
             if is_member == "false" and unlock_chance <= 0:
                 return {"chance_left": 0, "contact_info": None}
@@ -71,7 +72,7 @@ class ListingService(base_service.BaseService):
                 cls.model.update(unlocked_user_ids=",".join(unlocked_user_ids)).where(cls.model.id==id).execute()
 
         from addons.profile.service.profile_service import ProfileService
-        listing_owner_id = cls.model.select().where(cls.model.id == id).get().seller_id
+        listing_owner_id = cls.model.select().where(cls.model.id == id).get().owner_id
         contact_info = ProfileService.get_contact_info_by_seller_id(listing_owner_id)
         print(contact_info)
         return {"chance_left": unlock_chance, "contact_info":contact_info}

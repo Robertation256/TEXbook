@@ -167,7 +167,7 @@ class AuthResource(BaseResource):
 
     def get_reset_password(self):
         session = Session()
-        if session.get("logged_in") == " true":
+        if session.get("logged_in") == "true":
             session.extend()
             return redirect("/home")
         if session.get("reset_password_email_verified") != "true":
@@ -177,7 +177,7 @@ class AuthResource(BaseResource):
 
     def post_reset_password(self):
         session = Session()
-        if session.get("logged_in") == " true":
+        if session.get("logged_in") == "true":
             session.extend()
             return redirect("/home")
         if session.get("reset_password_email_verified") != "true":

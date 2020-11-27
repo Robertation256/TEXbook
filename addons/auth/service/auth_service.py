@@ -1,6 +1,6 @@
 from base import base_service
 from utils.MD5_helper import MD5Helper
-from common.models.user import User
+from addons.user.model.user import User
 from utils.token_generator import TokenGenerator
 from base import base_redis_dict
 from addons.auth.service.email_service import EmailHelper

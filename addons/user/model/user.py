@@ -7,7 +7,8 @@ class User(base_model.BaseModel):
     password = peewee.CharField(max_length=32)
     unlock_chance = peewee.IntegerField(default=5)
     is_member = peewee.CharField(default="false")
-    allow_email_notification = peewee.CharField(default="false")
+    email_notification_freq = peewee.CharField(default="never")
+    email_notification_type = peewee.CharField(max_length=50)
 
     @classmethod
     def get_user_id_by_email(cls, email:str):

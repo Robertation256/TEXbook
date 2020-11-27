@@ -1,7 +1,7 @@
 import peewee
 from base import base_model
 from common.models.image import Image
-from common.models.user import User
+from addons.user.model.user import User
 
 
 class Profile(base_model.BaseModel):

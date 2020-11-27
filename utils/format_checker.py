@@ -1,7 +1,6 @@
 import re
 
 from addons.profile.models import Profile
-from common.models.user import User
 
 
 def nyu_email_check(email: str) -> bool:

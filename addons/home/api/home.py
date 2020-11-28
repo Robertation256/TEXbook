@@ -12,7 +12,8 @@ class HomeResource(BaseResource):
     @login_required
     def get(self):
         avatar_id = self.service.get_avatar_id()
-        return render_template("home.html",avatar_id=avatar_id)
+        user = self.service.get_user_ins()
+        return render_template("home.html",avatar_id=avatar_id,user=user)
 
     @login_required
     def get_home_resource(self):

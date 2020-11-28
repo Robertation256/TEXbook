@@ -80,7 +80,7 @@ $(window).load(function() {
         form_data.append("defect",$("#defects").val());
 
         $.ajax({
-            url:"/listing/publish",
+            url:"/listing/listing_publish",
             processData: false,
             contentType: false,
             type:"POST",

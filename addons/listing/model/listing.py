@@ -10,9 +10,9 @@ class Listing(base_model.BaseModel):
     owner = peewee.ForeignKeyField(model=User)
     purchase_option = peewee.CharField()
     offered_price = peewee.DecimalField()
-    condition = peewee.CharField()
+    condition = peewee.CharField(null=True)
     defect = peewee.CharField(null=True)
-    book_image_ids = peewee.CharField()
+    book_image_ids = peewee.CharField(null=True)
     date_added = peewee.DateTimeField()
     unlocked_user_ids = peewee.TextField(default="")
     type = peewee.CharField(max_length=30,default="seller_post")
@@ -25,9 +25,9 @@ class Listing(base_model.BaseModel):
             owner_id = data["user_id"],
             purchase_option = data["purchase_option"],
             offered_price = data["offered_price"],
-            condition = data["condition"],
-            defect = data["defect"],
-            book_image_ids = data["book_image_ids"],
+            condition = data.get("condition"),
+            defect = data.get("defect"),
+            book_image_ids = data.get("book_image_ids"),
             date_added = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             type=data["type"]
         ).execute()

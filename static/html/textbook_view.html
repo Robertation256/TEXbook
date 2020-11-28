@@ -1,32 +1,7 @@
-{% extends "layout_navigation_bar.html" %}
+{% extends "navbar_with_avatar_search_bracket.html" %}
 
 {% block style_sheet_link %}
       <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/textbook_view.css') }}">
-{% endblock %}
-
-{% block navbar_rightmost %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha512-HWlJyU4ut5HkEj0QsK/IxBCY55n5ZpskyjVlAoV9Z7XQwwkqXoYdCIC93/htL3Gu5H3R4an/S0h2NXfbZk3g7w==" crossorigin="anonymous"></script>
-<div class="search_bracket" style="vertical-align:middle;display:flex; margin-right:200px; height:100%;width:600px;" >
-              <div class="input-group mb-1" style="height:100% !important;">
-                <div class="input-group-prepend" style="height:100% !important; width:23%; ">
-                  <select id="search_field" class="form-control input-group-text" style="font-size:9px;height:100%; background-color:#343A40; color:white;box-shadow:None !important;">
-                      <option value="1">Book Name</option>
-                      <option value="2">Course Name</option>
-                      <option value="3">Subject</option>
-                  </select>
-                </div>
-                <input id="search_input" type="text" class="form-control"  style="height:100%; box-shadow:None !important;" data-provide="typeahead"
-     data-source='' data-items="4">
-              </div>
-
-              <div class="col-9 col-md-2" style="height:100%" >
-                    <button type="submit" id="search_btn" class="btn btn-block btn-lg btn-primary" style="height:100%;font-size:13px">Search</button>
-              </div>
-</div>
-<div class="nav_rightmost_container" style="margin-right: 25px;">
-  <img class="nav_avatar_icon" src="/image/avatar?id={{avatar_id}}">
-  <span class="iconify" data-icon="octicon:bell-16" data-inline="false"></span>
-</div>
 {% endblock %}
 
 

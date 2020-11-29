@@ -7,19 +7,28 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def add(cls, user_id, data):
-        from common.models.image import Image
-        img_id_list = Image.add_multiple(data["image_data"])
-        img_ids = ",".join([str(i) for i in img_id_list])
-        cls.model.add({
-            "textbook_id":data["textbook_id"],
-            "user_id":user_id,
-            "purchase_option": data["purchase_option"],
-            "offered_price": data["offered_price"],
-            "condition":data["condition"],
-            "defect":data["defect"],
-            "book_image_ids": img_ids,
-            "type":"seller_post"
-        })
+        if data["type"] == "buyer_post":
+            cls.model.add({
+                "textbook_id": data["textbook_id"],
+                "user_id": user_id,
+                "purchase_option": data["purchase_option"],
+                "offered_price": data["offered_price"],
+                "type": data["type"]
+            })
+        else:
+            from common.models.image import Image
+            img_id_list = Image.add_multiple(data["image_data"])
+            img_ids = ",".join([str(i) for i in img_id_list])
+            cls.model.add({
+                "textbook_id":data["textbook_id"],
+                "user_id":user_id,
+                "purchase_option": data["purchase_option"],
+                "offered_price": data["offered_price"],
+                "condition":data["condition"],
+                "defect":data["defect"],
+                "book_image_ids": img_ids,
+                "type": data["type"]
+            })
         return {"status":True,"msg":None}
 
         #A function returns the user credentials (email address) who requested the title = user_list

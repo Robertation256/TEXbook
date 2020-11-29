@@ -10,6 +10,14 @@ class BaseService():
         return user_email
 
     @classmethod
+    def get_user_ins(cls):
+        email = cls.get_user_email()
+        query = User.select().where(User.email==email)
+        if query.exists():
+            return query.get()
+        return None
+
+    @classmethod
     def get_user_id(cls):
         user_email = cls.get_user_email()
         if user_email is None:

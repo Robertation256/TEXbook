@@ -12,13 +12,8 @@ class TextbookResource(BaseResource):
         self.service = textbook_service.TextbookService
 
     @login_required
-    def get_view(self):
-        avatar_id = self.service.get_avatar_id()
-        return render_template("textbook_view.html",avatar_id=avatar_id)
-
-
-    @login_required
     def get_search(self):
+        user = self.service.get_user_ins()
         textbook_id =  request.args.get("id")
         book_name = request.args.get("book_name")
         course_name = request.args.get("course_name")
@@ -37,7 +32,7 @@ class TextbookResource(BaseResource):
 
         if subject is not None:
             res = Textbook.search_by_subject(subject)
-            return render_template("textbook_view.html", books=res, keyword=subject, avatar_id=avatar_id)
+            return render_template("textbook_view.html", books=res, keyword=subject, avatar_id=avatar_id,user=user)
 
 
 

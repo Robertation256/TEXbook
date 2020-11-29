@@ -1,8 +1,9 @@
-{% extends "layout_navigation_bar.html" %}
+{% extends "navbar_with_avatar.html" %}
 
 {% block style_sheet_link %}
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
       <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/listing_publish.css') }}">
+      <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/navbar.css') }}">
 {% endblock %}
 
 
@@ -105,6 +106,6 @@
 {% endblock %}
 
 {% block script %}
-<script type="text/javascript" src="/static/js/listing_publish.js"></script>
+<script type="text/javascript" src="/static/js/listing_listing_publish.js"></script>
 
 {% endblock %}

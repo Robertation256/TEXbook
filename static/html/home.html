@@ -1,46 +1,36 @@
-{% extends "layout_navigation_bar.html" %}
+{% extends "navbar_with_avatar.html" %}
 
 {% block style_sheet_link %}
       <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/home.css') }}">
 {% endblock %}
 
-{% block navbar_rightmost %}
-  <div class="nav_rightmost_container" style="margin-right: 25px;">
-    <img class="nav_avatar_icon cursor-pointer" src="/image/avatar?id={{avatar_id}}">
-    <span class="iconify cursor-pointer" data-icon="octicon:bell-16" data-inline="false"></span>
-
-
-  </div>
-{% endblock %}
-
 
 {% block content %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha512-HWlJyU4ut5HkEj0QsK/IxBCY55n5ZpskyjVlAoV9Z7XQwwkqXoYdCIC93/htL3Gu5H3R4an/S0h2NXfbZk3g7w==" crossorigin="anonymous"></script>
-  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
   <!-- Masthead -->
     <section class="features-icons text-center">
-        <div class="col cursor-pointer">
+        <div class="col cursor-pointer" onclick="location.href='/listing/request_publish';">
           <div class="icon-container">
-            <img class = "icon" src="/image/resource?id=6">
+            <img class = "icon" src="/image/resource?id=2152">
           </div>
-          <h4>Search by University ID</h4>
-          <p class="mb-5">Find the books you need for this term by university ID</p>
+          <h4>Post Requests</h4>
+          <p class="mb-5">Haven't seen the book you are looking for? Post a request.</p>
         </div>
 
-        <div class="col cursor-pointer">
+        <div class="col cursor-pointer" onclick="location.href='/listing/listing_publish';">
             <div class="icon-container">
-              <img class = "icon" src="/image/resource?id=7">
+              <img class = "icon" src="/image/resource?id=2153">
             </div>
             <h4>Sell & Rent Textbooks</h4>
-            <p class="mb-5">Featuring the latest build of the new Bootstrap 4 framework!</p>
+            <p class="mb-5">Fill in a form and you are good to go.</p>
           </div>
 
         <div class="col cursor-pointer">
             <div class="icon-container">
-              <img class = "icon" src="/image/resource?id=8">
+              <img class = "icon" src="/image/resource?id=2154">
             </div>
             <h4>Make a Donation</h4>
-            <p class="mb-5">Ready to use with your own content, or customize the source files!</p>
+            <p class="mb-5">Donate to our website and get unlimited unlock chances!</p>
           </div>
   </section>
 

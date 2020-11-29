@@ -17,7 +17,8 @@ class ProfileResource(BaseResource):
         session = Session()
         email = session.get("email")
         profile_info = self.service.get_profile_info(email=email)
-        return render_template("profile.html", **profile_info)
+        user = self.service.get_user_ins()
+        return render_template("profile.html", user=user, **profile_info)
 
     @login_required
     def post_profile(self):

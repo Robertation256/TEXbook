@@ -1,7 +1,8 @@
-{% extends "layout_navigation_bar.html" %}
+{% extends "navbar_with_avatar.html" %}
 
 {% block style_sheet_link %}
       <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/profile.css') }}">
+      <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/navbar.css') }}">
 {% endblock %}
 
 {% block content %}

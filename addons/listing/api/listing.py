@@ -13,12 +13,13 @@ class ListingResource(BaseResource):
         self.service = listing_service.ListingService
 
     @login_required
-    def get_publish(self):
+    def get_listing_publish(self):
         textbook_options = Textbook.get_title(only_title=False)
-        return render_template("listing_publish.html",textbook_options=textbook_options)
+        user = self.service.get_user_ins()
+        return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user)
 
     @login_required
-    def post_publish(self):
+    def post_listing_publish(self):
         user_email = self.service.get_user_email()
         user_id = self.service.get_user_id()
         image_data = [{
@@ -35,7 +36,25 @@ class ListingResource(BaseResource):
         f["defect"] = request.form["defect"]
         f["user_id"] = user_id
         f["image_data"] = image_data
+        f["type"] = "seller_post"
         return self.service.add(user_id=user_id,data=f)
+
+    @login_required
+    def get_request_publish(self):
+        textbook_options = Textbook.get_title(only_title=False)
+        user = self.service.get_user_ins()
+        return render_template("listing_request_publish.html", textbook_options=textbook_options, user=user)
+
+    @login_required
+    def post_request_publish(self):
+        user_id = self.service.get_user_id()
+        f = dict()
+        f["textbook_id"] = request.form["textbook_id"]
+        f["purchase_option"] = request.form["purchase_option"]
+        f["offered_price"] = request.form["offered_price"]
+        f["user_id"] = user_id
+        f["type"] = "buyer_post"
+        return self.service.add(user_id=user_id, data=f)
 
     @login_required
     def get_image_ids(self):
@@ -58,7 +77,8 @@ class ListingResource(BaseResource):
         textbook = self.service.get_textbook_by_id(textbook_id)
         listings = self.service.get_listing_by_textbook_id(textbook_id)
         avatar_id = self.service.get_avatar_id()
-        return render_template("listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id)
+        user = self.service.get_user_ins()
+        return render_template("listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
 
     @login_required
     def get_unlock_contact_info(self):

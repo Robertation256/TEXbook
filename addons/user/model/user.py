@@ -6,6 +6,7 @@ class User(base_model.BaseModel):
     email = peewee.CharField(unique=True, max_length=32)
     password = peewee.CharField(max_length=32)
     unlock_chance = peewee.IntegerField(default=5)
+    publish_slot = peewee.IntegerField(default=5)
     is_member = peewee.CharField(default="false")
     email_notification_freq = peewee.CharField(default="never")
     email_notification_type = peewee.CharField(max_length=50)

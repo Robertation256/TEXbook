@@ -64,12 +64,12 @@ class AuthService(base_service.BaseService):
         return token
 
     @classmethod
-    def send_listing_notification(cls, email:str, session):
+    def send_listing_notification(cls, email:str, session, title, first_name):
         '''
         send a listing notification to mailbox and update session
         '''
         #email_content = email_template(buyer_post)
-        email_content = 'Dear Student, Your requested listing is now available! Click here to check it out'
+        email_content = 'Dear {}, Your requested listing {} is now available! Click here to check it out'.format(first_name, title)
         session["email_content"] = email_content
         session["email"] = email
         session.expire(600)

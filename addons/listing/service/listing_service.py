@@ -1,5 +1,11 @@
 from base import base_service
 from addons.listing.model.listing import Listing
+from addons.user.model.user import User
+from addons.textbook.model.textbook import Textbook
+from addons.listing.service.listingPublishingEvent import execute_event
+from addons.listing.service.helper_user import get_user_by_id
+from addons.notifications.api.notification import NotificationResource
+from addons.profile.models.profile import Profile
 
 
 class ListingService(base_service.BaseService):
@@ -29,12 +35,52 @@ class ListingService(base_service.BaseService):
                 "book_image_ids": img_ids,
                 "type": data["type"]
             })
+            
+        #----- Begin: Event handlers for notification push ------
+
+
+        user_email = get_user_by_id(data)
+        print('first print')
+        print(user_email)
+        first_names = []
+        for email in user_email:
+            user_id = User.select().where(User.email == email).get().id
+            
+            first_name = Profile.select().where(Profile.user_id == user_id).get().first_name
+            first_names.append(first_name)    
+        
+        
+        #Notification on the website
+        title = Textbook.select().where(Textbook.id == data["textbook_id"]).get().title
+
+        for i in range(len(first_names)):
+            first_name = first_names[i]
+
+            notify = NotificationResource()
+            notify.post_notification(notification_type = 'publish_listing', title =title, first_name=first_name)
+           
+        if data["type"] != "buyer_post":
+            #Notification on email
+
+            #Integrate if they have opted for email notification
+            title = Textbook.select().where(Textbook.id == data["textbook_id"]).get().title
+            user_email = get_user_by_id(data) #python list of email addresses
+
+            print('fellow users requested the title: ')
+            print(user_email)
+            
+            
+            data = [user_email, title, first_names]
+            # parameter example: data = [[user_email1, user_email2], title]
+            execute_event(data)
+
+        #----- End: Event handlers for notification push ------
+
         return {"status":True,"msg":None}
 
-        #A function returns the user credentials (email address) who requested the title = user_list
-            #This function runs through all the buyer posts and checks if the textbook_id matches the buyer post
-
-        #A listingPublishingEvent event is triggered with user_list as a parameter
+        
+ 
+    
 
     @classmethod
     def get_listing_by_id(cls, id:int):

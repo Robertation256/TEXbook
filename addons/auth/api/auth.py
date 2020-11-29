@@ -156,13 +156,6 @@ class AuthResource(BaseResource):
         )
         print("token sent:", token)
 
-        #Debugging
-        email_content = self.service.send_listing_notification(
-            email=email,
-            session=session
-        )
-        print("email sent:", email_content)
-
         return {"status": True, "message": "A token has been sent to your mail box"}
 
     def get_reset_password(self):

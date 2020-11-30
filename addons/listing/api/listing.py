@@ -3,6 +3,8 @@ from utils.decorators import login_required
 from flask import render_template,request
 from addons.textbook.model.textbook import Textbook
 from addons.listing.service import listing_service
+from addons.notifications.api.notification import NotificationResource
+from addons.profile.models.profile import Profile
 
 
 class ListingResource(BaseResource):
@@ -84,7 +86,18 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_unlock_contact_info(self):
+        #Push notification to user for unlocked information
         listing_id = request.args.get("id")
+        listing = self.service.get_listing_by_id(listing_id)
+        title = listing.textbook.title
+        notification_type = listing.type
+        user = self.service.get_user_ins()
+        user_id = user.id
+        first_name = Profile.select().where(user_id == user_id).get().first_name
+
+        notify = NotificationResource()
+        notify.post_notification(notification_type = notification_type, title =title, first_name=first_name)
+
         data = self.service.get_contact_info_by_id(listing_id)
         return data
 
@@ -137,3 +150,4 @@ class ListingResource(BaseResource):
         user_id = self.service.get_user_id()
         res = self.service.delete_listing_by_id(listing_id=listing_id, user_id=user_id)
         return res
+

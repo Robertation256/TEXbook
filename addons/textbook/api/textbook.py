@@ -24,11 +24,11 @@ class TextbookResource(BaseResource):
         avatar_id = self.service.get_avatar_id()
         if book_name is not None:
             res = Textbook.search_by_book_name(book_name)
-            return render_template("textbook_view.html",books=res,keyword=book_name, avatar_id=avatar_id)
+            return render_template("textbook_view.html",books=res,keyword=book_name, avatar_id=avatar_id,user=user)
 
         if course_name is not None:
             res = Textbook.search_by_course_name(course_name)
-            return render_template("textbook_view.html", books=res, keyword=course_name, avatar_id=avatar_id)
+            return render_template("textbook_view.html", books=res, keyword=course_name, avatar_id=avatar_id, user=user)
 
         if subject is not None:
             res = Textbook.search_by_subject(subject)

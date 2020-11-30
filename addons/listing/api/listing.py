@@ -37,6 +37,7 @@ class ListingResource(BaseResource):
         f["user_id"] = user_id
         f["image_data"] = image_data
         f["type"] = "seller_post"
+        f["is_published"] = "true"
         return self.service.add(user_id=user_id,data=f)
 
     @login_required
@@ -54,6 +55,7 @@ class ListingResource(BaseResource):
         f["offered_price"] = request.form["offered_price"]
         f["user_id"] = user_id
         f["type"] = "buyer_post"
+        f["is_published"] = "true"
         return self.service.add(user_id=user_id, data=f)
 
     @login_required
@@ -85,3 +87,53 @@ class ListingResource(BaseResource):
         listing_id = request.args.get("id")
         data = self.service.get_contact_info_by_id(listing_id)
         return data
+
+    @login_required
+    def get_listing_manage(self):
+        avatar_id = self.service.get_avatar_id()
+        user = self.service.get_user_ins()
+        published_listing = self.service.get_user_listings(user_id=user.id,type="seller_post",is_published="true")
+        posted_request = self.service.get_user_listings(user_id=user.id,type="buyer_post",is_published="true")
+        unpublished_listing = self.service.get_user_listings(user_id=user.id,type="seller_post",is_published="false")
+        unlocked_listing = self.service.get_user_unlocked_listings(user_id=user.id,type="seller_post")
+        unlocked_request = self.service.get_user_unlocked_listings(user_id=user.id,type="buyer_post")
+        data = dict()
+        data["avatar_id"] = avatar_id
+        data["user"] = user
+        data["published_listing"] = published_listing
+        data["unpublished_listing"] = unpublished_listing
+        data["unlocked_listing"] = unlocked_listing
+        data["unlocked_request"] = unlocked_request
+        data["posted_request"] = posted_request
+        print("data:",posted_request)
+
+        return render_template("listing_listing_manage.html", **data)
+
+    @login_required
+    def get_lock(self):
+        listing_id = request.args.get("id")
+        user_id = self.service.get_user_id()
+        self.service.lock_listing_by_id(listing_id=listing_id,user_id=user_id)
+
+    @login_required
+    def get_set(self):
+        user_id = self.service.get_user_id()
+        listing_id = request.args.get("id")
+        on_shelf = request.args.get("on_shelf")
+        if listing_id is None:
+            return {"status":False, "msg":"Bad Request"}
+        if on_shelf is not None:
+            on_shelf = True if on_shelf=="1" else False
+            res = self.service.modify_listing(
+                listing_id=listing_id,
+                data={"on_shelf": on_shelf},
+                user_id=user_id
+            )
+            return res
+
+    @login_required
+    def get_delete(self):
+        listing_id = request.args.get("id")
+        user_id = self.service.get_user_id()
+        res = self.service.delete_listing_by_id(listing_id=listing_id, user_id=user_id)
+        return res

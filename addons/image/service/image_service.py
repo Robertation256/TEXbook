@@ -18,3 +18,8 @@ class ImageService(base_service.BaseService):
             return {"status": True, "result": query.get()}
         else:
             return {"status": False, "result": None}
+
+    @classmethod
+    def delete_image_by_ids(cls,image_ids:list):
+        if len(image_ids) > 0:
+            cls.model.delete().where(cls.model.id << image_ids).execute()

@@ -43,6 +43,13 @@ class Profile(base_model.BaseModel):
             return {"status": True, "message": "Update succeeds"}
 
     @classmethod
+    def get_profile_by_user_id(cls, user_id):
+        query = cls.select().where(cls.user_id==user_id)
+        if query.exists():
+            profile_ins = query.get()
+            return profile_ins
+
+    @classmethod
     def get_profile_by_email(cls, user_email:str):
         user = User.select().where(User.email==user_email).get()
         query = cls.select().where(cls.user_id==user.id)

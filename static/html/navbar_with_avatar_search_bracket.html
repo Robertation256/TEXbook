@@ -36,6 +36,7 @@
           <div class="collapse navbar-collapse">
               <ul class="navbar-nav mr-auto">
                   <li class="nav-item active cursor-pointer" onclick="window.location.href='/home';">Home</li>
+                  <li class="nav-item active cursor-pointer" onclick="window.location.href='/listing/listing_manage';">My Listings</li>
                   {% block navbar_options %}{% endblock %}
               </ul>
           </div>
@@ -72,7 +73,7 @@
                   <text style="font-family:Google-Sans;font-size:10px;margin-top:25px;">Unlock chance(s):</text>
                   <text style="font-family:Google-Sans;font-size:10px;margin-top:25px;">{{user.unlock_chance}}</text>
                   <hr style="margin-top:5px;margin-bottom:5px;">
-                  <button class="dropdown-item" type="button">Profile</button>
+                  <button class="dropdown-item" type="button" onclick="location.href='/profile/profile';">Profile</button>
                 <button class="dropdown-item" type="button">Setting</button>
               </div>
             </div>

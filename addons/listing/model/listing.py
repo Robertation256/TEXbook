@@ -16,6 +16,7 @@ class Listing(base_model.BaseModel):
     date_added = peewee.DateTimeField()
     unlocked_user_ids = peewee.TextField(default="")
     type = peewee.CharField(max_length=30,default="seller_post")
+    is_published = peewee.CharField(max_length=10, default="true")
 
 
     @classmethod
@@ -29,14 +30,21 @@ class Listing(base_model.BaseModel):
             defect = data.get("defect"),
             book_image_ids = data.get("book_image_ids"),
             date_added = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            type=data["type"]
+            type=data["type"],
+            is_published=data["is_published"]
         ).execute()
 
     @classmethod
     def get_unlocked_user_ids(cls,id):
         query = cls.select(cls.unlocked_user_ids).where(cls.id==id)
         if query.exists():
-            res = query.get()
-            return res.unlocked_user_ids.split(",")
+            item = query.get()
+            res = item.unlocked_user_ids.split(",")
+            if len(res) == 1:
+                return []
+            res.pop(0)
+            res.pop(-1)
+            return res
+
         return []
 

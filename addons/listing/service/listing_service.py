@@ -13,7 +13,8 @@ class ListingService(base_service.BaseService):
                 "user_id": user_id,
                 "purchase_option": data["purchase_option"],
                 "offered_price": data["offered_price"],
-                "type": data["type"]
+                "type": data["type"],
+                "is_published": data["is_published"]
             })
         else:
             from common.models.image import Image
@@ -27,7 +28,8 @@ class ListingService(base_service.BaseService):
                 "condition":data["condition"],
                 "defect":data["defect"],
                 "book_image_ids": img_ids,
-                "type": data["type"]
+                "type": data["type"],
+                "is_published": data["is_published"]
             })
         return {"status":True,"msg":None}
 
@@ -50,6 +52,7 @@ class ListingService(base_service.BaseService):
                 seller_id = e.owner_id
                 avatar_id = Profile.get(Profile.user_id==seller_id).avatar_id
                 e.avatar_id = avatar_id
+                e.unlocked_user_ids = cls.model.get_unlocked_user_ids(id=e.id)
             return res
 
         return []
@@ -64,7 +67,6 @@ class ListingService(base_service.BaseService):
     def get_contact_info_by_id(cls, id:int):
         user_id = cls.get_user_id()
         unlocked_user_ids = cls.model.get_unlocked_user_ids(id)
-        print(unlocked_user_ids)
         unlock_chance = None
         if str(user_id) not in unlocked_user_ids:
             from addons.user.model.user import User
@@ -74,19 +76,82 @@ class ListingService(base_service.BaseService):
             else:
                 unlock_chance = User.dec_unlock_chance(user_id)
                 unlocked_user_ids.append(str(user_id))
-                cls.model.update(unlocked_user_ids=",".join(unlocked_user_ids)).where(cls.model.id==id).execute()
+                cls.model.update(unlocked_user_ids=","+",".join(unlocked_user_ids)+",").where(cls.model.id==id).execute()
 
         from addons.profile.service.profile_service import ProfileService
         listing_owner_id = cls.model.select().where(cls.model.id == id).get().owner_id
         contact_info = ProfileService.get_contact_info_by_seller_id(listing_owner_id)
-        print(contact_info)
         return {"chance_left": unlock_chance, "contact_info":contact_info}
 
+    @classmethod
+    def lock_listing_by_id(cls,listing_id,user_id):
+        '''
+        called when a user removes a listing from his unlocked listings
+        :param listing_id:
+        :return:
+        '''
+        unlocked_user_ids = cls.model.get_unlocked_user_ids(id=listing_id)
+        if str(user_id) in unlocked_user_ids:
+            unlocked_user_ids.remove(str(user_id))
+            cls.model.update(unlocked_user_ids=","+",".join(unlocked_user_ids)+",").where(cls.model.id == listing_id).execute()
 
     @classmethod
-    def get_listing_by_user_id(cls, user_id: int):
-        pass
+    def delete_listing_by_id(cls,listing_id,user_id):
+        listing_ins = cls.get_listing_by_id(id=listing_id)
+        if listing_ins is not None and listing_ins.owner_id == user_id:
+            image_ids = listing_ins.book_image_ids.split(",")
+            cls.model.delete().where(cls.model.id == listing_id).execute()
+            if len(image_ids) > 0:
+                from addons.image.service.image_service import ImageService
+                ImageService.delete_image_by_ids(image_ids)
+
+            return {"status":True,"msg":"Delete succeeds"}
+        return {"status": False, "msg": "Bad request"}
 
     @classmethod
-    def delete(cls, id: int):
-        pass
+    def modify_listing(cls, listing_id, user_id, data):
+        listing_ins = cls.get_listing_by_id(listing_id)
+        if listing_ins is None or listing_ins.type == "buyer_post" or listing_ins.owner_id != user_id:
+            return {"status":False, "msg":"Bad Request"}
+        if data["on_shelf"] is True:
+            cls.model.update(is_published="true").where(cls.model.id==listing_id).execute()
+        elif data["on_shelf"] is False:
+            cls.model.update(is_published="false").where(cls.model.id==listing_id).execute()
+
+        return {"status": True, "msg": "Update Succeeds"}
+
+    @classmethod
+    def get_user_listings(cls,user_id,type="seller_post",is_published="true"):
+        query = cls.model.select().where((cls.model.owner_id==user_id) & (cls.model.type==type) & (cls.model.is_published==is_published))
+        if query.exists():
+            res = []
+            for e in query:
+                data = dict()
+                data["id"] = e.id
+                data["book_title"] = e.textbook.title
+                data["purchase_option"] = e.purchase_option
+                data["offered_price"] = round(e.offered_price)
+                data["posted_date"] = str(e.date_added)[:10]
+                data["number_of_views"] = len(cls.model.get_unlocked_user_ids(id=e.id))
+                res.append(data)
+            return res
+        return []
+
+    @classmethod
+    def get_user_unlocked_listings(cls,user_id, type="seller_post"):
+        query = cls.model.select().where((cls.model.unlocked_user_ids.contains(","+str(user_id)+",") & (cls.model.type == type)))
+        if query.exists():
+            res = []
+            from addons.profile.models.profile import Profile
+            for e in query:
+                profile_info = Profile.get_profile_by_user_id(user_id=e.owner_id)
+                data = dict()
+                data["id"] = e.id
+                data["book_title"] = e.textbook.title
+                data["purchase_option"] = e.purchase_option
+                data["offered_price"] = round(e.offered_price)
+                data["owner_name"] = profile_info.last_name+","+profile_info.first_name
+                data["contact_info"] = profile_info.contact_info
+                res.append(data)
+            return res
+        return []

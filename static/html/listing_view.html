@@ -21,7 +21,7 @@
             <p id="offered-price-content">{{listing.offered_price}}</p>
             <p id="condition-content">{{listing.condition}}</p>
             <p id="defect-content">{{listing.defect}}</p>
-            <p id="checked-user-num-content">{{listing.unlocked_user_ids.split(",").__len__()-1}}</p>
+            <p id="checked-user-num-content">{{listing.unlocked_user_ids.__len__()}}</p>
         </div>
 
         <img class="listing-img" src="/image/upload?id={{listing.book_image_ids.split(',')[0]}}">

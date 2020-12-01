@@ -1,6 +1,6 @@
 import peewee
 from base import base_model
-from common.models.image import Image
+from addons.image.model.image import Image
 from common.models.course import Course
 
 

@@ -1,7 +1,7 @@
 from flask import render_template, request
 from utils.decorators import login_required
 from base.base_resource import BaseResource
-from utils.session import Session
+from common.service.session import Session
 from addons.profile.service.profile_service import ProfileService
 
 

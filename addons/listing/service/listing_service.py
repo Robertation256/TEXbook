@@ -1,20 +1,16 @@
 from base import base_service
 from addons.listing.model.listing import Listing
-from addons.user.model.user import User
-from addons.textbook.model.textbook import Textbook
-from addons.listing.service.listingPublishingEvent import execute_event
-from addons.listing.service.helper_user import get_user_by_id
-from addons.notifications.api.notification import NotificationResource
-from addons.profile.models.profile import Profile
-
+from common.service.event_manager import EventManager
+from addons.listing.event import listing_publish_event, listing_unlock_event
 
 class ListingService(base_service.BaseService):
     model = Listing
+    event_manager = EventManager()
 
     @classmethod
     def add(cls, user_id, data):
         if data["type"] == "buyer_post":
-            cls.model.add({
+            listing_id = cls.model.add({
                 "textbook_id": data["textbook_id"],
                 "user_id": user_id,
                 "purchase_option": data["purchase_option"],
@@ -23,10 +19,10 @@ class ListingService(base_service.BaseService):
                 "is_published": data["is_published"]
             })
         else:
-            from common.models.image import Image
+            from addons.image.model.image import Image
             img_id_list = Image.add_multiple(data["image_data"])
             img_ids = ",".join([str(i) for i in img_id_list])
-            cls.model.add({
+            listing_id= cls.model.add({
                 "textbook_id":data["textbook_id"],
                 "user_id":user_id,
                 "purchase_option": data["purchase_option"],
@@ -37,52 +33,18 @@ class ListingService(base_service.BaseService):
                 "type": data["type"],
                 "is_published": data["is_published"]
             })
-            
-        #----- Begin: Event handlers for notification push ------
+            # ----- Begin: Event handlers for notification push ------
+            listing_ins = cls.model.select().where(cls.model.id == listing_id).get()
+            event = listing_publish_event.ListingPublishEvent(
+                listing_ins=listing_ins
+            )
+            cls.event_manager.publish(event)
+
+            # ----- End: Event handlers for notification push ------
 
 
-        user_email = get_user_by_id(data)
-        print('first print')
-        print(user_email)
-        first_names = []
-        for email in user_email:
-            user_id = User.select().where(User.email == email).get().id
-            
-            first_name = Profile.select().where(Profile.user_id == user_id).get().first_name
-            first_names.append(first_name)    
-        
-        
-        #Notification on the website
-        title = Textbook.select().where(Textbook.id == data["textbook_id"]).get().title
-
-        for i in range(len(first_names)):
-            first_name = first_names[i]
-
-            notify = NotificationResource()
-            notify.post_notification(notification_type = 'publish_listing', title =title, first_name=first_name)
-           
-        if data["type"] != "buyer_post":
-            #Notification on email
-
-            #Integrate if they have opted for email notification
-            title = Textbook.select().where(Textbook.id == data["textbook_id"]).get().title
-            user_email = get_user_by_id(data) #python list of email addresses
-
-            print('fellow users requested the title: ')
-            print(user_email)
-            
-            
-            data = [user_email, title, first_names]
-            # parameter example: data = [[user_email1, user_email2], title]
-            execute_event(data)
-
-        #----- End: Event handlers for notification push ------
 
         return {"status":True,"msg":None}
-
-        
- 
-    
 
     @classmethod
     def get_listing_by_id(cls, id:int):
@@ -127,6 +89,13 @@ class ListingService(base_service.BaseService):
                 unlock_chance = User.dec_unlock_chance(user_id)
                 unlocked_user_ids.append(str(user_id))
                 cls.model.update(unlocked_user_ids=","+",".join(unlocked_user_ids)+",").where(cls.model.id==id).execute()
+
+        # publish listing_unlock_event
+        listing_ins = cls.model.select().where(cls.model.id==id).get()
+        event = listing_unlock_event.ListingUnlockEvent(
+            listing_ins=listing_ins
+        )
+        cls.event_manager.publish(event)
 
         from addons.profile.service.profile_service import ProfileService
         listing_owner_id = cls.model.select().where(cls.model.id == id).get().owner_id

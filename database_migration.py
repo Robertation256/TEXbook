@@ -1,7 +1,7 @@
 import os, pymysql
 import datetime
 from addons.textbook.model.textbook import Textbook
-from common.models.image import Image
+from addons.image.model.image import Image
 from common.models.course import Course
 from common.models.textbook_course import Textbook_Course
 

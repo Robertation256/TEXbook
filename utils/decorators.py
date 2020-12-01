@@ -1,4 +1,4 @@
-from utils.session import Session
+from common.service.session import Session
 from functools import wraps
 from flask import redirect
 

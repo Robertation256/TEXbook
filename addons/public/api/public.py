@@ -1,7 +1,6 @@
-import io
-from flask import render_template, redirect, send_file
+from flask import render_template, redirect
 from base.base_resource import BaseResource
-from utils.session import Session
+from common.service.session import Session
 
 
 class PublicResource(BaseResource):

@@ -21,7 +21,7 @@ class Listing(base_model.BaseModel):
 
     @classmethod
     def add(cls, data:dict):
-        cls.insert(
+        id = cls.insert(
             textbook_id = data["textbook_id"],
             owner_id = data["user_id"],
             purchase_option = data["purchase_option"],
@@ -33,6 +33,7 @@ class Listing(base_model.BaseModel):
             type=data["type"],
             is_published=data["is_published"]
         ).execute()
+        return id
 
     @classmethod
     def get_unlocked_user_ids(cls,id):

@@ -1,5 +1,5 @@
 from base import base_service
-from common.models.image import Image
+from addons.image.model.image import Image
 
 
 class ImageService(base_service.BaseService):

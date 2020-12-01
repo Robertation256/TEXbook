@@ -1,6 +1,6 @@
 from base.base_resource import BaseResource
 from flask import redirect, render_template, request
-from utils.session import Session
+from common.service.session import Session
 from addons.auth.service.auth_service import AuthService
 
 
@@ -9,7 +9,6 @@ class AuthResource(BaseResource):
         super().__init__()
         self._prefix = "auth"
         self.service = AuthService
-
 
     def get_login(self):
         session = Session()
@@ -31,7 +30,7 @@ class AuthResource(BaseResource):
 
         email = request.form.get("email")
         input_password = request.form.get("password")
-        res = self.service.email_pwd_auth(password=input_password, email=email)   #ERROR
+        res = self.service.email_pwd_auth(password=input_password, email=email)
         if res["status"]:
             self.service.delete_ip(ip_address)
             session["logged_in"] = "true"
@@ -185,17 +184,3 @@ class AuthResource(BaseResource):
 
         self.service.update_pwd_by_email(pwd=password, email=email)
         return redirect("/auth/login")
-
-
-
-
-
-
-
-
-
-
-
-
-
-

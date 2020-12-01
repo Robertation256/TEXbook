@@ -1,0 +1,83 @@
+{% extends "navbar_with_avatar_search_bracket.html" %}
+
+{% block style_sheet_link %}
+      <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/textbook_view.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<section>
+<div class="container"style="height:{{(books.__len__()//5+1)*310+100}}px;width:100%;margin-top:80px !important;">
+  <p class="prompt">Results for "{{keyword}}" Related Textbooks</p>
+  <hr>
+  <div class="textbook_container" style="height:500px;width:100%;margin-top:20px;display:flex;flex-wrap:wrap">
+    {% for book in books %}
+      <div class="textbook_wrapper cursor-pointer" id="{{book.id}}">
+        <img class = "bookcover"  src="/image/bookcover?id={{book.cover_image_id}}">
+        <div class="info_wrapper">
+        <p class="title">{{book.title[:40]+"..." if book.title.__len__() >40 else book.title}}</p>
+        <p class="author">{{book.author[:30]+"..." if book.author.__len__() >30 else book.author}}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</section>
+
+
+  <!-- Footer -->
+<section>
+  <footer class="footer bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item">
+              <a href="#">About</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Contact</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Terms of Use</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2020. All Rights Reserved.</p>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-facebook fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <i class="fab fa-instagram fa-2x fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+</section>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/js/search_bracket.js"></script>
+<script type="text/javascript" src="/static/js/textbook_view.js"></script>
+<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+{% endblock %}

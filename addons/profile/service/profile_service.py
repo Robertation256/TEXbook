@@ -1,5 +1,5 @@
 from addons.profile.models.profile import Profile
-from common.models.image import Image
+from addons.image.model.image import Image
 from base import base_service
 
 

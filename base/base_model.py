@@ -1,5 +1,5 @@
 from peewee import Model, MySQLDatabase
-from config import db_credentials
+from config.config import db_credentials
 
 db = MySQLDatabase(
     database=db_credentials.get("DB_DATABASE"),

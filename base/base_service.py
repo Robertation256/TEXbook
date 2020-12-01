@@ -1,5 +1,5 @@
 from addons.user.model.user import User
-from utils.session import Session
+from common.service.session import Session
 
 
 class BaseService():

@@ -3,7 +3,7 @@ from utils.MD5_helper import MD5Helper
 from addons.user.model.user import User
 from utils.token_generator import TokenGenerator
 from base import base_redis_dict
-from addons.auth.service.email_service import EmailHelper
+from common.service.email_service import EmailHelper
 
 
 
@@ -64,26 +64,6 @@ class AuthService(base_service.BaseService):
         return token
 
     @classmethod
-    def send_listing_notification(cls, email:str, session, title, first_name):
-        '''
-        send a listing notification to mailbox and update session
-        '''
-        #email_content = email_template(buyer_post)
-        email_content = 'Dear {}, Your requested listing {} is now available! Click here to check it out'.format(first_name, title)
-        session["email_content"] = email_content
-        session["email"] = email
-        session.expire(600)
-        email_helper = EmailHelper(receiver_email=email)
-        email_helper.send_listing_notification(email_content)
-        return email_content
-
-    def email_template(cls, buyer_post):
-        email_content = """Dear {}, Your requested title, {} with IBSN: {} at the Date of Publish : {} is now exclusively available 
-        on the website! Please feel free to check it out - Insert Listing Link or display""".format(buyer_post['name'], 
-        buyer_post['textbook_id'], buyer_post['textbook_ISBN'], buyer_post['DOP'])
-
-
-    @classmethod
     def exceeded_max_attempt(cls,ip):
         chance_left = cls.ip_dict.get(ip)
         if chance_left is None:
@@ -114,10 +94,3 @@ class AuthService(base_service.BaseService):
     @classmethod
     def reset_chances(cls, ip):
         cls.ip_dict[ip] = 5
-
-
-
-
-
-
-

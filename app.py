@@ -1,5 +1,5 @@
 from flask import Flask
-from config import  app_config
+from config.config import  app_config
 from utils.scheduler import scheduler
 
 
@@ -10,19 +10,20 @@ from addons.profile.api.profile import ProfileResource
 from addons.listing.api.listing import ListingResource
 from addons.textbook.api.textbook import TextbookResource
 from addons.home.api.home import HomeResource
+from addons.notification.api.notification import NotificationResource
 
-
-from common.models import image
+from addons.image.model import image
 from addons.user.model import user
 from addons.profile.models.profile import Profile
 from addons.listing.model.listing import Listing
+from addons.notification.model.notification import Notification
 
 from addons.user.crontab import recover_unlock_chance_task
 
 
 
 
-app = Flask(__name__, template_folder="static/html")
+app = Flask(__name__)
 
 app.config.from_mapping(app_config)
 scheduler.start()
@@ -34,12 +35,13 @@ ProfileResource().api_register(app)
 HomeResource().api_register(app)
 ListingResource().api_register(app)
 TextbookResource().api_register(app)
-
+NotificationResource().api_register(app)
 
 user.User.create_table()
 image.Image.create_table()
 Profile.create_table()
 Listing.create_table()
+Notification.create_table()
 
 
 recover_unlock_chance_task.RecoverUnlockChanceTask().schedule()

@@ -48,6 +48,8 @@ class TestNotificationHandler(unittest.TestCase):
             email=email,
             password=MD5Helper.hash(password)
         ).execute()
+        
+        cls.assertIsNotNone(user_id)
 
         return user_id
 
@@ -71,6 +73,11 @@ class TestNotificationHandler(unittest.TestCase):
             avatar_id = avatar_id
         ).execute()
 
+        result = {"status":True,"msg":None}
+
+        cls.assertEqual(result["status"], True)
+
+
 
     @classmethod
     def create_seller_post(cls, user_id):
@@ -92,6 +99,8 @@ class TestNotificationHandler(unittest.TestCase):
             is_published = data["is_published"]
         ).execute()
 
+        cls.assertIsNotNone(seller_listing_id)
+
         return seller_listing_id
 
     @classmethod
@@ -108,6 +117,8 @@ class TestNotificationHandler(unittest.TestCase):
             type = data["type"],
             is_published = data["is_published"]
         ).execute()
+
+        cls.assertIsNotNone(buyer_listing_id)
 
         return buyer_listing_id
 
@@ -136,7 +147,6 @@ class TestNotificationHandler(unittest.TestCase):
             listing_ins=seller_listing_id
         )
 
-
         event_manager.publish(event)
 
 
@@ -145,7 +155,6 @@ class TestNotificationHandler(unittest.TestCase):
         event = listing_unlock_event.ListingUnlockEvent(
             listing_ins=seller_listing_id
         )
-
 
         event_manager.publish(event)
 

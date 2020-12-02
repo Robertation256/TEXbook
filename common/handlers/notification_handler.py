@@ -35,13 +35,13 @@ class NotificationHandler():
                 Notification.insert_many(data[i:i + 100]).execute()
 
     def _handle_listing_unlock_event(self,event):
-        listing_id = event.lisitng_ins.id
+        listing_id = event.listing_ins.id
         query = Listing.select().where(Listing.id == listing_id)
         if query.exists():
             Notification.add(
                 {
-                    "listing_id":event.lisitng_ins.id,
-                    "owner_id":event.lisitng_ins.owner_id,
+                    "listing_id":event.listing_ins.id,
+                    "owner_id":event.listing_ins.owner_id,
                     "type": "listing_unlock_event"
                 }
             )

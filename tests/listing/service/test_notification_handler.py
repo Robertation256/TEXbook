@@ -11,7 +11,7 @@ from addons.notification.model.notification import Notification
 
 class TestNotificationHandler(unittest.TestCase):
 
-    def setUp(self):
+    def setUpClass(self):
         # Prepare dummy data
         self.seller_id = User.insert(
             email='bm2515@nyu.edu',

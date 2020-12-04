@@ -14,7 +14,7 @@ user_config = {
 
 
 db_credentials = {
-    "DB_DATABASE": "textbook",
+    "DB_DATABASE": "texbook",
     "DB_HOST": "127.0.0.1",
     "DB_ORT": 3306,
 }

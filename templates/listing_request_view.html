@@ -19,8 +19,6 @@
         <div style="display:none;">
             <p id="option-content">{{listing.purchase_option}}</p>
             <p id="offered-price-content">{{listing.offered_price}}</p>
-            <p id="condition-content">{{listing.condition}}</p>
-            <p id="defect-content">{{listing.defect}}</p>
             <p id="checked-user-num-content">{{listing.unlocked_user_ids.__len__()}}</p>
         </div>
         <img class="listing-img" src="/image/upload?id={{listing.book_image_ids.split(',')[0]}}">
@@ -41,16 +39,6 @@
             </div>
         </div>
 
-        <div class="condition-container" style="display:flex;">
-            <p class="condition-label">Condition</p>
-            <div class="condition-label-container" style="float:left;">
-                <span class="badge badge-success condition">{{listing.condition}}</span>
-                {% for d in listing.defect.split(",") %}
-                <span class="badge badge-warning">{{d}}</span>
-                {% endfor %}
-
-            </div>
-        </div>
     </div>
     {% endfor %}
 </div>
@@ -186,14 +174,7 @@
                             <text class="pop-up-info">{{textbook.author}}</text>
                         </div>
 
-                        <div style="width:50%; align-self:center;">
-                            <text class="pop-up-label">Condition: </text>
-                            <text id="pop-up-condition" class="pop-up-info"></text>
-                            <br/>
-                            <br/>
-                            <text class="pop-up-label">Defects: </text>
-                            <text id="pop-up-defect" class="pop-up-info"></text>
-                        </div>
+                        
 
                     </div>
 
@@ -212,7 +193,7 @@
                         <p class="pop-up-contact-info">Wechat:Robertation</p>
                     </div>
                     <div class="info-shield">
-                        <h3 class="striped-prompt">Unlock Seller Info</h3>
+                        <h3 class="striped-prompt">Unlock Buyer Info</h3>
                     </div>
                 </div>
 

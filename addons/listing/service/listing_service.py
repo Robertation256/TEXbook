@@ -1,5 +1,6 @@
 from base import base_service
 from addons.listing.model.listing import Listing
+from addons.textbook.model.textbook import Textbook
 from common.service.event_manager import EventManager
 from addons.listing.event import listing_publish_event, listing_unlock_event
 
@@ -9,12 +10,18 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def add(cls, user_id, data):
+
+        #Default textbook cover image
+        image_ids = Textbook.select().where(Textbook.id == data["textbook_id"]).get().cover_image_id
+        
+
         if data["type"] == "buyer_post":
             listing_id = cls.model.add({
                 "textbook_id": data["textbook_id"],
                 "user_id": user_id,
                 "purchase_option": data["purchase_option"],
                 "offered_price": data["offered_price"],
+                "book_image_ids": image_ids,
                 "type": data["type"],
                 "is_published": data["is_published"]
             })
@@ -33,8 +40,12 @@ class ListingService(base_service.BaseService):
                 "type": data["type"],
                 "is_published": data["is_published"]
             })
+
+            
+
             # ----- Begin: Event handlers for notification push ------
             listing_ins = cls.model.select().where(cls.model.id == listing_id).get()
+
             event = listing_publish_event.ListingPublishEvent(
                 listing_ins=listing_ins
             )
@@ -56,9 +67,18 @@ class ListingService(base_service.BaseService):
     @classmethod
     def get_listing_by_textbook_id(cls, id:int):
         query = cls.model.select().where(cls.model.textbook_id==id)
+        #Default: Seller post
+        #seller_post = True
+        #buyer_post = False
         if query.exists():
             from addons.profile.models.profile import Profile
+
+            #if seller_post:
+            #    res =  [_ for _ in query if _.type == 'seller_post']
+            
+            #if buyer_post:
             res =  [_ for _ in query]
+
             for e in res:
                 e.offered_price = int(e.offered_price)
                 seller_id = e.owner_id

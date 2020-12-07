@@ -10,7 +10,8 @@ class User(base_model.BaseModel):
     is_member = peewee.CharField(default="false")
     email_notification = peewee.CharField(default="true")
     email_notification_freq = peewee.CharField(default="never")
-    email_notification_type = peewee.CharField(max_length=50)
+    send_email_on_listing_unlocked = peewee.CharField(default="true")
+    send_email_on_requested_book_available = peewee.CharField(default="true")
 
     @classmethod
     def get_user_id_by_email(cls, email:str):

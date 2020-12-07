@@ -104,12 +104,12 @@ class ListingService(base_service.BaseService):
                 unlocked_user_ids.append(str(user_id))
                 cls.model.update(unlocked_user_ids=","+",".join(unlocked_user_ids)+",").where(cls.model.id==id).execute()
 
-        # publish listing_unlock_event
-        listing_ins = cls.model.select().where(cls.model.id==id).get()
-        event = listing_unlock_event.ListingUnlockEvent(
-            listing_ins=listing_ins
-        )
-        cls.event_manager.publish(event)
+                # publish listing_unlock_event
+                listing_ins = cls.model.select().where(cls.model.id==id).get()
+                event = listing_unlock_event.ListingUnlockEvent(
+                    listing_ins=listing_ins
+                )
+                cls.event_manager.publish(event)
 
         from addons.profile.service.profile_service import ProfileService
         listing_owner_id = cls.model.select().where(cls.model.id == id).get().owner_id
@@ -132,9 +132,9 @@ class ListingService(base_service.BaseService):
     def delete_listing_by_id(cls,listing_id,user_id):
         listing_ins = cls.get_listing_by_id(id=listing_id)
         if listing_ins is not None and listing_ins.owner_id == user_id:
-            image_ids = listing_ins.book_image_ids.split(",")
             cls.model.delete().where(cls.model.id == listing_id).execute()
-            if len(image_ids) > 0:
+            if listing_ins.book_image_ids is not None:
+                image_ids = listing_ins.book_image_ids.split(",")
                 from addons.image.service.image_service import ImageService
                 ImageService.delete_image_by_ids(image_ids)
 
@@ -147,7 +147,13 @@ class ListingService(base_service.BaseService):
         if listing_ins is None or listing_ins.type == "buyer_post" or listing_ins.owner_id != user_id:
             return {"status":False, "msg":"Bad Request"}
         if data["on_shelf"] is True:
+            from addons.listing.event.listing_publish_event import ListingPublishEvent
+            from common.service.event_manager import EventManager
             cls.model.update(is_published="true").where(cls.model.id==listing_id).execute()
+            listing_ins = cls.model.select().where(cls.model.id == listing_id).get()
+            event = ListingPublishEvent(listing_ins)
+            EventManager.publish(event)
+
         elif data["on_shelf"] is False:
             cls.model.update(is_published="false").where(cls.model.id==listing_id).execute()
 

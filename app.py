@@ -18,10 +18,7 @@ from addons.profile.models.profile import Profile
 from addons.listing.model.listing import Listing
 from addons.notification.model.notification import Notification
 
-from addons.user.crontab import recover_unlock_chance_task
-
-
-
+from jobs import recover_unlock_chance_task
 
 app = Flask(__name__)
 

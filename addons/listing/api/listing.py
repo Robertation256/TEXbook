@@ -18,7 +18,8 @@ class ListingResource(BaseResource):
     def get_listing_publish(self):
         textbook_options = Textbook.get_title(only_title=False)
         user = self.service.get_user_ins()
-        return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user)
+        avatar_id = self.service.get_avatar_id()
+        return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user,avatar_id=avatar_id)
 
     @login_required
     def get_test_listing(self):
@@ -52,7 +53,8 @@ class ListingResource(BaseResource):
     def get_request_publish(self):
         textbook_options = Textbook.get_title(only_title=False)
         user = self.service.get_user_ins()
-        return render_template("listing_request_publish.html", textbook_options=textbook_options, user=user)
+        avatar_id = self.service.get_avatar_id()
+        return render_template("listing_request_publish.html", textbook_options=textbook_options, user=user,avatar_id=avatar_id)
 
     @login_required
     def post_request_publish(self):
@@ -86,11 +88,10 @@ class ListingResource(BaseResource):
         except:
             #Buyer Post
             return {"status": True, "book_image_ids": book_image_ids}
-        
-       
+           
 
-   
-
+        #ids = [] if res.book_image_ids is None else res.book_image_ids.split(",")
+        #return {"status": True, "book_image_ids": ids}
 
     @login_required
     def get_view_listing(self):

@@ -8,6 +8,7 @@ class User(base_model.BaseModel):
     unlock_chance = peewee.IntegerField(default=5)
     publish_slot = peewee.IntegerField(default=5)
     is_member = peewee.CharField(default="false")
+    email_notification = peewee.CharField(default="true")
     email_notification_freq = peewee.CharField(default="never")
     email_notification_type = peewee.CharField(max_length=50)
 
@@ -38,6 +39,21 @@ class User(base_model.BaseModel):
             ins = query.get()
             return ins.is_member, ins.unlock_chance
         return "false",0
+
+    @classmethod
+    def add(cls, dict): 
+        cls.update(
+            email_notification=dict["email_notification"],
+            email_notification_freq=dict["email_notification_freq"],
+            email_notification_type=dict["email_notification_type"]
+        ).where(cls.email == dict["email"]
+        ).execute()
+        return {"status":True, "message":"Updated Successfully"}
+
+    @classmethod
+    def delete_account(cls, email):
+        user = cls.get(cls.email == email)
+        user.delete_instance()
 
 
 

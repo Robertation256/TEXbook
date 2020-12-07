@@ -1,5 +1,7 @@
+from addons.user.model.user import User
 from addons.profile.models.profile import Profile
 from addons.image.model.image import Image
+from utils.MD5_helper import MD5Helper
 from base import base_service
 
 
@@ -51,4 +53,20 @@ class ProfileService(base_service.BaseService):
             res["last_name"] = ins.last_name
             return res
         return None
+
+    @classmethod
+    def update_pwd_by_email(cls,pwd:str, email:str):
+        hashed_pwd = MD5Helper.hash(pwd)
+        User.update(password=hashed_pwd).where(User.email == email).execute()
+
+    @classmethod 
+    def notification_settings(cls, data:dict):
+        res = User.add(data)
+        return res
+
+    @classmethod
+    def delete_account(cls, email:str):
+        User.delete_account(email)
+
+
 

@@ -53,17 +53,10 @@ class ProfileResource(BaseResource):
         session = Session()
         email = session.get("email")
         form = dict() 
-        form["email_notification"] = request.form.get("email_notification")
+        form["email_notification"] = request.form["email_notification"]
         form["email_notification_freq"] = request.form.get("email_notification_freq")
-        form["notificationA"] = request.form.get("user_unlock")
-        form["notificationB"] = request.form.get("book_listed")
-        email_notification_type = '' 
-        if form["notificationA"]: 
-            email_notification_type += 'A'
-        if form["notificationB"]:
-            email_notification_type += 'B'
-        form["email_notification_type"] = email_notification_type 
-        form["email_notification_type"] = None
+        form["send_email_on_listing_unlocked"] = request.form.get("send_email_on_listing_unlocked")
+        form["send_email_on_requested_book_available"] = request.form.get("send_email_on_requested_book_available")
         form["email"] = email
         res = self.service.notification_settings(data=form)
         return res

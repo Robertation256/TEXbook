@@ -95,24 +95,25 @@ $(window).load(function () {
 	});
 	
     $("#update_notifications").click(function(){
-		var email_notification = $('input[name="email_notification"]').val(); 
+		var email_notification = $('input[name="email_notification"]:checked').val(); 
 		var email_notification_freq = $("#frequency").val();
-		var notificationA = $("#user_unlock").is(":checked");
-		var notificationB = $("#book_listed").is(":checked");
+		var send_email_on_listing_unlocked = $("#user_unlock").is(":checked");
+		var send_email_on_requested_book_available = $("#book_listed").is(":checked");
         var data = {
 			            "email_notification": email_notification,
 			            "email_notification_freq": email_notification_freq,
-			            "notificationA": notificationA,
-			            "notificationB": notificationB,
+			            "send_email_on_listing_unlocked": send_email_on_listing_unlocked,
+			            "send_email_on_requested_book_available": send_email_on_requested_book_available
 					};
+		console.log(data)
 		$.ajax({
 					type: 'post',
 					url: '/profile/profile_notifications',
 					data: {
 			            "email_notification": email_notification,
 			            "email_notification_freq": email_notification_freq,
-			            "notificationA": notificationA,
-			            "notificationB": notificationB,
+			            "send_email_on_listing_unlocked": send_email_on_listing_unlocked,
+			            "send_email_on_requested_book_available": send_email_on_requested_book_available
 					},
 					success:function(data){
 			            if (data.status){

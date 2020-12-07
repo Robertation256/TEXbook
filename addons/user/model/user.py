@@ -46,7 +46,8 @@ class User(base_model.BaseModel):
         cls.update(
             email_notification=dict["email_notification"],
             email_notification_freq=dict["email_notification_freq"],
-            email_notification_type=dict["email_notification_type"]
+            send_email_on_listing_unlocked=dict["send_email_on_listing_unlocked"],
+            send_email_on_requested_book_available = dict["send_email_on_requested_book_available"]
         ).where(cls.email == dict["email"]
         ).execute()
         return {"status":True, "message":"Updated Successfully"}

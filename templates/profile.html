@@ -121,8 +121,7 @@
                     <div class="custom-control">
                       <input type="radio" name="email_notification" value="true" checked="">
                       <label for="email">Yes, I want to receive email notifications</label>
-                    </div>
-                    <div class="custom-control">
+                      <pre></pre>
                       <input type="radio" name="email_notification" value="false">
                       <label for="no_email">No, I do not want to receive email notifications</label>
                     </div>
@@ -131,7 +130,7 @@
                   <label >How often do you want to hear from us?</label>
                   <div class="small text-muted mb-3">We will send you a summary on your active listings</div>
                   <select name = "frequency" class="form-control" id="frequency" value = "{{email_notification_freq}}">
-                    {% for freq in ["Daily", "Weekly", "Monthly"] %}
+                    {% for freq in ["Daily", "Weekly", "Monthly", "Never"] %}
                       {% if freq == class_ye %}
                         <option value ="{{email_notification_freq}}" selected="selected">{{class_yearemail_notification_freq}}</option>
                       {% else %}
@@ -152,7 +151,7 @@
                       <input type="checkbox" class="custom-control-input" id="book_listed" checked="">
                       <label class="custom-control-label" for="book_listed">Email me when a book I have requested has been listed.</label>
                     </div>
-                  <button id="update_notifications" class="btn btn-primary">Update Notifications Settings</button>
+                  <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings"></input>
                 </form>
                 </div>
               </div>

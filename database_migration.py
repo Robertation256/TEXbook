@@ -5,7 +5,9 @@ from addons.image.model.image import Image
 from common.models.course import Course
 from common.models.textbook_course import Textbook_Course
 
-if __name__ == "__main__":
+
+
+def handle_raw_tables():
     Textbook.create_table()
     Course.create_table()
     Textbook_Course.create_table()
@@ -19,8 +21,8 @@ if __name__ == "__main__":
                            cursorclass=pymysql.cursors.DictCursor)
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT distinct course_name,course_ID,instructor,subject from book
-    ''')
+            SELECT distinct course_name,course_ID,instructor,subject from book
+        ''')
     course_res = cursor.fetchall()
     for e in course_res:
         Course.insert(
@@ -32,7 +34,7 @@ if __name__ == "__main__":
 
     dir_path = os.listdir(fp)
     for name in dir_path:
-        with open(fp+"/"+name,"rb") as p:
+        with open(fp + "/" + name, "rb") as p:
             image_content = p.read()
         Image.insert(
             owner_email="public",
@@ -43,8 +45,8 @@ if __name__ == "__main__":
         ).execute()
 
     query = '''
-            select * from book
-    '''
+                select * from book
+        '''
     cursor.execute(query)
     res = cursor.fetchall()
     cursor.close()
@@ -70,7 +72,7 @@ if __name__ == "__main__":
         except:
             publisher = "NULL"
 
-        query = Image.select().where(Image.type == "bookcover:"+ISBN)
+        query = Image.select().where(Image.type == "bookcover:" + ISBN)
         if query.exists():
             image_id = query.get().id
             Textbook.insert(
@@ -101,6 +103,55 @@ if __name__ == "__main__":
             course_id=course_id,
             textbook_id=textbook_id
         ).execute()
+
+
+
+
+def insert_images():
+    fp = "C:/Users/yz391/Desktop/collected_covers"
+    dir_path = os.listdir(fp)
+    for name in dir_path:
+        with open(fp + "/" + name, "rb") as p:
+            image_content = p.read()
+
+        if "-" not in name:
+            name = name[:3]+"-"+name[3:]
+
+        name = name.split(".")[0]
+
+        query = Image.select(Image.id).where(Image.type.contains(name))
+        if not query.exists():
+            Image.insert(
+                owner_email="public",
+                image_format="jpg",
+                type="bookcover:"+name,
+                content=image_content,
+                dateAdded=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            ).execute()
+
+
+def textbook_reference():
+    textbook_list = Textbook.select()
+
+    for book in textbook_list:
+        if book.cover_image_id is None:
+            ISBN = book.ISBN.replace("-rent","").replace(" Author","").replace("-Web","")
+            query = Image.select().where(Image.type.contains(ISBN))
+            if query.exists():
+                book_cover_image=query.get()
+                Textbook.update(ISBN=ISBN,cover_image_id=book_cover_image.id).where(Textbook.id == book.id).execute()
+            else:
+                print(ISBN)
+
+
+if __name__ == "__main__":
+    textbook_reference()
+
+
+
+
+
+
 
 
 

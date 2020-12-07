@@ -15,19 +15,8 @@ class NotificationResource(BaseResource):
     def get_get(self):
         user_id = self.service.get_user_id()
         notifications = self.service.get_notifications_by_user_id(user_id)
-        data = []
-        for e in notifications:
-            record = {
-                "id": e.id,
-                "book_title":e.listing.textbook.title,
-                "type":e.type,
-                "date_added": e.date_added,
-                "is_read":e.is_read,
-                "listing_type":e.listing.type
-            }
-            data.append(record)
 
-        return jsonify(data)
+        return jsonify(notifications)
 
     @login_required
     def get_is_read(self):

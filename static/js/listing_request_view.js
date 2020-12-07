@@ -2,6 +2,8 @@ $(window).load(function() {
     $(".hover_bkgr_fricc").hide();
     $(".seller-info").hide();
     var listing_id = -1;
+
+
     $(".listing-wrapper").click(function (e) {
         listing_id = $(this).attr("id");
         $(".carousel-inner").empty();

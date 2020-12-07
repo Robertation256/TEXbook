@@ -5,7 +5,7 @@ from addons.user.model.user import User
 from addons.listing.model.listing import Listing
 
 class Notification(base_model.BaseModel):
-    listing = peewee.ForeignKeyField(model=Listing)
+    listing_id = peewee.IntegerField()
     owner = peewee.ForeignKeyField(model=User)
     date_added = peewee.DateTimeField()
     is_read = peewee.CharField(max_length=10,default="false")

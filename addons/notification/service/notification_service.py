@@ -8,9 +8,26 @@ class NotificationService(base_service.BaseService):
     @classmethod
     def get_notifications_by_user_id(cls, user_id):
         query = cls.model.select().where(cls.model.owner_id == user_id)
+        data = []
         if query.exists():
-            return [_ for _ in query]
-        return []
+            from addons.listing.model.listing import Listing
+            for e in query:
+                query = Listing.select().where(Listing.id == e.listing_id)
+                if query.exists():
+                    listing_ins = query.get()
+                    record = {
+                        "id": e.id,
+                        "book_title": listing_ins.textbook.title,
+                        "type": e.type,
+                        "date_added": e.date_added,
+                        "is_read": e.is_read,
+                        "listing_type": listing_ins.type
+                    }
+                    data.append(record)
+                else:
+                    cls.model.delete().where(cls.model.id == e.id).execute()
+
+        return data
 
     @classmethod
     def delete_notification_by_id(cls, notification_id, user_id):

@@ -3,7 +3,7 @@ import abc
 class BaseCronTab():
 
     @abc.abstractmethod
-    def job(self):
+    def job(self,**kwargs):
         pass
 
     @abc.abstractmethod

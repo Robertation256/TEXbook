@@ -1,6 +1,7 @@
 from base.base_resource import BaseResource
 from utils.decorators import login_required
 from flask import render_template,request
+from addons.listing.model.listing import Listing
 from addons.textbook.model.textbook import Textbook
 from addons.listing.service import listing_service
 from addons.notification.api.notification import NotificationResource
@@ -77,7 +78,8 @@ class ListingResource(BaseResource):
         '''
 
         listing_id = request.args.get("id")
-        book_image_ids = Textbook.select().where(Textbook.id == listing_id).get().cover_image_id
+        listing_ins = Listing.select().where(Listing.id == listing_id).get()
+        book_image_ids = listing_ins.textbook.cover_image_id
         res = self.service.get_listing_by_id(listing_id)
         if res is None:
             return {"status":False, "msg":""}

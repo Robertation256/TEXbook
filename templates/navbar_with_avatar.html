@@ -3,91 +3,25 @@
    <head>
 
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+       <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/navbar.css') }}">
        {% block style_sheet_link %}{% endblock %}
       <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
       <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
 
          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <style>
-            nav {
-                color: white;
-            }
-            a.brand {
-                color: white;
-                font-family: "Gill Sans Extrabold";
-                font-weight: bold;
-                margin-right: 50px;
-            }
-            .nav-item  {
-                margin-right: 20px;
-            }
-            .nav_avatar_icon {
-                height: 25px;
-                width: 25px;
-                border-radius:50%;
-                margin-right: 10px;
-            }
-            .dropdown-menu::before {
-               margin-left:120px;
-               position: absolute;
-               top: -7px;
-               left: 9px;
-               display: inline-block;
-               border-right: 7px solid transparent;
-               border-bottom: 7px solid #CCC;
-               border-left: 7px solid transparent;
-               border-bottom-color: rgba(0, 0, 0, 0.2);
-               content: '';
-             }
 
-
-             .dropdown-menu{
-              top: 60px;
-              right: 15px;
-              left: unset;
-              width: 460px;
-              box-shadow: 0px 5px 7px -1px #c1c1c1;
-              padding-bottom: 0px;
-              padding: 0px;
-            }
-            .dropdown-menu:before{
-              content: "";
-              position: absolute;
-              top: -20px;
-              right: 12px;
-            }
-
-             .notification-box{
-              padding: 10px 0px; 
-            }
-
-             .dropdown-menu::after {
-                margin-left:120px;
-                position: absolute;
-                top: -6px;
-                left: 10px;
-                display: inline-block;
-                border-right: 6px solid transparent;
-                border-bottom: 6px solid white;
-                border-left: 6px solid transparent;
-                content: '';
-              }
-
-
-        </style>
-        
        {% block style %}{% endblock %}
    </head>
    <body>
    
 
 
-   </div>  
    <script src="https://code.jquery.com/jquery.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+   <script type="text/javascript" src="/static/js/notification.js"></script>
    {% block bs_js %}{% endblock %}
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="height: 50px !important;">
           <a class="brand cursor-pointer">TEXbook</a>
@@ -104,10 +38,10 @@
           
           {% block navbar_rightmost %}{% endblock %}
 
-          <div class="dropdown">
+          <div class="dropdown avatar-dropdown">
               <img class="nav_avatar_icon cursor-pointer" src="/image/avatar?id={{avatar_id}}" data-toggle="dropdown">
 
-              <div class="dropdown-menu dropdown-menu-right" style="margin-top:10px;" aria-labelledby="dropdownMenu2">
+              <div class="dropdown-menu dropdown-menu-right avatar-dropdown-menu" style="width:50px;" aria-labelledby="dropdownMenu2">
                   <text style="margin-top:10px;margin-left:20px;font-family:Google Sans; font-size:14px; font-weight:400;color:#464B4F;">Signed in as:</text>
                   <br/>
                   <text style="margin-left:20px;font-family:-apple-system,BlinkMacSystemFont;font-size:13px; font-weight:600;">{{user.email}}</text>
@@ -125,70 +59,57 @@
               </div>
             </div>
 
-            
 
-          <div class="nav_rightmost_container" style="margin-right: 25px;">
-            <span class="iconify cursor-pointer" data-icon="octicon:bell-16" data-inline="false" data-toggle="dropdown"></span>
-            
-            <ul class="dropdown-menu">
-              <li class="head text-light bg-dark">
-                <div class="row">
-                  <div class="col-lg-12 col-sm-12 col-12">
-                    <span>Notifications (3)</span>
-                    <a href="" class="float-right text-light">Mark all as read</a>
-                  </div>
-              </li>
-              <li class="notification-box">
-                <div class="row">
-                  <div class="col-lg-3 col-sm-3 col-3 text-center">
-                    <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
-                  </div>    
-                  <div class="col-lg-8 col-sm-8 col-8">
-                    <strong class="text-info">Bilal</strong>
-                    <div>
-                      A user recently unlocked your contact info from request post 
-                    </div>
-                    <small class="text-warning">27.11.2015, 15:00</small>
-                  </div>    
-                </div>
-              </li>
-              <li class="notification-box bg-gray">
-                <div class="row">
-                  <div class="col-lg-3 col-sm-3 col-3 text-center">
-                    <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
-                  </div>    
-                  <div class="col-lg-8 col-sm-8 col-8">
-                    <strong class="text-info">Bilal</strong>
-                    <div>
-                      A user recently unlocked your contact info from seller post
-                    </div>
-                    <small class="text-warning">27.11.2015, 15:00</small>
-                  </div>    
-                </div>
-              </li>
-              <li class="notification-box">
-                <div class="row">
-                  <div class="col-lg-3 col-sm-3 col-3 text-center">
-                    <img src="/demo/man-profile.jpg" class="w-50 rounded-circle">
-                  </div>    
-                  <div class="col-lg-8 col-sm-8 col-8">
-                    <strong class="text-info">Bilal</strong>
-                    <div>
-                      Your requested listing, Algorithms is now available
-                    </div>
-                    <small class="text-warning">27.11.2015, 15:00</small>
-                  </div>    
-                </div>
-              </li>
-              <li class="footer bg-dark text-center">
-                <a href="" class="text-light">View All</a>
-              </li>
-            </ul>
-        </li>
-      </ul>
+          <div class="dropdown notification-dropdown" style="margin-right:25px;">
+                    <span id="bell" class="iconify cursor-pointer" data-icon="octicon:bell-16" data-inline="false" data-toggle="dropdown"></span>
 
-            
-        </div>
+                    <div class="dropdown-menu dropdown-menu-right notification-dropdown-menu"  aria-labelledby="dropdownMenu2">
+
+                        <div class = "dropdown-header">
+                            <span class="dropdown-title">Notification</span>
+                            <span class="notification-count" id="dd-notifications-count">3</span>
+                        </div>
+
+                        <div class="notification-container">
+
+                            <div class="notification-wrapper">
+
+                                <div class="notification-text">
+                                    <p style="font-size:15px;">A user unlocked your contact info from your listing on "Abnormal Psychology"</p>
+                                    <p class="text-warning" style="font-size:15px;">15:00 2015-10-11</p>
+                                </div>
+
+                                <div class="notification-operation">
+                                    <div class="mark-as-read">
+                                        <svg width="28px" height="28px" viewBox="0 0 16 16" class="bi bi-envelope-open" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                          <path fill-rule="evenodd" d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.818l5.724 3.465L8 8.917l1.276.766L15 6.218V5.4a1 1 0 0 0-.53-.882l-6-3.2zM15 7.388l-4.754 2.877L15 13.117v-5.73zm-.035 6.874L8 10.083l-6.965 4.18A1 1 0 0 0 2 15h12a1 1 0 0 0 .965-.738zM1 13.117l4.754-2.852L1 7.387v5.73zM7.059.435a2 2 0 0 1 1.882 0l6 3.2A2 2 0 0 1 16 5.4V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5.4a2 2 0 0 1 1.059-1.765l6-3.2z"/>
+                                        </svg>
+                                    </div>
+
+                                    <svg width="30px" height="30px" viewBox="0 0 16 16" class="bi bi-envelope mark-as-unread" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                                    </svg>
+
+                                    <svg width="30px" height="30px" viewBox="0 0 16 16" class="bi bi-trash delete" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <div class="display-mode-btn cursor-pointer">Show all notifications</div>
+
+
+                    </div>
+          </div>
+
+
       </nav>
       {% block script %}{% endblock %}
       {% block content %}{% endblock %}

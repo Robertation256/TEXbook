@@ -1,62 +1,63 @@
 .cursor-pointer{
-  cursor: pointer;
+cursor: pointer;
 }
 
 .prompt {
-    font: Aria,sans-serif;
-    font-size:21px;
-    font-weight: 700;
+font: Aria,sans-serif;
+font-size:21px;
+font-weight: 700;
 
 }
 
 .textbook_wrapper {
-    margin-top:10px;
-    margin-left:20px;
-    margin-right:20px;
-    height: 300px;
-    width: 150px;
-    text-align: center;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
-    border-radius: 2px;
+margin-top:10px;
+margin-left:20px;
+margin-right:20px;
+height: 300px;
+width: 150px;
+text-align: center;
+box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+border-radius: 2px;
 }
 
 .bookcover {
-    margin-top:4px;
-    height: 196px;
-    width: 140px;
+margin-top:4px;
+height: 196px;
+width: 140px;
 
 }
 
 .info_wrapper {
-    margin-left:4px;
-    width: 100%;
-    text-align: left;
+margin-left:4px;
+width: 100%;
+text-align: left;
 }
 .title {
-    margin-top: 5px;
-    font: Aria,sans-serif;
-    font-size:13px;
-    font-weight: 500;
-    margin-bottom:5px;
+margin-top: 5px;
+font: Aria,sans-serif;
+font-size:13px;
+font-weight: 500;
+margin-bottom:5px;
 }
 
 .author {
-    color:#555555;
-    font: Aria,sans-serif;
-    font-size:13px;
-    font-weight: 400;
-    margin-top:5px;
+color:#555555;
+font: Aria,sans-serif;
+font-size:13px;
+font-weight: 400;
+margin-top:5px;
 }
 
 .nav_avatar_icon {
-    height: 25px;
-    width: 25px;
-    border-radius:50%;
-    margin-right: 10px;
+height: 25px;
+width: 25px;
+border-radius:50%;
+margin-right: 10px;
 }
 
 
 footer {
-    margin-top:120px;
-    width: 100%;
+margin-top:120px;
+width: 100%;
 }
+

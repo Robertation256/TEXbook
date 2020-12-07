@@ -6,3 +6,8 @@ $(window).load(function() {
     });
 
 });
+$(document).on('click','.switch',function(){
+    $(this).toggleClass('switch-on');
+    console.log('You just pushed me!')
+    $(this).toggleClass('switch-off');
+  });

@@ -77,12 +77,26 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_view_listing(self):
+        #pass a URL variable
         textbook_id = request.args.get("id")
+        listing_type = request.args.get("listing_type")
         textbook = self.service.get_textbook_by_id(textbook_id)
+
+        #Pass in an argument to return seller of buyer listing post. 
         listings = self.service.get_listing_by_textbook_id(textbook_id)
+        
+
         avatar_id = self.service.get_avatar_id()
         user = self.service.get_user_ins()
-        return render_template("listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
+        #Hard code: 
+        buyer_post = True
+        seller_post = False
+
+        if buyer_post:
+            return render_template("listing_request_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
+
+        elif seller_post: 
+            return render_template("listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
 
     @login_required
     def get_unlock_contact_info(self):

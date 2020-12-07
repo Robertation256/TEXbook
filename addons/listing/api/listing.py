@@ -21,6 +21,12 @@ class ListingResource(BaseResource):
         return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user)
 
     @login_required
+    def get_test_listing(self):
+        textbook_options = Textbook.get_title(only_title=False)
+        user = self.service.get_user_ins()
+        return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user)
+
+    @login_required
     def post_listing_publish(self):
         user_email = self.service.get_user_email()
         user_id = self.service.get_user_id()
@@ -69,34 +75,43 @@ class ListingResource(BaseResource):
         '''
 
         listing_id = request.args.get("id")
+        book_image_ids = Textbook.select().where(Textbook.id == listing_id).get().cover_image_id
         res = self.service.get_listing_by_id(listing_id)
         if res is None:
             return {"status":False, "msg":""}
 
-        return {"status": True, "book_image_ids": res.book_image_ids.split(",")}
+        try:
+            #Seller Post
+            return {"status": True, "book_image_ids": res.book_image_ids.split(",")}
+        except:
+            #Buyer Post
+            return {"status": True, "book_image_ids": book_image_ids}
+        
+       
+
+   
+
 
     @login_required
     def get_view_listing(self):
         #pass a URL variable
         textbook_id = request.args.get("id")
         listing_type = request.args.get("listing_type")
+        
         textbook = self.service.get_textbook_by_id(textbook_id)
 
         #Pass in an argument to return seller of buyer listing post. 
-        listings = self.service.get_listing_by_textbook_id(textbook_id)
+        listings = self.service.get_listing_by_textbook_id(listing_type, textbook_id)
         
 
         avatar_id = self.service.get_avatar_id()
         user = self.service.get_user_ins()
-        #Hard code: 
-        buyer_post = True
-        seller_post = False
 
-        if buyer_post:
+        if listing_type == 'buyer_post':
             return render_template("listing_request_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
 
-        elif seller_post: 
-            return render_template("listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
+        elif listing_type == 'seller_post': 
+            return render_template("listing_listing_view.html",textbook=textbook, listings=listings, avatar_id=avatar_id,user=user)
 
     @login_required
     def get_unlock_contact_info(self):

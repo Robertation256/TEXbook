@@ -2,17 +2,19 @@ $(window).load(function() {
     $(".hover_bkgr_fricc").hide();
     $(".seller-info").hide();
     var listing_id = -1;
+    var listing_type = 'seller_post';
     $(".listing-wrapper").click(function (e) {
         listing_id = $(this).attr("id");
+        listing_type = $(this).attr("listing_type")
         $(".carousel-inner").empty();
         $(".carousel-indicators").empty();
         $(".hidden_info").attr("id","closed");
         var option = $(this).find("#option-content").text();
         if (option == "Buy") {
-            $(".pop_up_purchase_option").text("Demand to Purchase at");
+            $(".pop_up_purchase_option").text("Sold at");
         }
         else if (option == "Rent"){
-            $(".pop_up_purchase_option").text("Demand to Rent at");
+            $(".pop_up_purchase_option").text("Rented at");
         }
         $(".pop_up_offered_price").text("￥"+$(this).find("#offered-price-content").text());
         $("#pop-up-condition").text($(this).find("#condition-content").text());

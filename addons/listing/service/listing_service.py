@@ -11,17 +11,12 @@ class ListingService(base_service.BaseService):
     @classmethod
     def add(cls, user_id, data):
 
-        #Default textbook cover image
-        image_ids = Textbook.select().where(Textbook.id == data["textbook_id"]).get().cover_image_id
-        
-
         if data["type"] == "buyer_post":
             listing_id = cls.model.add({
                 "textbook_id": data["textbook_id"],
                 "user_id": user_id,
                 "purchase_option": data["purchase_option"],
                 "offered_price": data["offered_price"],
-                "book_image_ids": image_ids,
                 "type": data["type"],
                 "is_published": data["is_published"]
             })
@@ -65,19 +60,18 @@ class ListingService(base_service.BaseService):
         return None
 
     @classmethod
-    def get_listing_by_textbook_id(cls, id:int):
+    def get_listing_by_textbook_id(cls, listing_type, id:int):
         query = cls.model.select().where(cls.model.textbook_id==id)
-        #Default: Seller post
-        #seller_post = True
-        #buyer_post = False
+        #Default: listing_type = seller post
+        
         if query.exists():
             from addons.profile.models.profile import Profile
 
-            #if seller_post:
-            #    res =  [_ for _ in query if _.type == 'seller_post']
+            if listing_type == 'seller_post':
+                res =  [_ for _ in query if _.type == 'seller_post']
             
-            #if buyer_post:
-            res =  [_ for _ in query]
+            elif listing_type == 'buyer_post':
+                res =  [_ for _ in query if _.type == 'buyer_post']
 
             for e in res:
                 e.offered_price = int(e.offered_price)

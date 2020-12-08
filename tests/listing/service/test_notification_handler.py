@@ -1,9 +1,9 @@
 # python3 -m unittest test_notificationHandler.py to run the automated test
 
 import unittest
-from utils.MD5_helper import MD5Helper
-from common.handlers.notification_handler import NotificationHandler
 from addons.user.model.user import User
+from common.handlers.notification_handler import NotificationHandler
+from utils.MD5_helper import MD5Helper
 from addons.listing.model.listing import Listing
 from addons.listing.event import listing_publish_event, listing_unlock_event
 from addons.notification.model.notification import Notification
@@ -11,7 +11,7 @@ from addons.notification.model.notification import Notification
 
 class TestNotificationHandler(unittest.TestCase):
 
-    def setUpClass(self):
+    def setUp(self):
         # Prepare dummy data
         self.seller_id = User.insert(
             email='bm2515@nyu.edu',
@@ -81,7 +81,6 @@ class TestNotificationHandler(unittest.TestCase):
 
         # Restore the table
         Notification.delete().execute()
-
 
 
 

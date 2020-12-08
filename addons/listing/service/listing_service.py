@@ -61,11 +61,12 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_listing_by_textbook_id(cls, listing_type, id:int):
-        query = cls.model.select().where(cls.model.textbook_id==id)
+        query = cls.model.select().where((cls.model.textbook_id==id)&(cls.model.is_published=="true"))
         #Default: listing_type = seller post
         
         if query.exists():
             from addons.profile.models.profile import Profile
+            res = []
 
             if listing_type == 'seller_post':
                 res =  [_ for _ in query if _.type == 'seller_post']

@@ -28,7 +28,10 @@
           </div>
         </div>
         <div class="col-md-8">
-          <div class="card">
+
+
+          <div class="card" style="margin-bottom:200px;">
+
             <div class="card-header border-bottom mb-3 d-flex d-md-none">
               <ul class="nav nav-tabs card-header-tabs nav-gap-x-1" role="tablist">
                 <li class="nav-item">
@@ -42,7 +45,10 @@
                 </li>
               </ul>
             </div>
-            <div class="card-body tab-content">
+
+            <div class="card-body tab-content" >
+
+
               <div class="tab-pane active" id="profile">
                 <h6>YOUR PROFILE INFORMATION</h6>
                 <hr>
@@ -60,8 +66,8 @@
                   </div>
                   <div class="form-group">
                     <label>Major</label>
-                    <select name = "major" class="form-control" id="major" value = "{{major}}">
-                      {% for m in ["Computer Science","Computer Engineering","Data Science","Math"] %}
+                    <select name = "major" class="form-control" id="major" value = "{{majors[0]}}">
+                      {% for m in majors %}
                         {% if m == major %}
                           <option value ="{{major}}" selected="selected">{{major}}</option>
                         {% else %}
@@ -92,6 +98,7 @@
                 </form>
                 <button id="update_profile" class="btn btn-primary">Update Profile</button>
               </div>
+
               <div class="tab-pane" id="account">
                 <h6>ACCOUNT SETTINGS</h6>
                 <hr>
@@ -105,7 +112,7 @@
                     <input id="update_password" class="btn btn-primary" type = "button" value="Update Password"></input>
                   <hr>
                   <div class="form-group">
-                    <label class="d-block text-danger">Delete Account</label>
+                    <label class="d-block text-danger"></label>
                     <p class="text-muted font-size-sm">Once you delete your account, there is no going back. Please be certain.</p>
                   </div>
                   <input id="delete" class="btn btn-danger" type="button" value='Delete Account'></input>
@@ -151,16 +158,18 @@
                       <input type="checkbox" class="custom-control-input" id="book_listed" checked="">
                       <label class="custom-control-label" for="book_listed">Email me when a book I have requested has been listed.</label>
                     </div>
-                  <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings"></input>
-                </form>
+                  <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings">Update Notifications Settings</input>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-    </div>
+            </div>
+
+          </div>
+
+        </div>
+
+</div>
+
 
 <div class="hover_bkgr_fricc">
     <span class="helper"></span>

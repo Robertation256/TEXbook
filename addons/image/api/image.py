@@ -61,11 +61,10 @@ class ImageResource(BaseResource):
 
     @login_required
     def get_upload(self):
-        owner_email = self.service.get_user_email()
         image_id = request.args.get("id")
         if image_id is None:
             return {"status": False, "message": "no image_id"}
-        result = self.service.get_image(image_id, user_email=owner_email, type="seller_upload")
+        result = self.service.get_image(image_id, user_email=None, type="seller_upload")
         if result["status"]:
             image_ins = result["result"]
             return send_file(

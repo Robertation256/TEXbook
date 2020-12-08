@@ -18,7 +18,10 @@ class ProfileResource(BaseResource):
         email = session.get("email")
         profile_info = self.service.get_profile_info(email=email)
         user = self.service.get_user_ins()
-        return render_template("profile.html", user=user, **profile_info)
+        from common.models.course import Course
+        query = Course.select(Course.subject).order_by(Course.subject).distinct()
+        majors = [_.subject for _ in query]
+        return render_template("profile.html", user=user,majors=majors, **profile_info)
 
     @login_required
     def post_profile(self):
@@ -75,3 +78,11 @@ class ProfileResource(BaseResource):
         session = Session()
         session["logged_in"] = "false"
         return redirect("/")
+
+
+    @login_required
+    def get_unlock_chances(self):
+        user_id = self.service.get_user_id()
+        from addons.user.model.user import User
+        unlock_chance = User.select(User.unlock_chance).where(User.id==user_id).get().unlock_chance
+        return str(unlock_chance)

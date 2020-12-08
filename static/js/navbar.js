@@ -155,9 +155,6 @@ $(window).load(function() {
         refresh_all();
     })
 
-
-
-
     $(".delete").click(function() {
         var notification_id = $(this).closest(".notification-wrapper").attr("id");
         console.log(notification_id);
@@ -182,6 +179,21 @@ $(window).load(function() {
             $(this).text("Show all notifications");
             refresh_all();
         }
+
+    })
+
+
+
+
+    /*avatar dropdown control*/
+    $(".avatar-dropdown").click(function(){
+        $.ajax({
+            url:"/profile/unlock_chances",
+            type:"GET",
+            success: function(unlock_chances){
+                $("#unlock-chance").text(unlock_chances);
+            }
+        });
 
     })
 

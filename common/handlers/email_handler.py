@@ -42,6 +42,7 @@ class EmailHandler():
                 if e.owner.send_email_on_requested_book_available == "true":
                     target_users.append(e.owner)
 
+            target_users=set(target_users)
             if len(target_users) > 0:
                 all_emails = []
                 from addons.profile.models.profile import Profile
@@ -50,8 +51,7 @@ class EmailHandler():
                     email = dict()
                     email["address"] = user.email
                     email["subject"] = "Your Requested Textbook is now available"
-                    email[
-                        "content"] = 'Dear {}, Your requested textbook {} is now available! Click here to check it out.'.format(
+                    email["content"] = 'Dear {}, Your requested textbook {} is now available! Click here to check it out.'.format(
                         profile_ins.first_name + ' ' + profile_ins.last_name, event.listing_ins.textbook.title)
                     all_emails.append(email)
 

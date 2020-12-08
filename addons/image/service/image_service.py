@@ -10,7 +10,7 @@ class ImageService(base_service.BaseService):
         if image_id is None:
             return {"status": False, "result": None}
         if user_email is None or user_email == "public":
-            query = cls.model.select().where((cls.model.id == image_id) & (cls.model.owner_email == "public"))
+            query = cls.model.select().where(cls.model.id == image_id)
         else:
             query = cls.model.select().where((cls.model.id == image_id) & (cls.model.owner_email == user_email))
 

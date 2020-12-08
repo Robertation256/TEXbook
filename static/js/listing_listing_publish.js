@@ -87,6 +87,7 @@ $(window).load(function() {
             data:form_data,
             success: function() {
                 alert("Publish succeeds");
+                location.href = "/home";
             }
         });
     });

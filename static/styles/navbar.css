@@ -157,8 +157,9 @@ a.brand {
     width: 100%;
     height:50px;
     position:relative;
-    margin-top:20px;
+    margin-top:60px;
     left:0;
+    background-color:white !important;
 }
 
 html, body {
@@ -167,6 +168,5 @@ html, body {
 
 .meta-container {
     min-height:550px;
-
 }
 

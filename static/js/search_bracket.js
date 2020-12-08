@@ -1,4 +1,5 @@
 $(window).load(function () {
+    console.log("Here");
     var search_data = {};
     var field = $("#search_field option:selected").val();
     $.ajax({

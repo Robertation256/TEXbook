@@ -9,9 +9,10 @@
     .slogan-container {
         display:flex;
         flex-direction: column;
-        height: 350px;
+        height: 560px;
         width: 100%;
-        background-image: url("/image/resource?id=2150");
+        background-image: url("/image/resource?id=7777");
+        background-position:center;
         background-size: 1300px 600px;
         margin-top: 50px;
     }
@@ -38,53 +39,23 @@
 
     }
     .round-btn {
-        margin-top: 5px !important;
-        margin-left: 50px;
         height:50px;
         width: 200px;
         font-family: "Raleway";
-        font-weight: 500;
         font-size: 15px;
         letter-spacing: 1px;
         padding: 10px 35px;
         border-radius: 50px;
         transition: 0.5s;
-        margin-top: 30px;
         border: 3px solid #fff;
         color: #fff;
         background-color: Transparent;
         outline:none !important;
+        margin-top:150px;
+        margin-left:900px;
+    button {
+        outline:none !important;
     }
-    button{
-        outline:none;
-    }
-    .introduction-container {
-        margin-top: 50px;
-        margin-left:50px;
-        height: 500px;
-        width: 100%;
-    }
-    .introduction-container h1 {
-        margin: 0;
-        font-size: 36px;
-        font-weight: 700;
-        text-transform: uppercase;
-        font-family: "Poppins", sans-serif;
-        color: #37423b;
-        margin-bottom: 35px;
-    }
-    .introduction-content {
-        display: flex;
-    }
-
-    .introduction-content text {
-        width: 40%
-    }
-    .introduction-content img {
-        margin-left: 30px;
-    }
-
-
 </style>
 {% endblock %}
 
@@ -97,21 +68,11 @@
 {% block content %}
     <div class="slogan-container">
         <div class="slogan">
-            <h1 style="margin-top=300px">Find textbooks</h1>
-            <h1>from fellow students</h1>
-            <h2>Make textbooks affordable for NYUSH community</h2>
+            <div style="margin-top:100px;width:50%;float:right">
+            <h1 style="width:100%;">Find textbooks from fellow students</h1>
+            <h2 style="width:100%;">Make textbooks affordable for NYUSH community</h2>
+            </div>
         </div>
-        <button class="round-btn cursor-pointer">Sign Up</button>
-    </div>
-    <div class="introduction-container">
-        <h1>About</h1>
-        <div class="introduction-content">
-            <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                magna aliqua.Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.
-                Ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                Duis aute irure dolor in reprehenderit in voluptate
-            </text>
-            <img src="https://3k7by215ywuf340yi3alsfso-wpengine.netdna-ssl.com/wp-content/uploads/sites/5/2019/12/NYU-SHANGHAI-525x250.jpg"></img>
-        </div>
+        <button class="round-btn btn-light" onclick="location.href='/auth/email_verify';">Sign Up</button>
     </div>
 {% endblock %}

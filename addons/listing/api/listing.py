@@ -105,7 +105,7 @@ class ListingResource(BaseResource):
 
         #Pass in an argument to return seller of buyer listing post. 
         listings = self.service.get_listing_by_textbook_id(listing_type, textbook_id)
-        
+        print(len(listings))
 
         avatar_id = self.service.get_avatar_id()
         user = self.service.get_user_ins()

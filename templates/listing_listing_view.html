@@ -16,13 +16,18 @@
     <p>{{textbook.author}}, {{textbook.publisher}}, {{textbook.edition}}</p>
     <p>Original price: ￥ {{textbook.price}}</p>
     <input type=button class="btn btn-outline-primary" onClick="location.href='/listing/view_listing?id={{textbook.id}}&listing_type=buyer_post'" value='View Buyer Posts'>
-  
+    {% if listings | count == 0 %}
+        <p></p>
+        <h2>No Seller listings are currently available for {{textbook.title}}</h2>
+    {% endif %}
+    
 
   <hr>
     <!-- Listings -->
     {% for listing in listings %}
     <div class="listing-wrapper cursor-pointer" id="{{listing.id}}">
         <div style="display:none;">
+            
             <p id="option-content">{{listing.purchase_option}}</p>
             <p id="offered-price-content">{{listing.offered_price}}</p>
             <p id="condition-content">{{listing.condition}}</p>

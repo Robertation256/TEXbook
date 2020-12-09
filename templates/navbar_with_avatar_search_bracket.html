@@ -23,6 +23,7 @@
    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha512-HWlJyU4ut5HkEj0QsK/IxBCY55n5ZpskyjVlAoV9Z7XQwwkqXoYdCIC93/htL3Gu5H3R4an/S0h2NXfbZk3g7w==" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/js/search_bracket.js"></script>
+       <script type="text/javascript" src="/static/js/navbar.js"></script>
    {% block bs_js %}{% endblock %}
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="height: 50px !important;">
           <a class="brand cursor-pointer">TEXbook</a>
@@ -84,7 +85,7 @@
 
                         <div class = "dropdown-header">
                             <span class="dropdown-title">Notification</span>
-                            <span class="notification-count"></span>
+                            <span class="notification-count" id="dd-notifications-count">3</span>
                         </div>
 
                         <div class="notification-container">

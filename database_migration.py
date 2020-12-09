@@ -145,11 +145,12 @@ def textbook_reference():
 
 
 if __name__ == "__main__":
-    textbook_reference()
-    # from addons.image.model.image import Image
-    # with open("C:/Users/yz391/Desktop/f.jpg","rb") as fp:
-    #     f = fp.read()
-    # Image.update(content=f).where(Image.id==7777).execute()
+    # textbook_reference()
+    from addons.image.model.image import Image
+    with open("C:/Users/yz391/Desktop/matthew-feeney-Nwkh-n6l25w-unsplash.jpg","rb") as fp:
+        f = fp.read()
+    Image.update(
+        content=f).where(Image.id==2151).execute()
 
 
 

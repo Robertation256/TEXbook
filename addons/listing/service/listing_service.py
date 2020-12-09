@@ -153,7 +153,7 @@ class ListingService(base_service.BaseService):
             cls.model.update(is_published="true").where(cls.model.id==listing_id).execute()
             listing_ins = cls.model.select().where(cls.model.id == listing_id).get()
             event = ListingPublishEvent(listing_ins)
-            EventManager.publish(event)
+            EventManager().publish(event)
 
         elif data["on_shelf"] is False:
             cls.model.update(is_published="false").where(cls.model.id==listing_id).execute()

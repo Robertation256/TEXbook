@@ -5,37 +5,28 @@ $(window).load(function() {
     var listing_type = 'seller_post';
     $(".listing-wrapper").click(function (e) {
         listing_id = $(this).attr("id");
-        listing_type = $(this).attr("listing_type")
+        listing_type = $(".listing-type").text();
         $(".carousel-inner").empty();
         $(".carousel-indicators").empty();
         $(".hidden_info").attr("id","closed");
         var option = $(this).find("#option-content").text();
-        
+
         if (option == "Buy") {
-            $(".pop_up_purchase_option").text("Sold at");
+            if (listing_type == 'seller_post'){
+                $(".pop_up_purchase_option").text("Sold at");
+            }
+            else if (listing_type == 'buyer_post' ){
+                $(".pop_up_purchase_option").text("Buy at");
+            }
         }
         else if (option == "Rent"){
-            $(".pop_up_purchase_option").text("Rented at");
+            if (listing_type == 'seller_post'){
+                $(".pop_up_purchase_option").text("Rented at");
+            }
+            else if (listing_type == 'buyer_post'){
+                $(".pop_up_purchase_option").text("Borrow at");
+            }
         }
-        
-        //Replace the above code with commented code when listing_type is loaded properly
-        
-        //if (option == "Buy") {
-            //if (listing_type == 'seller_post'){
-            //    $(".pop_up_purchase_option").text("Sold at");
-            //}
-            //else if (listing_type == 'buyer_post' ){
-            //    $(".pop_up_purchase_option").text("Request to purchase at");
-            //}
-        //}
-        //else if (option == "Rent"){
-        //    if (listing_type == 'seller_post'){
-        //        $(".pop_up_purchase_option").text("Rented at");
-        //    }
-        //    else if (listing_type == 'buyer_post'){
-        //        $(".pop_up_purchase_option").text("Request to Rent at");
-        //    }
-        //}
         
         $(".pop_up_offered_price").text("￥"+$(this).find("#offered-price-content").text());
         $("#pop-up-condition").text($(this).find("#condition-content").text());

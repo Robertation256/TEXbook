@@ -102,12 +102,12 @@
               <div class="tab-pane" id="account">
                 <h6>ACCOUNT SETTINGS</h6>
                 <hr>
+                <h8>Change Password</h8>
                 <form id="settings">
                   <div class="form-group">
                     <!-- <input type="text"  placeholder="Enter your old password"> -->
                     <input type="password" id="password"  class="form-control" name="password" placeholder="Password">
                     <input type="password" id="re_password"  class="form-control" name="re_password" placeholder="Confirm your password">
-                    <!-- <input type="submit" id="confirm" class="fadeIn third" value="Confirm"> -->
                   </div>
                     <input id="update_password" class="btn btn-primary" type = "button" value="Update Password"></input>
                   <hr>
@@ -126,20 +126,28 @@
                   <form>
                     <div class="small text-muted mb-3">Would you like to receive notifications via email?</div>
                     <div class="custom-control">
-                      <input type="radio" name="email_notification" value="true" checked="">
-                      <label for="email">Yes, I want to receive email notifications</label>
-                      <pre></pre>
-                      <input type="radio" name="email_notification" value="false">
-                      <label for="no_email">No, I do not want to receive email notifications</label>
-                    </div>
+                      {% if user.email_notification == "true" %}
+                        <input type="radio" name="email_notification" id="email" value="true" checked="">
+                        <label for="email">Yes, I want to receive email notifications</label>
+                        <pre></pre>
+                        <input type="radio" name="email_notification" id="no_email" value="false">
+                        <label for="no_email">No, I do not want to receive email notifications</label>
+                      {% else%}
+                        <input type="radio" name="email_notification" id="email" value="true">
+                        <label for="email">Yes, I want to receive email notifications</label>
+                        <pre></pre>
+                        <input type="radio" name="email_notification" id="no_email" value="false" checked="">
+                        <label for="no_email">No, I do not want to receive email notifications</label>
+                      {% endif %}
+                    </div>  
                    <pre></pre> 
                 <div class="form-group">
                   <label >How often do you want to hear from us?</label>
                   <div class="small text-muted mb-3">We will send you a summary on your active listings</div>
                   <select name = "frequency" class="form-control" id="frequency" value = "{{email_notification_freq}}">
                     {% for freq in ["Daily", "Weekly", "Monthly", "Never"] %}
-                      {% if freq == class_ye %}
-                        <option value ="{{email_notification_freq}}" selected="selected">{{class_yearemail_notification_freq}}</option>
+                      {% if freq == user.email_notification_freq %}
+                        <option value ="{{email_notification_freq}}" selected="selected">{{user.email_notification_freq}}</option>
                       {% else %}
                         <option value ="{{freq}}">{{freq}}</option>
                       {% endif %}
@@ -151,14 +159,22 @@
                   <label class="d-block mb-0">Additional Notifications</label>
                     <div class="small text-muted mb-3">Receive notifications via email, regardless of frequency preference</div>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="user_unlock" checked="">
+                      {% if user.send_email_on_listing_unlocked == "true" %}
+                        <input type="checkbox" class="custom-control-input" id="user_unlock" checked="">
+                      {% else %}
+                        <input type="checkbox" class="custom-control-input" id="user_unlock">
+                      {% endif %}
                       <label class="custom-control-label" for="user_unlock">Email me when another user unlocks my info in one of my listings.</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="book_listed" checked="">
+                      {% if user.send_email_on_requested_book_available == "true" %}
+                        <input type="checkbox" class="custom-control-input" id="book_listed" checked="">
+                      {% else %}
+                        <input type="checkbox" class="custom-control-input" id="book_listed">
+                      {% endif %}
                       <label class="custom-control-label" for="book_listed">Email me when a book I have requested has been listed.</label>
                     </div>
-                  <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings">Update Notifications Settings</input>
+                  <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings"></input>
                 </div>
               </div>
 

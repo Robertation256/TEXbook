@@ -21,6 +21,15 @@ class Image(base_model.BaseModel):
             image_format: str,
             image_id: int = None,
             ):
+        '''
+        add a Image record to DB
+        :param user_email: String
+        :param content: ByteObject
+        :param type: String
+        :param image_format: String
+        :param image_id: int
+        :return: dict
+        '''
 
         date_time = time.strftime("%Y-%m-%d %H:%M")
         if image_id is None:    #Perform insertion
@@ -51,6 +60,11 @@ class Image(base_model.BaseModel):
 
     @classmethod
     def add_multiple(cls, data:list):
+        '''
+        add multiple Image record to DB
+        :param data: list of dict
+        :return: list of image ids
+        '''
         res = []
         for d in data:
             id = cls.add(**d)
@@ -64,5 +78,9 @@ class Image(base_model.BaseModel):
     def get_avatar_ids(
             cls,
     ) -> list:
+        '''
+        get avatar ids
+        :return:
+        '''
         query = cls.select().where(cls.type == "avatar")
         return [ _.id for _ in query]

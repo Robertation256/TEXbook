@@ -10,8 +10,8 @@ class PublicResource(BaseResource):
         self._prefix = ""
 
     def get(self):
-        sesson = Session()
-        if sesson.get("logged-in") == "true":
+        session = Session()
+        if session.get("logged-in") == "true":
             return redirect("/home")
 
         return render_template("index.html")

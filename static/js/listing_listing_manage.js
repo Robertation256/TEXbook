@@ -94,4 +94,26 @@ $(window).load(function() {
         }
     });
 
+
+
+    $(".lock_btn").click(function(){
+        var bool = confirm("Do you wish to remove this listing from unlocked items?");
+        if (bool){
+            var parent = $(this).parent(".operation-icons");
+            var listing_id = parent.siblings(".listing_id").text();
+            $.ajax({
+                url:"/listing/lock?id="+listing_id,
+                success: function(data){
+                    if (data.status){
+                        window.location.reload();
+                    }
+                    else{
+                        alert(data.msg);
+                    }
+                }
+            });
+        }
+    });
+
+
 });

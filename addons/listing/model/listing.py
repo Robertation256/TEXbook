@@ -21,6 +21,11 @@ class Listing(base_model.BaseModel):
 
     @classmethod
     def add(cls, data:dict):
+        '''
+        add a listing record to DB
+        :param data:
+        :return: int
+        '''
         id = cls.insert(
             textbook_id = data["textbook_id"],
             owner_id = data["user_id"],
@@ -37,14 +42,19 @@ class Listing(base_model.BaseModel):
 
     @classmethod
     def get_unlocked_user_ids(cls,id):
+        '''
+        get the ids of corresponding user who have unlocked a listing
+        :param id:
+        :return: dict
+        '''
         query = cls.select(cls.unlocked_user_ids).where(cls.id==id)
         if query.exists():
             item = query.get()
-            res = item.unlocked_user_ids.split(",")
-            if len(res) == 1:
-                return []
-            res.pop(0)
-            res.pop(-1)
+            data = item.unlocked_user_ids.split(",")
+            res = []
+            for i in data:
+                if i != "":
+                    res.append(i)
             return res
 
         return []

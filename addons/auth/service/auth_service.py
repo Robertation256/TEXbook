@@ -14,11 +14,23 @@ class AuthService(base_service.BaseService):
 
     @classmethod
     def update_pwd_by_email(cls,pwd:str, email:str):
+        '''
+        update user password
+        :param pwd: user password: String
+        :param email: user email: String
+        :return: None
+        '''
         hashed_pwd = MD5Helper.hash(pwd)
         User.update(password=hashed_pwd).where(User.email == email).execute()
 
     @classmethod
     def email_pwd_auth(cls,password:str, email:str):
+        '''
+        authenticate user password
+        :param password: user password: String
+        :param email: user email: String
+        :return: dict
+        '''
         query = cls.model.select().where(User.email == email)
         if query.exists():
             stored_pwd = query.get().password
@@ -31,7 +43,13 @@ class AuthService(base_service.BaseService):
 
     @classmethod
     def add_user(cls, email:str, password:str):
-        user_id = User.insert(
+        '''
+        add user into database
+        :param email: str
+        :param password: str
+        :return: None
+        '''
+        User.insert(
             email=email,
             password=MD5Helper.hash(password)
         ).execute()
@@ -40,7 +58,7 @@ class AuthService(base_service.BaseService):
     def is_registered(cls,email):
         '''
         checks if this email is register or not
-        :param email:
+        :param email: str
         :return: bool
         '''
         query = cls.model.select().where(User.email == email)
@@ -53,7 +71,7 @@ class AuthService(base_service.BaseService):
         send a token to mailbox and update session
         :param email:
         :param session:
-        :return:
+        :return: str
         '''
         token = TokenGenerator.generate()
         session["token"] = token
@@ -65,6 +83,11 @@ class AuthService(base_service.BaseService):
 
     @classmethod
     def exceeded_max_attempt(cls,ip):
+        '''
+        check if an IP exceeds maximum failed attempts
+        :param ip: str
+        :return: bool
+        '''
         chance_left = cls.ip_dict.get(ip)
         if chance_left is None:
             cls.ip_dict[ip] = 5
@@ -78,6 +101,11 @@ class AuthService(base_service.BaseService):
 
     @classmethod
     def dec_login_chance(cls, ip):
+        '''
+        decrease user login chance by one
+        :param ip:
+        :return: None
+        '''
         chance_left = int(cls.ip_dict.get(ip))
         if chance_left > 0:
             cls.ip_dict[ip] = chance_left-1
@@ -85,12 +113,27 @@ class AuthService(base_service.BaseService):
 
     @classmethod
     def get_chance_left(cls, ip):
+        '''
+        get the login chance left for a ip
+        :param ip:
+        :return: int
+        '''
         return int(cls.ip_dict.get(ip))
 
     @classmethod
     def delete_ip(cls, ip):
+        '''
+        remove an IP from IP dict
+        :param ip:
+        :return: None
+        '''
         cls.ip_dict.delete(ip)
 
     @classmethod
     def reset_chances(cls, ip):
+        '''
+        reset user login chance to 5
+        :param ip:
+        :return: None
+        '''
         cls.ip_dict[ip] = 5

@@ -12,6 +12,10 @@ class ImageResource(BaseResource):
         self.service = ImageService
 
     def get_resource(self):
+        '''
+        return resource type image
+        :return: file object
+        '''
         image_id = request.args.get("id")
         if image_id is None:
             return {"status": False, "message": "no image_id"}
@@ -28,6 +32,10 @@ class ImageResource(BaseResource):
 
     @login_required
     def get_avatar(self):
+        '''
+        return avatar type image
+        :return: file object
+        '''
         image_id = request.args.get("id")
         if image_id is None:
             return {"status": False, "message": "no image_id"}
@@ -45,6 +53,10 @@ class ImageResource(BaseResource):
 
     @login_required
     def get_bookcover(self):
+        '''
+        return bookcover type image
+        :return: file object
+        '''
         image_id = request.args.get("id")
         if image_id is None:
             return {"status": False, "message": "no image_id"}
@@ -61,6 +73,10 @@ class ImageResource(BaseResource):
 
     @login_required
     def get_upload(self):
+        '''
+        return seller-upload type image
+        :return: file object
+        '''
         image_id = request.args.get("id")
         if image_id is None:
             return {"status": False, "message": "no image_id"}

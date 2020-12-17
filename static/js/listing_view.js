@@ -38,7 +38,6 @@ $(window).load(function() {
             success: function(data) {
                 if (data.status) {
                     var image_ids = data.book_image_ids;
-                    console.log(image_ids);
                     for (var i = 0; i < image_ids.length; i++){
                         if (i == 0){
                             var _ = $('<div class="carousel-item active"><img class="d-block w-100" src="/image/upload?id='+image_ids[i]+'" alt="First slide"></div>');
@@ -99,13 +98,13 @@ $(window).load(function() {
                 url:"/listing/unlock_contact_info?id="+listing_id,
                 type:"GET",
                 success:function(data){
-                    console.log(data);
                     if (data.chance_left == 0){
                         alert("You have 0 unlock chance left for today. Get membership for unlimited access.");
                     }
                     else{
-                        $(".name").text(data.contact_info.last_name + "," + data.contact_info.first_name);
-                        $(".contact-info").text(data.contact_info.contact_info);
+                        $(".pop-up-name").text(data.contact_info.last_name + "," + data.contact_info.first_name);
+                        $(".pop-up-email").text(data.contact_info.email);
+                        $(".pop-up-contact-info").text(data.contact_info.contact_info);
                         $(".hidden_info").attr("id","open");
                         $(".seller-info").toggle("slide");
                     }

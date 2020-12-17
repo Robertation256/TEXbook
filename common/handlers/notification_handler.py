@@ -17,6 +17,11 @@ class NotificationHandler():
 
 
     def _handle_listing_publish_event(self, event):
+        '''
+        handles notification sending for listing publish event
+        :param event:
+        :return: None
+        '''
         textbook_id = event.listing_ins.textbook_id
         query = Listing.select(Listing.owner_id).where((Listing.type=="buyer_post") & (Listing.textbook_id == textbook_id))
         if query.exists():
@@ -35,6 +40,11 @@ class NotificationHandler():
                 Notification.insert_many(data[i:i + 100]).execute()
 
     def _handle_listing_unlock_event(self,event):
+        '''
+        handles notification sending for listing unlock event
+        :param event:
+        :return: None
+        '''
         listing_id = event.listing_ins.id
         query = Listing.select().where(Listing.id == listing_id)
         if query.exists():

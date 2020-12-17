@@ -8,6 +8,10 @@ from common.models.textbook_course import Textbook_Course
 
 
 def handle_raw_tables():
+    '''
+    maps raw data into db tables ok for the platform
+    :return:
+    '''
     Textbook.create_table()
     Course.create_table()
     Textbook_Course.create_table()
@@ -108,6 +112,10 @@ def handle_raw_tables():
 
 
 def insert_images():
+    '''
+    insert collected images into db
+    :return:
+    '''
     fp = "C:/Users/yz391/Desktop/collected_covers"
     dir_path = os.listdir(fp)
     for name in dir_path:
@@ -145,12 +153,8 @@ def textbook_reference():
 
 
 if __name__ == "__main__":
-    # textbook_reference()
-    from addons.image.model.image import Image
-    with open("C:/Users/yz391/Desktop/matthew-feeney-Nwkh-n6l25w-unsplash.jpg","rb") as fp:
-        f = fp.read()
-    Image.update(
-        content=f).where(Image.id==2151).execute()
+    textbook_reference()
+
 
 
 

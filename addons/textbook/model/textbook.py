@@ -67,11 +67,11 @@ class Textbook(base_model.BaseModel):
 
     @classmethod
     def search_by_subject(cls,subject):
-        query = Course.select().where(Course.subject == subject)
+        query = Course.select().where(Course.subject.contains(subject))
         if query.exists():
-            course_id = query.get().id
+            course_id = [_.id for _ in query]
             from common.models.textbook_course import Textbook_Course
-            query = Textbook_Course.select().where(Textbook_Course.course_id == course_id)
+            query = Textbook_Course.select().where(Textbook_Course.course_id << course_id)
             if query.exists():
                 textbook_ids = [_.textbook_id for _ in query]
                 res = cls.select().where(cls.id << textbook_ids)

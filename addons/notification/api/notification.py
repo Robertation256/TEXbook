@@ -13,6 +13,10 @@ class NotificationResource(BaseResource):
 
     @login_required
     def get_get(self):
+        '''
+        return all notification a user received
+        :return: json
+        '''
         user_id = self.service.get_user_id()
         notifications = self.service.get_notifications_by_user_id(user_id)
 
@@ -20,6 +24,10 @@ class NotificationResource(BaseResource):
 
     @login_required
     def get_is_read(self):
+        '''
+        set a notification to is_read = True
+        :return: dict
+        '''
         notification_id = request.args.get("id")
         status = request.args.get("status")
         user_id = self.service.get_user_id()
@@ -28,6 +36,10 @@ class NotificationResource(BaseResource):
 
     @login_required
     def get_notification_delete(self):
+        '''
+        delete a notification
+        :return: dict
+        '''
         notification_id = request.args.get("id")
         user_id = self.service.get_user_id()
         res = self.service.delete_notification_by_id(notification_id,user_id)

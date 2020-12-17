@@ -22,6 +22,11 @@ class User(base_model.BaseModel):
 
     @classmethod
     def dec_unlock_chance(cls, id):
+        '''
+        decrease a user's listing unlock chance by one
+        :param id:
+        :return: chances left: int
+        '''
         unlock_chance = cls.select().where(cls.id == id).get().unlock_chance
         if unlock_chance > 0:
             unlock_chance -= 1
@@ -31,15 +36,24 @@ class User(base_model.BaseModel):
 
     @classmethod
     def recover_unlock_chance(cls):
+        '''
+        reset unlock chance to 5
+        :return: None
+        '''
         cls.update(unlock_chance=5).execute()
 
     @classmethod
     def check_member_and_unlock_chance(cls,id):
+        '''
+        check if a user is a member and whether has unlock chances left
+        :param id:
+        :return: tuple
+        '''
         query = cls.select(cls.is_member,cls.unlock_chance).where(cls.id == id)
         if query.exists():
             ins = query.get()
             return ins.is_member, ins.unlock_chance
-        return "false",0
+        return "false", 0
 
     @classmethod
     def add(cls, dict): 

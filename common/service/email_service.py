@@ -38,6 +38,7 @@ class EmailHelper(object):
         #     print(f"[EMAIL_HELPER]: Failed while sending email to {self._receiver}")
 
     def send_token(self, token):
+        print(f"Token sent:{token}")
         self.send_email(
             subject="测试验证码",
             content=f"验证码：{token}"

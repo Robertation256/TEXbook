@@ -11,6 +11,7 @@
 
       <div class="row gutters-sm">
         <div class="col-md-4 d-none d-md-block">
+
           <div class="card">
             <div class="card-body">
               <nav class="nav flex-column nav-pills nav-gap-y-1">
@@ -26,7 +27,10 @@
               </nav>
             </div>
           </div>
+
         </div>
+
+
         <div class="col-md-8">
 
 
@@ -48,141 +52,138 @@
 
             <div class="card-body tab-content" >
 
-
-              <div class="tab-pane active" id="profile">
-                <h6>YOUR PROFILE INFORMATION</h6>
-                <hr>
-                <form >
-                  <div style="display:flex;">
-                    <div class="form-group">
-                      <label >Full Name</label>
-                        <div style="display:flex;">
-                          <input type="text" name = "first_name" class="form-control" id="first_name" aria-describedby="fullNameHelp" value = "{{first_name}}"  style = "width:40% !important; margin-right:10px !important;">
-                          <input type="text" name = "last_name" class="form-control" id="last_name" value = "{{last_name}}"  style = "width:40% !important;">
-                        </div>
-                        <small id="fullNameHelp" class="form-text text-muted">You can change or remove it at any time.</small>
+                <div class="tab-pane active" id="profile">
+                  <h6>YOUR PROFILE INFORMATION</h6>
+                  <hr>
+                    <div style="display:flex;">
+                      <div class="form-group">
+                        <label >Full Name</label>
+                          <div style="display:flex;">
+                            <input type="text" name = "first_name" class="form-control" id="first_name" aria-describedby="fullNameHelp" value = "{{first_name}}"  style = "width:40% !important; margin-right:10px !important;">
+                            <input type="text" name = "last_name" class="form-control" id="last_name" value = "{{last_name}}"  style = "width:40% !important;">
+                          </div>
+                          <small id="fullNameHelp" class="form-text text-muted">You can change or remove it at any time.</small>
+                      </div>
+                      <img id = "avatar" value = "{{avatar_id}}" class="avatar trigger_popup_fricc" src="/image/avatar?id={{avatar_id}}" style="height:100px; width:100px; border-radius: 50% !important; margin-left:125px; margin-top:5px;">
                     </div>
-                    <img id = "avatar" value = "{{avatar_id}}" class="avatar trigger_popup_fricc" src="/image/avatar?id={{avatar_id}}" style="height:100px; width:100px; border-radius: 50% !important; margin-left:125px; margin-top:5px;">
-                  </div>
-                  <div class="form-group">
-                    <label>Major</label>
-                    <select name = "major" class="form-control" id="major" value = "{{majors[0]}}">
-                      {% for m in majors %}
-                        {% if m == major %}
-                          <option value ="{{major}}" selected="selected">{{major}}</option>
-                        {% else %}
-                          <option value ="{{m}}">{{m}}</option>
-                        {% endif %}
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label >Class</label>
-                    <select name = "class" class="form-control" id="class" value = "{{class_year}}">
-                      {% for year in ["2018","2019","2020","2021","2022","2023","2024"] %}
-                        {% if year == class_year %}
-                          <option value ="{{class_year}}" selected="selected">{{class_year}}</option>
-                        {% else %}
-                          <option value ="{{year}}">{{year}}</option>
-                        {% endif %}
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Contact Information</label>
-                    <input name = "contact_information" type="text" class="form-control" id="contact_information" value = "{{contact_information}}">
-                  </div>
-                  <div class="form-group small text-muted">
-                    All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears.
-                  </div>
-                </form>
-                <button id="update_profile" class="btn btn-primary">Update Profile</button>
-              </div>
+                    <div class="form-group">
+                      <label>Major</label>
+                      <select name = "major" class="form-control" id="major" value = "{{majors[0]}}">
+                        {% for m in majors %}
+                          {% if m == major %}
+                            <option value ="{{major}}" selected="selected">{{major}}</option>
+                          {% else %}
+                            <option value ="{{m}}">{{m}}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label >Class</label>
+                      <select name = "class" class="form-control" id="class" value = "{{class_year}}">
+                        {% for year in ["2018","2019","2020","2021","2022","2023","2024"] %}
+                          {% if year == class_year %}
+                            <option value ="{{class_year}}" selected="selected">{{class_year}}</option>
+                          {% else %}
+                            <option value ="{{year}}">{{year}}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Contact Information</label>
+                      <input name = "contact_information" type="text" class="form-control" id="contact_information" value = "{{contact_information}}">
+                    </div>
+                    <div class="form-group small text-muted">
+                      All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears.
+                    </div>
+                  <button id="update_profile" class="btn btn-primary">Update Profile</button>
+                </div>
 
-              <div class="tab-pane" id="account">
-                <h6>ACCOUNT SETTINGS</h6>
-                <hr>
-                <h8>Change Password</h8>
-                <form id="settings">
-                  <div class="form-group">
-                    <!-- <input type="text"  placeholder="Enter your old password"> -->
-                    <input type="password" id="password"  class="form-control" name="password" placeholder="Password">
-                    <input type="password" id="re_password"  class="form-control" name="re_password" placeholder="Confirm your password">
+                <div class="tab-pane" id="account">
+                  <h6>ACCOUNT SETTINGS</h6>
+                  <hr>
+                  <h8>Change Password</h8>
+                  <form id="settings">
+                    <div class="form-group">
+                      <!-- <input type="text"  placeholder="Enter your old password"> -->
+                      <input type="password" id="password"  class="form-control" name="password" placeholder="Password">
+                      <input type="password" id="re_password"  class="form-control" name="re_password" placeholder="Confirm your password">
+                    </div>
+                      <input id="update_password" class="btn btn-primary" type = "button" value="Update Password"></input>
+                    <hr>
+                    <div class="form-group">
+                      <label class="d-block text-danger"></label>
+                      <p class="text-muted font-size-sm">Once you delete your account, there is no going back. Please be certain.</p>
+                    </div>
+                    <input id="delete" class="btn btn-danger" type="button" value='Delete Account'></input>
+                  </form>
                   </div>
-                    <input id="update_password" class="btn btn-primary" type = "button" value="Update Password"></input>
+
+                <div class="tab-pane" id="notification">
+                  <h6>NOTIFICATION SETTINGS</h6>
+                  <hr>
+                  <label class="d-block mb-0">Email Notification</label>
+                      <div class="small text-muted mb-3">Would you like to receive notifications via email?</div>
+                      <div class="custom-control">
+                        {% if user.email_notification == "true" %}
+                          <input type="radio" name="email_notification" id="email" value="true" checked="">
+                          <label for="email">Yes, I want to receive email notifications</label>
+                          <pre></pre>
+                          <input type="radio" name="email_notification" id="no_email" value="false">
+                          <label for="no_email">No, I do not want to receive email notifications</label>
+                        {% else%}
+                          <input type="radio" name="email_notification" id="email" value="true">
+                          <label for="email">Yes, I want to receive email notifications</label>
+                          <pre></pre>
+                          <input type="radio" name="email_notification" id="no_email" value="false" checked="">
+                          <label for="no_email">No, I do not want to receive email notifications</label>
+                        {% endif %}
+                      </div>
+                     <pre></pre>
+                  <div class="form-group">
+                    <label >How often do you want to hear from us?</label>
+                    <div class="small text-muted mb-3">We will send you a summary on your active listings</div>
+                    <select name = "frequency" class="form-control" id="frequency" value = "{{email_notification_freq}}">
+                      {% for freq in ["Daily", "Weekly", "Monthly", "Never"] %}
+                        {% if freq == user.email_notification_freq %}
+                          <option value ="{{email_notification_freq}}" selected="selected">{{user.email_notification_freq}}</option>
+                        {% else %}
+                          <option value ="{{freq}}">{{freq}}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                  </div>
                   <hr>
                   <div class="form-group">
-                    <label class="d-block text-danger"></label>
-                    <p class="text-muted font-size-sm">Once you delete your account, there is no going back. Please be certain.</p>
+                    <label class="d-block mb-0">Additional Notifications</label>
+                      <div class="small text-muted mb-3">Receive notifications via email, regardless of frequency preference</div>
+                      <div class="custom-control custom-checkbox">
+                        {% if user.send_email_on_listing_unlocked == "true" %}
+                          <input type="checkbox" class="custom-control-input" id="user_unlock" checked="">
+                        {% else %}
+                          <input type="checkbox" class="custom-control-input" id="user_unlock">
+                        {% endif %}
+                        <label class="custom-control-label" for="user_unlock">Email me when another user unlocks my info in one of my listings.</label>
+                      </div>
+                      <div class="custom-control custom-checkbox">
+                        {% if user.send_email_on_requested_book_available == "true" %}
+                          <input type="checkbox" class="custom-control-input" id="book_listed" checked="">
+                        {% else %}
+                          <input type="checkbox" class="custom-control-input" id="book_listed">
+                        {% endif %}
+                        <label class="custom-control-label" for="book_listed">Email me when a book I have requested has been listed.</label>
+                      </div>
+                    <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings"></input>
                   </div>
-                  <input id="delete" class="btn btn-danger" type="button" value='Delete Account'></input>
-                </form>
                 </div>
-                
-              <div class="tab-pane" id="notification">
-                <h6>NOTIFICATION SETTINGS</h6>
-                <hr>
-                <label class="d-block mb-0">Email Notification</label>
-                  <form>
-                    <div class="small text-muted mb-3">Would you like to receive notifications via email?</div>
-                    <div class="custom-control">
-                      {% if user.email_notification == "true" %}
-                        <input type="radio" name="email_notification" id="email" value="true" checked="">
-                        <label for="email">Yes, I want to receive email notifications</label>
-                        <pre></pre>
-                        <input type="radio" name="email_notification" id="no_email" value="false">
-                        <label for="no_email">No, I do not want to receive email notifications</label>
-                      {% else%}
-                        <input type="radio" name="email_notification" id="email" value="true">
-                        <label for="email">Yes, I want to receive email notifications</label>
-                        <pre></pre>
-                        <input type="radio" name="email_notification" id="no_email" value="false" checked="">
-                        <label for="no_email">No, I do not want to receive email notifications</label>
-                      {% endif %}
-                    </div>  
-                   <pre></pre> 
-                <div class="form-group">
-                  <label >How often do you want to hear from us?</label>
-                  <div class="small text-muted mb-3">We will send you a summary on your active listings</div>
-                  <select name = "frequency" class="form-control" id="frequency" value = "{{email_notification_freq}}">
-                    {% for freq in ["Daily", "Weekly", "Monthly", "Never"] %}
-                      {% if freq == user.email_notification_freq %}
-                        <option value ="{{email_notification_freq}}" selected="selected">{{user.email_notification_freq}}</option>
-                      {% else %}
-                        <option value ="{{freq}}">{{freq}}</option>
-                      {% endif %}
-                    {% endfor %}
-                  </select>
-                </div>
-                <hr>
-                <div class="form-group">
-                  <label class="d-block mb-0">Additional Notifications</label>
-                    <div class="small text-muted mb-3">Receive notifications via email, regardless of frequency preference</div>
-                    <div class="custom-control custom-checkbox">
-                      {% if user.send_email_on_listing_unlocked == "true" %}
-                        <input type="checkbox" class="custom-control-input" id="user_unlock" checked="">
-                      {% else %}
-                        <input type="checkbox" class="custom-control-input" id="user_unlock">
-                      {% endif %}
-                      <label class="custom-control-label" for="user_unlock">Email me when another user unlocks my info in one of my listings.</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
-                      {% if user.send_email_on_requested_book_available == "true" %}
-                        <input type="checkbox" class="custom-control-input" id="book_listed" checked="">
-                      {% else %}
-                        <input type="checkbox" class="custom-control-input" id="book_listed">
-                      {% endif %}
-                      <label class="custom-control-label" for="book_listed">Email me when a book I have requested has been listed.</label>
-                    </div>
-                  <input type="button" id="update_notifications" class="btn btn-primary" value="Update Notifications Settings"></input>
-                </div>
-              </div>
 
             </div>
 
           </div>
 
         </div>
+      </div>
 
 </div>
 

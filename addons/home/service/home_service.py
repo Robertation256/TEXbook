@@ -6,6 +6,10 @@ class HomeService(base_service.BaseService):
 
     @classmethod
     def get_search_resource(cls):
+        '''
+        return data needed for /home/home
+        :return: dict
+        '''
         title = Textbook.get_title(only_title=True)
         course_name = Course.get_course_name()
         subject = Course.get_subject()

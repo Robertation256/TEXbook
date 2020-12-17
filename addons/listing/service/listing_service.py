@@ -10,6 +10,12 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def add(cls, user_id, data):
+        '''
+
+        :param user_id: int
+        :param data: dict
+        :return: dict
+        '''
 
         if data["type"] == "buyer_post":
             listing_id = cls.model.add({
@@ -54,6 +60,11 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_listing_by_id(cls, id:int):
+        '''
+        get listing ins by id
+        :param id:
+        :return: Listing
+        '''
         query = cls.model.select().where(cls.model.id == id)
         if query.exists():
             return query.get()
@@ -61,6 +72,12 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_listing_by_textbook_id(cls, listing_type, id:int):
+        '''
+        return a list of listings on a textbook
+        :param listing_type: string
+        :param id: int
+        :return: list
+        '''
         query = cls.model.select().where((cls.model.textbook_id==id)&(cls.model.is_published=="true"))
         #Default: listing_type = seller post
         
@@ -92,6 +109,11 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_contact_info_by_id(cls, id:int):
+        '''
+        get the contact information of a listing
+        :param id:
+        :return: dict
+        '''
         user_id = cls.get_user_id()
         unlocked_user_ids = cls.model.get_unlocked_user_ids(id)
         unlock_chance = None
@@ -131,6 +153,12 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def delete_listing_by_id(cls,listing_id,user_id):
+        '''
+
+        :param listing_id: int
+        :param user_id: int
+        :return: dict
+        '''
         listing_ins = cls.get_listing_by_id(id=listing_id)
         if listing_ins is not None and listing_ins.owner_id == user_id:
             cls.model.delete().where(cls.model.id == listing_id).execute()
@@ -144,6 +172,13 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def modify_listing(cls, listing_id, user_id, data):
+        '''
+        called when a lisitng is off-shelved or on-shelved
+        :param listing_id: int
+        :param user_id: int
+        :param data: int
+        :return: dict
+        '''
         listing_ins = cls.get_listing_by_id(listing_id)
         if listing_ins is None or listing_ins.type == "buyer_post" or listing_ins.owner_id != user_id:
             return {"status":False, "msg":"Bad Request"}
@@ -162,6 +197,13 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_user_listings(cls,user_id,type="seller_post",is_published="true"):
+        '''
+        get all the listing of a user by field constraints
+        :param user_id: int
+        :param type: str
+        :param is_published: str
+        :return: list
+        '''
         query = cls.model.select().where((cls.model.owner_id==user_id) & (cls.model.type==type) & (cls.model.is_published==is_published))
         if query.exists():
             res = []
@@ -179,6 +221,12 @@ class ListingService(base_service.BaseService):
 
     @classmethod
     def get_user_unlocked_listings(cls,user_id, type="seller_post"):
+        '''
+        get all the unlocked listings of a user
+        :param user_id: int
+        :param type: str
+        :return: list
+        '''
         query = cls.model.select().where((cls.model.unlocked_user_ids.contains(","+str(user_id)+",") & (cls.model.type == type)))
         if query.exists():
             res = []

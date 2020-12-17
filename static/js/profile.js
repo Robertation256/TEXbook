@@ -13,13 +13,15 @@ $(window).load(function () {
         $(this).addClass("avatar_option_selected");
     });
 
-    $("#avatar_select").click(function(){
+    $("#avatar_select").click(function(event){
+
         $("#avatar").prop("src", avatar_selected.attr("src"));
         $("#avatar_id").val(avatar_selected.attr("value"));
         $('.hover_bkgr_fricc').hide();
     });
 
-    $("#avatar_select_cancel").click(function(){
+    $("#avatar_select_cancel").click(function(event){
+
         $('.hover_bkgr_fricc').hide();
 	});
 
@@ -81,7 +83,6 @@ $(window).load(function () {
     });
     
     $("#delete").on("click", function(){
-		console.log('may work?')
         var confirmed = window.confirm("Are you sure you want to DELETE your account?");
         if (confirmed){ 
 			$.ajax({

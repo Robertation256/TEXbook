@@ -83,7 +83,6 @@ $(window).load(function() {
 
                 $(".mark-as-read").click(function() {
                     var notification_id = $(this).closest(".notification-wrapper").attr("id");
-                    console.log(notification_id);
                     $.ajax({
                         url: "/notification/is_read?id="+notification_id+"&status=read",
                         type:"GET",
@@ -95,7 +94,6 @@ $(window).load(function() {
 
                 $(".delete").click(function() {
                     var notification_id = $(this).closest(".notification-wrapper").attr("id");
-                    console.log(notification_id);
                     $.ajax({
                         url: "/notification/notification_delete?id="+notification_id,
                         type:"GET",
@@ -107,7 +105,6 @@ $(window).load(function() {
 
                 $(".mark-as-unread").click(function() {
                     var notification_id = $(this).closest(".notification-wrapper").attr("id");
-                    console.log(notification_id);
                     $.ajax({
                         url: "/notification/is_read?id="+notification_id+"&status=unread",
                         type:"GET",
@@ -157,7 +154,6 @@ $(window).load(function() {
 
     $(".delete").click(function() {
         var notification_id = $(this).closest(".notification-wrapper").attr("id");
-        console.log(notification_id);
         $.ajax({
             url: "/notification/notification_delete?id="+notification_id,
             type:"GET",
@@ -186,7 +182,7 @@ $(window).load(function() {
 
 
     /*avatar dropdown control*/
-    $(".avatar-dropdown").click(function(){
+    $(".nav_avatar_icon").click(function(){
         $.ajax({
             url:"/profile/unlock_chances",
             type:"GET",
@@ -199,5 +195,9 @@ $(window).load(function() {
 
 
 
+
 });
+
+
+
 

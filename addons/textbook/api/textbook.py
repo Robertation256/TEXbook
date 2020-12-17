@@ -13,6 +13,10 @@ class TextbookResource(BaseResource):
 
     @login_required
     def get_search(self):
+        '''
+        handles get requests to /textbook/search?id={}&book_name={}&subject={}
+        :return: HTML template
+        '''
         user = self.service.get_user_ins()
         textbook_id =  request.args.get("id")
         book_name = request.args.get("book_name")

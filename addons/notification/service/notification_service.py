@@ -7,6 +7,11 @@ class NotificationService(base_service.BaseService):
 
     @classmethod
     def get_notifications_by_user_id(cls, user_id):
+        '''
+        get all the notification a user has
+        :param user_id:
+        :return: dict
+        '''
         query = cls.model.select().where(cls.model.owner_id == user_id)
         data = []
         if query.exists():
@@ -31,6 +36,12 @@ class NotificationService(base_service.BaseService):
 
     @classmethod
     def delete_notification_by_id(cls, notification_id, user_id):
+        '''
+        delete a notification
+        :param notification_id: int
+        :param user_id: int
+        :return: dict
+        '''
         query = cls.model.select().where(cls.model.id == notification_id)
         if query.exists() and query.get().owner_id == user_id:
             cls.model.delete().where(cls.model.id == notification_id).execute()

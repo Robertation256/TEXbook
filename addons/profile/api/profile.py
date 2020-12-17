@@ -14,17 +14,27 @@ class ProfileResource(BaseResource):
 
     @login_required
     def get_profile(self):
+        '''
+        handles get requests to /profile/profile
+        :return: HTML template
+        '''
         session = Session()
         email = session.get("email")
         profile_info = self.service.get_profile_info(email=email)
+        from addons.image.model.image import Image
+        avatar_options = Image.get_avatar_ids()
         user = self.service.get_user_ins()
         from common.models.course import Course
         query = Course.select(Course.subject).order_by(Course.subject).distinct()
         majors = [_.subject for _ in query]
-        return render_template("profile.html", user=user,majors=majors, **profile_info)
+        return render_template("profile.html", user=user,avatar_options=avatar_options, majors=majors, **profile_info)
 
     @login_required
     def post_profile(self):
+        '''
+        handles post requests to /profile/profile
+        :return: dict
+        '''
         session = Session()
         email = session.get("email")
         form = dict()
@@ -40,6 +50,11 @@ class ProfileResource(BaseResource):
 
     @login_required
     def post_profile_account(self):
+        '''
+        handles post requests to /profile/profile_account
+        this api updates use pwd
+        :return: rediction status code
+        '''
         session = Session()
         email = session.get("email")
         password = request.form.get("password")
@@ -52,7 +67,12 @@ class ProfileResource(BaseResource):
         return redirect("/profile/profile")
 
     @login_required
-    def post_profile_notifications(self): 
+    def post_profile_notifications(self):
+        '''
+        handles post requests to /profile/profile_notification
+        this api changes notification setting
+        :return: dict
+        '''
         session = Session()
         email = session.get("email")
         form = dict() 
@@ -85,4 +105,6 @@ class ProfileResource(BaseResource):
         user_id = self.service.get_user_id()
         from addons.user.model.user import User
         unlock_chance = User.select(User.unlock_chance).where(User.id==user_id).get().unlock_chance
+        print(unlock_chance)
         return str(unlock_chance)
+

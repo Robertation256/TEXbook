@@ -30,27 +30,41 @@ class ProfileService(base_service.BaseService):
         }
         '''
         profile_info = cls.model.get_profile_by_email(email)
-        avatar_options = Image.get_avatar_ids()
-        profile_info["avatar_options"] = avatar_options
+        if profile_info is None:
+            email = cls.get_user_email()
+            res = cls.add(
+                {
+                    "email":email,
+                    "first_name": "",
+                    "last_name": "",
+                    "major": "",
+                    "class_year": "",
+                    "avatar_id": 5,
+                    "contact_info": ""
+                }
+            )
+            profile_info = {
+                "first_name": "",
+                "last_name": "",
+                "major": "",
+                "class_year": "",
+                "avatar_id": 5,
+                "contact_info": ""
+            }
         return profile_info
-
-    @classmethod
-    def avatar_format_check(cls, file_name: str) -> bool:
-        if "." in file_name:
-            file_format = file_name.split(".")[-1]
-            if file_format in ["jpg","png", "jpeg"]:
-                return file_format
-        return False
 
     @classmethod
     def get_contact_info_by_seller_id(cls, id):
         query = cls.model.select(cls.model.last_name,cls.model.first_name,cls.model.contact_info).where(cls.model.user_id==id)
         if query.exists():
+            from addons.user.model.user import User
+            user_email = User.select().where(User.id==id).get().email
             ins = query.get()
             res = dict()
             res["contact_info"] = ins.contact_info
             res["first_name"] = ins.first_name
             res["last_name"] = ins.last_name
+            res["email"] = user_email
             return res
         return None
 

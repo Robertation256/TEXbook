@@ -11,6 +11,10 @@ class AuthResource(BaseResource):
         self.service = AuthService
 
     def get_login(self):
+        '''
+        handles get requests towards /auth/login
+        :return: HTML template
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -18,6 +22,10 @@ class AuthResource(BaseResource):
         return render_template("auth_login.html")
 
     def post_login(self):
+        '''
+        handles post requests towards /auth/login
+        :return: json
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -45,6 +53,10 @@ class AuthResource(BaseResource):
 
 
     def get_email_verify(self):
+        '''
+        handles get requests towards /auth/email_verify
+        :return: HTML template
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -60,6 +72,10 @@ class AuthResource(BaseResource):
         return render_template("auth_email_verify.html", type=template_type)
 
     def post_email_verify(self):
+        '''
+        handles post requests towards /auth/email_verify
+        :return: json
+        '''
         session = Session()
         if session.get("login"):
             session.extend()
@@ -88,6 +104,10 @@ class AuthResource(BaseResource):
             return {"status": False, "message": "Wrong token or token expired"}
 
     def get_register(self):
+        '''
+        handles get requests towards /auth/register
+        :return: HTML template
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -98,6 +118,10 @@ class AuthResource(BaseResource):
         return render_template("auth_register.html")
 
     def post_register(self):
+        '''
+        handles post requests towards /auth/register
+        :return: json
+        '''
         session = Session()
         if session.get("logged_in") == " true":
             session.extend()
@@ -125,6 +149,10 @@ class AuthResource(BaseResource):
         return redirect("/profile/profile")
 
     def post_token(self):
+        '''
+        handles post requests towards /auth/token
+        :return: json
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -158,6 +186,10 @@ class AuthResource(BaseResource):
         return {"status": True, "message": "A token has been sent to your mail box"}
 
     def get_reset_password(self):
+        '''
+        handles get requests towards /auth/reset_password
+        :return: redirect status code
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()
@@ -168,6 +200,10 @@ class AuthResource(BaseResource):
         return render_template("auth_reset_password.html")
 
     def post_reset_password(self):
+        '''
+        handles post requests towards /reset_password
+        :return: json
+        '''
         session = Session()
         if session.get("logged_in") == "true":
             session.extend()

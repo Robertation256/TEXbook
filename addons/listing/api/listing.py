@@ -17,19 +17,21 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_listing_publish(self):
+        '''
+        handles get requests to /listing/listing_publish
+        :return: HTML template
+        '''
         textbook_options = Textbook.get_title(only_title=False)
         user = self.service.get_user_ins()
         avatar_id = self.service.get_avatar_id()
         return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user,avatar_id=avatar_id)
 
     @login_required
-    def get_test_listing(self):
-        textbook_options = Textbook.get_title(only_title=False)
-        user = self.service.get_user_ins()
-        return render_template("listing_listing_publish.html",textbook_options=textbook_options,user=user)
-
-    @login_required
     def post_listing_publish(self):
+        '''
+        handles post requests to /listing/listing_publish
+        :return: dict
+        '''
         user_email = self.service.get_user_email()
         user_id = self.service.get_user_id()
         image_data = [{
@@ -52,6 +54,10 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_request_publish(self):
+        '''
+        handle get request  to /listing/request_publish
+        :return: HTML template
+        '''
         textbook_options = Textbook.get_title(only_title=False)
         user = self.service.get_user_ins()
         avatar_id = self.service.get_avatar_id()
@@ -59,6 +65,10 @@ class ListingResource(BaseResource):
 
     @login_required
     def post_request_publish(self):
+        '''
+        handle post request  to /listing/request_publish
+        :return: HTML template
+        '''
         user_id = self.service.get_user_id()
         f = dict()
         f["textbook_id"] = request.form["textbook_id"]
@@ -97,6 +107,10 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_view_listing(self):
+        '''
+        handle get request  to /listing/view_listing
+        :return: HTML template
+        '''
         #pass a URL variable
         textbook_id = request.args.get("id")
         listing_type = request.args.get("listing_type")
@@ -118,12 +132,20 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_unlock_contact_info(self):
+        '''
+        handle get request  to /listing/unlock_contact_info
+        :return: dict
+        '''
         listing_id = request.args.get("id")
         data = self.service.get_contact_info_by_id(listing_id)
         return data
 
     @login_required
     def get_listing_manage(self):
+        '''
+        handle get request  to /listing/listing_manage
+        :return: HTML template
+        '''
         avatar_id = self.service.get_avatar_id()
         user = self.service.get_user_ins()
         published_listing = self.service.get_user_listings(user_id=user.id,type="seller_post",is_published="true")
@@ -145,12 +167,21 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_lock(self):
+        '''
+        handle get request  to /listing/lock
+        :return: dict
+        '''
         listing_id = request.args.get("id")
         user_id = self.service.get_user_id()
         self.service.lock_listing_by_id(listing_id=listing_id,user_id=user_id)
+        return {"status":True, "msg":"Succeeds"}
 
     @login_required
     def get_set(self):
+        '''
+        handle get request  to /listing/set?id={}&on_shelf={}
+        :return: dict
+        '''
         user_id = self.service.get_user_id()
         listing_id = request.args.get("id")
         on_shelf = request.args.get("on_shelf")
@@ -167,6 +198,10 @@ class ListingResource(BaseResource):
 
     @login_required
     def get_delete(self):
+        '''
+        handle get request  to /listing/delete
+        :return: dict
+        '''
         listing_id = request.args.get("id")
         user_id = self.service.get_user_id()
         res = self.service.delete_listing_by_id(listing_id=listing_id, user_id=user_id)

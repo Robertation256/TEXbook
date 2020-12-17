@@ -18,6 +18,11 @@ class EmailHandler():
 
 
     def _handle_listing_unlocked(self,event):
+        '''
+        handles email sending for listing unlock event
+        :param event:
+        :return: None
+        '''
         if event.listing_ins.owner.send_email_on_listing_unlocked == "true":
             from addons.profile.models.profile import Profile
             profile_ins = Profile.select().where(Profile.user_id == event.listing_ins.owner_id).get()
@@ -34,6 +39,11 @@ class EmailHandler():
             task.schedule()
 
     def _handle_listing_publish(self, event):
+        '''
+        handles email sending for listing publish event
+        :param event:
+        :return:
+        '''
         textbook_id = event.listing_ins.textbook_id
         query = Listing.select().where((Listing.textbook_id == textbook_id) & (Listing.type == "buyer_post"))
         if query.exists():

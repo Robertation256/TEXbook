@@ -11,7 +11,9 @@ First fork the repo then do a `git clone`.
 Once you have all of that, you should set up Redis and MySQL Database on your local machine.
 Create a table called TEXbook and RUN:
   
-    mysql -u root -p TEXbook < DB.sql
+    mysql -u root -p TEXbook < texbook.sql
+    
+to load the database file
 
 Finally, to run the project
 ```
